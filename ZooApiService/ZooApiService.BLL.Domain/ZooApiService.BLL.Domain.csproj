@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZooApiService.BLL.Contracts\ZooApiService.BLL.Contracts.csproj" />
+    <ProjectReference Include="..\ZooApiService.Common\ZooApiService.Common.csproj" />
+    <ProjectReference Include="..\ZooApiService.DAL.Data\ZooApiService.DAL.Data.csproj" />
+  </ItemGroup>
+
+</Project>
