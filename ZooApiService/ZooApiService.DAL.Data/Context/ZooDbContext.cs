@@ -1,32 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ZooApiService.DAL.Data.Entities;
 
 namespace ZooApiService.DAL.Data.Context
 {
-    public class ZooDbContext : DbContext
+    public class ZooDbContext : IdentityDbContext<Employee>
     {
-        public ZooDbContext(DbContextOptions<ZooDbContext> options) : base(options) { }
-
         public DbSet<Animal> Animals { get; set; }
 
-        public DbSet<AnimalType> AnimalTypes { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
-        public DbSet<Food> Foods { get; set; }
+        public DbSet<EmployeeJob> EmployeeJobs { get; set; }
 
-        public DbSet<FoodType> FoodTypes { get; set; }
-
-        public DbSet<MedicalCard> MedicalCards { get; set; }
-
-        public DbSet<MedicalRecord> MedicalRecords { get; set; }
-
-        public DbSet<Profession> Professions { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         public DbSet<Ration> Rations { get; set; }
 
-        public DbSet<Staff> Staff { get; set; }
+        public ZooDbContext(DbContextOptions<ZooDbContext> options) : base(options) { }
 
-        public DbSet<StaffWork> StaffWorks { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-        public DbSet<Work> Works { get; set; }
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ZooDbContext).Assembly);
+        }
     }
 }

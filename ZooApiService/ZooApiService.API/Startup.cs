@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ZooApiService.API.Configuration;
 using ZooApiService.API.Middleware;
 
 namespace ZooApiService.API
@@ -19,6 +20,14 @@ namespace ZooApiService.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // AddAutoMapper;
+
+            services.ConfigureDbContext(Configuration);
+
+            services.ConfigureIdentity();
+
+            services.ConfigureDiServices();
+
             services.AddCors();
 
             services.AddControllers();

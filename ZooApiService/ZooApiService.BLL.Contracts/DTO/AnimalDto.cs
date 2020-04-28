@@ -1,15 +1,14 @@
 ﻿using System;
-using ZooApiService.DAL.Data.Enums;
 
-namespace ZooApiService.DAL.Data.Entities
+namespace ZooApiService.BLL.Contracts.DTO
 {
-    public class Animal
+    public class AnimalDto
     {
         public int AnimalId { get; set; }
 
         public string Name { get; set; }
 
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
 
         public DateTime DateOfBirth { get; set; }
     }
