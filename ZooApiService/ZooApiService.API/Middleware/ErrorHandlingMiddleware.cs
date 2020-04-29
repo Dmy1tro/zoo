@@ -49,12 +49,12 @@ namespace ZooApiService.API.Middleware
                     break;
 
                 case DbUpdateException ex:
-                    await WriteErrorAsync(context, "Failed to update in DataBase", HttpStatusCode.InternalServerError);
+                    await WriteErrorAsync(context, ex.Message, HttpStatusCode.InternalServerError);
                     _logger.LogError(exception, $"{errorTimeStamp}: {ex.Message}");
                     break;
 
                 default:
-                    await WriteErrorAsync(context, @"Something went wrong ¯\_(ツ)_/¯, try again later", HttpStatusCode.InternalServerError);
+                    await WriteErrorAsync(context, exception.Message, HttpStatusCode.InternalServerError);
                     _logger.LogError(exception, $"{errorTimeStamp}: {exception.Message}");
                     break;
             }

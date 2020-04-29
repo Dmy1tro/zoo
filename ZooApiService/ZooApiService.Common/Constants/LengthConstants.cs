@@ -1,6 +1,6 @@
-﻿namespace ZooApiService.DAL.Data.Constants
+﻿namespace ZooApiService.Common.Constants
 {
-    public static class DbLengthConstants
+    public static class LengthConstants
     {
         public const int SmallLength = 100;
 

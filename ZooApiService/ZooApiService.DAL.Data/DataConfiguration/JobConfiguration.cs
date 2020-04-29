@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ZooApiService.Common.Constants;
 using ZooApiService.DAL.Data.Constants;
 using ZooApiService.DAL.Data.Entities;
 
@@ -15,10 +16,10 @@ namespace ZooApiService.DAL.Data.DataConfiguration
 
             builder.Property(x => x.Title)
                 .IsRequired()
-                .HasMaxLength(DbLengthConstants.SmallLength);
+                .HasMaxLength(LengthConstants.SmallLength);
 
             builder.Property(x => x.Description)
-                .HasMaxLength(DbLengthConstants.MediumLength);
+                .HasMaxLength(LengthConstants.MediumLength);
         }
     }
 }

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ZooApiService.BLL.Contracts.Interfaces;
+using ZooApiService.BLL.Domain.Services;
 using ZooApiService.DAL.Data.Context;
 using ZooApiService.DAL.Data.Entities;
 
@@ -29,6 +31,10 @@ namespace ZooApiService.API.Configuration
 
         public static IServiceCollection ConfigureDiServices(this IServiceCollection services)
         {
+            services.AddScoped<IAnimalService, AnimalService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IJobService, JobService>();
+            services.AddScoped<IRationService, RationService>();
 
             return services;
         }

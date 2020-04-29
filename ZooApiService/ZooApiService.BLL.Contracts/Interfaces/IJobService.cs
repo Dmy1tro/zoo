@@ -7,16 +7,20 @@ namespace ZooApiService.BLL.Contracts.Interfaces
 {
     public interface IJobService
     {
-        public Task<JobDto> GetJobAsync(int id);
+        Task<JobDto> GetJobAsync(int id);
 
-        public Task<IList<JobDto>> GetJobsAsync();
+        Task<IList<JobDto>> GetJobsAsync();
 
-        public Task<IList<JobDto>> GetJobsForEmployeeAsync(string employeeId);
+        Task<IList<JobDto>> GetJobsForEmployeeAsync(string employeeId, string minStatus);
 
-        public Task<CreatedData> CreateJobAsync(JobDto employee);
+        Task<CreatedData> CreateJobAsync(string title, string description);
 
-        public Task UpdateJobAsync(JobDto employee);
+        Task StartJobAsync(int id);
 
-        public Task DeleteJobAsync(int id);
+        Task FinishJobAsync(int id);
+
+        Task UpdateJobAsync(JobDto jobDto);
+
+        Task DeleteJobAsync(int id);
     }
 }

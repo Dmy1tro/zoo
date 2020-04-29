@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ZooApiService.API.Configuration;
+using ZooApiService.API.Mapping;
 using ZooApiService.API.Middleware;
 
 namespace ZooApiService.API
@@ -20,7 +22,7 @@ namespace ZooApiService.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // AddAutoMapper;
+            services.AddAutoMapper(typeof(MappingProfile));
 
             services.ConfigureDbContext(Configuration);
 
@@ -53,7 +55,7 @@ namespace ZooApiService.API
 
             app.UseHttpsRedirection();
 
-            app.UseCors(options => 
+            app.UseCors(options =>
                 options.AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod());

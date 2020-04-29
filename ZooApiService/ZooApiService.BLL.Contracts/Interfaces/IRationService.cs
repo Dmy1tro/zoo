@@ -7,16 +7,16 @@ namespace ZooApiService.BLL.Contracts.Interfaces
 {
     public interface IRationService
     {
-        public Task<RationDto> GetRationAsync(int id);
+        Task<RationDto> GetRationAsync(int id);
 
-        public Task<IList<RationDto>> GetRationsAsync();
+        Task<IList<RationDto>> GetRationsAsync();
 
-        public Task<IList<RationDto>> GetRationsForAnimalAsync(int animalId);
+        Task<IList<RationDto>> GetRationsForAnimalAsync(int animalId);
 
-        public Task<CreatedData> CreateRationAsync(RationDto employee);
+        Task<CreatedData> CreateRationAsync(RationDto rationDto);
 
-        public Task UpdateRationAsync(RationDto employee);
+        Task UpdateRationAsync(RationDto rationDto);
 
-        public Task DeleteRationAsync(int id);
+        Task DeleteRationAsync(int id);
     }
 }

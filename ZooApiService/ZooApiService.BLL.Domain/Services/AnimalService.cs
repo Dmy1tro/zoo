@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using ZooApiService.BLL.Contracts.DTO;
 using ZooApiService.BLL.Contracts.DTO.ServiceResults;
 using ZooApiService.BLL.Contracts.Interfaces;
+using ZooApiService.Common.Constants;
+using ZooApiService.Common.Exceptions.BusinessLogic;
 using ZooApiService.DAL.Data.Context;
 using ZooApiService.DAL.Data.Entities;
 
@@ -26,6 +28,11 @@ namespace ZooApiService.BLL.Domain.Services
             var animalDbo = await _dbContext.Animals
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.AnimalId == id);
+
+            if (animalDbo is null)
+            {
+                throw new NotFoundException(EntityName.Animal, id);
+            }
 
             var animalDto = _mapper.Map<AnimalDto>(animalDbo);
 
@@ -67,6 +74,11 @@ namespace ZooApiService.BLL.Domain.Services
         {
             var animalDbo = await _dbContext.Animals
                 .FirstOrDefaultAsync(x => x.AnimalId == animalId);
+
+            if (animalDbo is null)
+            {
+                throw new NotFoundException(EntityName.Animal, animalId);
+            }
 
             _dbContext.Animals.Remove(animalDbo);
 
