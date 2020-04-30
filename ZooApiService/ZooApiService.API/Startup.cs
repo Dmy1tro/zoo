@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using ZooApiService.API.Configuration;
 using ZooApiService.API.Mapping;
 using ZooApiService.API.Middleware;
+using ZooApiService.Common.Authentication;
 
 namespace ZooApiService.API
 {
@@ -27,6 +29,10 @@ namespace ZooApiService.API
             services.ConfigureDbContext(Configuration);
 
             services.ConfigureIdentity();
+
+            services.Configure<JwtSettings>(Configuration.GetSection(nameof(JwtSettings)));
+
+            services.AddJwtAuthentication(Configuration);
 
             services.ConfigureDiServices();
 
@@ -50,10 +56,17 @@ namespace ZooApiService.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.UseMiddleware<RequestPerformanceMiddleware>();
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseCors(options =>
                 options.AllowAnyOrigin()

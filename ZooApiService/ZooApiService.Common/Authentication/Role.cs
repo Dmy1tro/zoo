@@ -1,4 +1,4 @@
-﻿namespace ZooApiService.Common.Constants
+﻿namespace ZooApiService.Common.Authentication
 {
     public static class Role
     {
