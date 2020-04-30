@@ -1,16 +1,17 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ZooApiService.BLL.Contracts.DTO;
 using ZooApiService.BLL.Contracts.Interfaces;
 using ZooApiService.Common.Authentication;
+using ZooApiService.Common.Exceptions;
 using ZooApiService.DAL.Data.Entities;
 
 namespace ZooApiService.BLL.Domain.Services
@@ -18,11 +19,18 @@ namespace ZooApiService.BLL.Domain.Services
     public class AccountService : IAccountService
     {
         private readonly UserManager<Employee> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
         private readonly JwtSettings _jwtSettings;
 
-        public AccountService(UserManager<Employee> userManager, IOptions<JwtSettings> jwtOptions)
+        public AccountService(UserManager<Employee> userManager,
+                              RoleManager<IdentityRole> roleManager,
+                              IOptions<JwtSettings> jwtOptions,
+                              IMapper mapper)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
+            _mapper = mapper;
             _jwtSettings = jwtOptions.Value;
         }
 
@@ -32,7 +40,7 @@ namespace ZooApiService.BLL.Domain.Services
 
             if (employee is null || (await _userManager.CheckPasswordAsync(employee, password)))
             {
-                throw new AuthenticationException();
+                throw new BusinessLogicException("Email or password is incorrect.");
             }
 
             var token = await GenerateToken(employee);
@@ -40,25 +48,26 @@ namespace ZooApiService.BLL.Domain.Services
             return token;
         }
 
-        public async Task SignUp(EmployeeDto employeeDto)
+        public async Task SignUp(EmployeeDto employeeDto, string password)
         {
-            //var user = new User
-            //{
-            //    UserName = model.Name,
-            //    Email = model.Email,
-            //    SecurityStamp = Guid.NewGuid().ToString()
-            //};
+            var employee = _mapper.Map<Employee>(employeeDto);
 
-            //var result = await userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(employee, password);
 
-            //if (!result.Succeeded)
-            //    return new RegisterResult(result.Errors.Select(x => x.Description));
+            if (!result.Succeeded)
+                throw new BusinessLogicException(string.Join("\n", result.Errors.Select(x => x.Description)));
 
-            //await CheckRoleExists(Roles.userRole);
+            await CheckRoleExists(Role.Worker);
 
-            //await userManager.AddToRoleAsync(user, Roles.userRole);
+            await _userManager.AddToRoleAsync(employee, Role.Worker);
+        }
 
-            throw new NotImplementedException();
+        private async Task CheckRoleExists(string role)
+        {
+            if (!await _roleManager.RoleExistsAsync(role))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(role));
+            }
         }
 
 
@@ -70,15 +79,17 @@ namespace ZooApiService.BLL.Domain.Services
                 .Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role))
                 .ToList();
 
-            claims.Add(new Claim(ClaimsIdentity.DefaultNameClaimType, employee.Id));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, employee.Id));
 
             var signKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+            var credentials = new SigningCredentials(signKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                signingCredentials: new SigningCredentials(signKey, SecurityAlgorithms.HmacSha256));
+                expires: DateTime.Now.AddHours(2),
+                signingCredentials: credentials);
 
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 

@@ -7,6 +7,6 @@ namespace ZooApiService.BLL.Contracts.Interfaces
     {
         Task<string> SignIn(string email, string password);
 
-        Task SignUp(EmployeeDto employee);
+        Task SignUp(EmployeeDto employee, string password);
     }
 }

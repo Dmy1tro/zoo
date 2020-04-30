@@ -38,6 +38,7 @@ namespace ZooApiService.API.Configuration
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IJobService, JobService>();
             services.AddScoped<IRationService, RationService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             return services;
         }
