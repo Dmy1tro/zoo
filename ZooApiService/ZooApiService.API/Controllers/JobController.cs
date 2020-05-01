@@ -1,14 +1,17 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZooApiService.API.ViewModels.JobViewModels;
 using ZooApiService.BLL.Contracts.DTO;
 using ZooApiService.BLL.Contracts.Interfaces;
+using ZooApiService.Common.Authentication;
 
 namespace ZooApiService.API.Controllers
 {
     [Route("api/jobs")]
     [ApiController]
+    [Authorize(Policy = PolicyName.ForAllUsers)]
     public class JobController : ControllerBase
     {
         private readonly IJobService _jobService;
@@ -37,7 +40,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpGet("for-employee/{employeeId}/{jobStatus?}")]
-        public async Task<IActionResult> GetForEmployee(string employeeId, string jobStatus)
+        public async Task<IActionResult> GetJobForEmployee(string employeeId, string jobStatus)
         {
             var jobsDto = await _jobService.GetJobsForEmployeeAsync(employeeId, jobStatus);
 
@@ -45,6 +48,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Create(CreateJobViewModel model)
         {
             var createdId = await _jobService.CreateJobAsync(model.Title, model.Description);
@@ -69,6 +73,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Put(JobViewModel model)
         {
             var jobDto = _mapper.Map<JobDto>(model);
@@ -79,6 +84,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Delete(int id)
         {
             await _jobService.DeleteJobAsync(id);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -38,7 +39,7 @@ namespace ZooApiService.BLL.Domain.Services
         {
             var employee = await _userManager.FindByEmailAsync(email);
 
-            if (employee is null || (await _userManager.CheckPasswordAsync(employee, password)))
+            if (employee is null || (!await _userManager.CheckPasswordAsync(employee, password)))
             {
                 throw new BusinessLogicException("Email or password is incorrect.");
             }
@@ -48,7 +49,7 @@ namespace ZooApiService.BLL.Domain.Services
             return token;
         }
 
-        public async Task SignUp(EmployeeDto employeeDto, string password)
+        public async Task SignUp(EmployeeDto employeeDto, string password, string role)
         {
             var employee = _mapper.Map<Employee>(employeeDto);
 
@@ -57,9 +58,21 @@ namespace ZooApiService.BLL.Domain.Services
             if (!result.Succeeded)
                 throw new BusinessLogicException(string.Join("\n", result.Errors.Select(x => x.Description)));
 
-            await CheckRoleExists(Role.Worker);
+            await CheckRoleExists(role);
 
-            await _userManager.AddToRoleAsync(employee, Role.Worker);
+            await _userManager.AddToRoleAsync(employee, role);
+        }
+
+        public async Task ChangePassword(string id, string oldPassword, string newPassword)
+        {
+            var employee = await _userManager.FindByIdAsync(id);
+
+            var result = await _userManager.ChangePasswordAsync(employee, oldPassword, newPassword);
+
+            if (!result.Succeeded)
+            {
+                throw new BusinessLogicException(string.Join("\n", result.Errors.Select(x => x.Description)));
+            }
         }
 
         private async Task CheckRoleExists(string role)
@@ -70,17 +83,17 @@ namespace ZooApiService.BLL.Domain.Services
             }
         }
 
-
         private async Task<string> GenerateToken(Employee employee)
         {
-            var roles = await _userManager.GetRolesAsync(employee);
+            var role = (await _userManager.GetRolesAsync(employee)).First();
 
-            var claims = roles
-                .Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role))
-                .ToList();
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, employee.Id),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, role)
+            };
 
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, employee.Id));
-
+            var expires = DateTime.Now.AddHours(2);
             var signKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var credentials = new SigningCredentials(signKey, SecurityAlgorithms.HmacSha256);
 
@@ -88,7 +101,7 @@ namespace ZooApiService.BLL.Domain.Services
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddHours(2),
+                expires: expires,
                 signingCredentials: credentials);
 
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);

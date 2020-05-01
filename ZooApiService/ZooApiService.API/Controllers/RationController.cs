@@ -1,14 +1,17 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZooApiService.API.ViewModels.RationViewModels;
 using ZooApiService.BLL.Contracts.DTO;
 using ZooApiService.BLL.Contracts.Interfaces;
+using ZooApiService.Common.Authentication;
 
 namespace ZooApiService.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = PolicyName.ForAllUsers)]
     public class RationController : ControllerBase
     {
         private readonly IRationService _rationService;

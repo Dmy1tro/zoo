@@ -7,6 +7,7 @@ namespace ZooApiService.DAL.Data.Enums
     public enum JobPosition
     {
         Worker = 1,
-        Manager
+        Manager,
+        Vet
     }
 }

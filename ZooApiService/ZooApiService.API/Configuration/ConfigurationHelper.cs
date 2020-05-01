@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using ZooApiService.BLL.Contracts.Interfaces;
 using ZooApiService.BLL.Domain.Services;
+using ZooApiService.Common.Authentication;
 using ZooApiService.DAL.Data.Context;
+using ZooApiService.DAL.Data.DataBuilders;
 using ZooApiService.DAL.Data.Entities;
 
 namespace ZooApiService.API.Configuration
@@ -25,7 +29,19 @@ namespace ZooApiService.API.Configuration
 
         public static IServiceCollection ConfigureIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<Employee, IdentityRole>()
+            services.AddIdentity<Employee, IdentityRole>(options =>
+                {
+                    // Password
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+
+                    // User
+                    options.User.RequireUniqueEmail = true;
+                    options.User.AllowedUserNameCharacters = null;
+                })
                 .AddEntityFrameworkStores<ZooDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -64,6 +80,35 @@ namespace ZooApiService.API.Configuration
             });
 
             return services;
+        }
+
+        public static IServiceCollection ConfigureAuthorization(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyName.ForAllUsers, configure =>
+                    configure.RequireClaim(ClaimsIdentity.DefaultRoleClaimType, Role.Manager, Role.Worker));
+
+                options.AddPolicy(PolicyName.ForManagersOnly, configure =>
+                    configure.RequireClaim(ClaimsIdentity.DefaultRoleClaimType, Role.Manager));
+            });
+
+            return services;
+        }
+
+        public static IApplicationBuilder MigrateDataBase(this IApplicationBuilder app)
+        {
+            using var scope = app.ApplicationServices.CreateScope();
+
+            var dbContext = scope.ServiceProvider.GetRequiredService<ZooDbContext>();
+            dbContext.Database.Migrate();
+
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Employee>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            new EmployeeDataBuilder(userManager, roleManager).SetData();
+
+            return app;
         }
     }
 }

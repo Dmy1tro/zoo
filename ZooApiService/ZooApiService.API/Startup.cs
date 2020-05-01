@@ -30,9 +30,11 @@ namespace ZooApiService.API
 
             services.ConfigureIdentity();
 
-            services.Configure<JwtSettings>(Configuration.GetSection(nameof(JwtSettings)));
+            services.Configure<JwtSettings>(Configuration.GetSection("Auth"));
 
             services.AddJwtAuthentication(Configuration);
+
+            services.ConfigureAuthorization();
 
             services.ConfigureDiServices();
 
@@ -45,6 +47,31 @@ namespace ZooApiService.API
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "ZooApiService Swagger API"
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
                 });
             });
         }
@@ -66,8 +93,6 @@ namespace ZooApiService.API
 
             app.UseHttpsRedirection();
 
-            app.UseAuthentication();
-
             app.UseCors(options =>
                 options.AllowAnyOrigin()
                     .AllowAnyHeader()
@@ -75,6 +100,7 @@ namespace ZooApiService.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -84,6 +110,8 @@ namespace ZooApiService.API
 
             app.UseSwagger();
             app.UseSwaggerUI(s => s.SwaggerEndpoint("/swagger/v1/swagger.json", "ZooApiService"));
+
+            app.MigrateDataBase();
         }
     }
 }
