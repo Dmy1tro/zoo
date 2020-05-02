@@ -34,6 +34,12 @@ namespace ZooApiService.API.Mapping
 
             CreateMap<string, JobPosition>()
                 .ConvertUsing(x => Enum.Parse<JobPosition>(x));
+
+            CreateMap<JobStatus, string>()
+                .ConvertUsing(x => x.ToString());
+
+            CreateMap<string, JobStatus>()
+                .ConvertUsing(x => Enum.Parse<JobStatus>(x));
         }
 
         private void MapViewModels()
