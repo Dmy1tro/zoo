@@ -32,9 +32,9 @@ namespace ZooApiService.API
 
             services.Configure<JwtSettings>(Configuration.GetSection("Auth"));
 
-            services.AddJwtAuthentication(Configuration);
+            //services.AddJwtAuthentication(Configuration);
 
-            services.ConfigureAuthorization();
+            //services.ConfigureAuthorization();
 
             services.ConfigureDiServices();
 
@@ -100,8 +100,8 @@ namespace ZooApiService.API
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

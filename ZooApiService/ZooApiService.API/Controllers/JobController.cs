@@ -11,7 +11,7 @@ namespace ZooApiService.API.Controllers
 {
     [Route("api/jobs")]
     [ApiController]
-    [Authorize(Policy = PolicyName.ForAllUsers)]
+    //[Authorize(Policy = PolicyName.ForAllUsers)]
     public class JobController : ControllerBase
     {
         private readonly IJobService _jobService;
@@ -48,7 +48,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = PolicyName.ForManagersOnly)]
+        //[Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Create(CreateJobViewModel model)
         {
             var createdId = await _jobService.CreateJobAsync(model.Title, model.Description);
@@ -73,7 +73,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpPut]
-        [Authorize(Policy = PolicyName.ForManagersOnly)]
+        //[Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Put(JobViewModel model)
         {
             var jobDto = _mapper.Map<JobDto>(model);
@@ -84,7 +84,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = PolicyName.ForManagersOnly)]
+        //[Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Delete(int id)
         {
             await _jobService.DeleteJobAsync(id);

@@ -11,7 +11,7 @@ namespace ZooApiService.API.Controllers
 {
     [Route("api/employees")]
     [ApiController]
-    [Authorize(Policy = PolicyName.ForManagersOnly)]
+    //[Authorize(Policy = PolicyName.ForManagersOnly)]
     public class EmployeeController : BaseApiController
     {
         private readonly IEmployeeService _employeeService;
@@ -44,7 +44,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpGet("profile")]
-        [Authorize(Policy = PolicyName.ForAllUsers)]
+        //[Authorize(Policy = PolicyName.ForAllUsers)]
         public async Task<IActionResult> Profile()
         {
             var employeeDto = await _employeeService.GetEmployeeAsync(CurrentUser.UserId);
@@ -63,7 +63,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpPut("change-password")]
-        [Authorize(Policy = PolicyName.ForAllUsers)]
+        //[Authorize(Policy = PolicyName.ForAllUsers)]
         public async Task<IActionResult> ChangePassword(ChangePassword model)
         {
             await _accountService.ChangePassword(CurrentUser.UserId, model.OldPassword, model.NewPassword);
