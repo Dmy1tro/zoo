@@ -27,19 +27,19 @@ namespace ZooApiService.API.Mapping
                 .ConvertUsing(x => x.ToString());
 
             CreateMap<string, Gender>()
-                .ConvertUsing(x => Enum.Parse<Gender>(x));
+                .ConvertUsing(x => Enum.Parse<Gender>(x, true));
 
             CreateMap<JobPosition, string>()
                 .ConvertUsing(x => x.ToString());
 
             CreateMap<string, JobPosition>()
-                .ConvertUsing(x => Enum.Parse<JobPosition>(x));
+                .ConvertUsing(x => Enum.Parse<JobPosition>(x, true));
 
             CreateMap<JobStatus, string>()
                 .ConvertUsing(x => x.ToString());
 
             CreateMap<string, JobStatus>()
-                .ConvertUsing(x => Enum.Parse<JobStatus>(x));
+                .ConvertUsing(x => Enum.Parse<JobStatus>(x, true));
         }
 
         private void MapViewModels()
