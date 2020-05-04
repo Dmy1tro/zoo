@@ -1,19 +1,24 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ZooApiService.API.ViewModels.AccountViewModels;
+using ZooApiService.API.ViewModels.EmployeeViewModels;
+using ZooApiService.BLL.Contracts.DTO;
 using ZooApiService.BLL.Contracts.Interfaces;
 
 namespace ZooApiService.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseApiController
     {
         private readonly IAccountService _accountService;
+        private readonly IMapper _mapper;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IMapper mapper)
         {
             _accountService = accountService;
+            _mapper = mapper;
         }
 
         [HttpPost("sign-in")]
@@ -22,6 +27,25 @@ namespace ZooApiService.API.Controllers
             var token = await _accountService.SignIn(model.Email, model.Password);
 
             return Ok(new { token });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateEmployeeViewModel model)
+        {
+            var employeeDto = _mapper.Map<EmployeeDto>((EmployeeViewModel)model);
+
+            await _accountService.SignUp(employeeDto, model.Password, model.Role);
+
+            return NoContent();
+        }
+
+        [HttpPut("change-password")]
+        //[Authorize(Policy = PolicyName.ForAllUsers)]
+        public async Task<IActionResult> ChangePassword(ChangePassword model)
+        {
+            await _accountService.ChangePassword(CurrentUser.UserId, model.OldPassword, model.NewPassword);
+
+            return NoContent();
         }
     }
 }
