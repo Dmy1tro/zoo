@@ -7,7 +7,7 @@ export namespace enums {
     }
 
     export enum GENDER {
-        MALE = 'male',
-        FEMALE = 'female'
+        MALE = 'Male',
+        FEMALE = 'Female'
     }
 }
