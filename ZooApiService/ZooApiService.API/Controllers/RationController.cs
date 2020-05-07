@@ -9,7 +9,7 @@ using ZooApiService.Common.Authentication;
 
 namespace ZooApiService.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/rations")]
     [ApiController]
     //[Authorize(Policy = PolicyName.ForAllUsers)]
     public class RationController : ControllerBase

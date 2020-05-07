@@ -8,6 +8,11 @@ const routes: Routes = [
   {
     path: 'animal',
     loadChildren: () => import('./features/animal/animal.module').then(m => m.AnimalModule)
+  },
+
+  {
+    path: 'employee',
+    loadChildren: () => import('./features/employee/employee.module').then(m => m.EmployeeModule)
   }
 ];
 

@@ -7,7 +7,8 @@ import { RationComponent } from './ration/ration.component';
 const routes: Routes = [
   { path: '', redirectTo: 'details', pathMatch: 'full' },
   { path: 'details', component: AnimalDetailsComponent },
-  { path: 'ration/:id', component: RationComponent }
+  { path: 'details/:animalId', component: AnimalDetailsComponent },
+  { path: 'ration/:animalId', component: RationComponent }
 ];
 
 @NgModule({

@@ -27,21 +27,27 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="date" class="form-control" placeholder="date of birth" formControlName="dateOfBirth">
+                        <input type="date" class="form-control" placeholder="date of birth"
+                            formControlName="dateOfBirth">
                         <div class="alert alert-danger my-1" *ngIf="hasCustomError(animalForm, 'dateOfBirth')">
                             Date of birth is required.
-                        </div>          
+                        </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-8">
-                            <button mat-raised-button class="btn-block " type="submit">
+                    <div class="row pr-3">
+                        <div class="col-md-6">
+                            <button mat-raised-button class="btn-block " type="submit" color="primary">
                                 {{ getButtonState() }}
                             </button>
                         </div>
                         <div class="col-md-4">
-                            <button mat-raised-button type="button" class="btn-block" color="primary"
-                                (click)="resetForm()">
+                            <a mat-raised-button class="btn-block" color="accent" [disabled]="animalId == null"
+                                (click)="goToAnimalRation()">
+                                Edit ration
+                            </a>
+                        </div>
+                        <div class="col-md-2">
+                            <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
                                 <mat-icon>cached</mat-icon>
                             </button>
                         </div>
@@ -52,23 +58,26 @@
     </div>
     <hr>
     <div class="col-md-5">
-        <!-- <hr> -->
-        <table class="table table-borderless">
-            <tbody>
-                <tr class="row border-bottom mb-2 ml-1" *ngFor="let animal of animals">
-                    <td class="col-md-10">
-                        <a class="text-truncate btn btn-outline-primary btn-block"
-                            (click)='selectAnimal(animal.animalId)'>{{animal.name}}</a>
-                    </td>
-                    <td class="col-md-2">
-                        <div class="d-flex bg-light justify-content-center">
-                            <a class="btn btn-light flex-fill" (click)="deleteAnimal(animal.animalId)">
-                                <img src="/assets/images/icons8-xbox-x-24.png" alt="delete">
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+
+        <mat-action-list>
+            <a mat-list-item [class.active]="animal.animalId === animalId" 
+                *ngFor="let animal of animals" (click)='selectAnimal(animal.animalId)'>
+                {{ animal.name }}
+                <span class="float-right btn btn-light btn-sm" (click)="deleteAnimal(animal.animalId)">
+                    <img src="/assets/images/icons8-xbox-x-24.png" alt="delete">
+                </span>
+            </a>
+        </mat-action-list>
+
+        <!-- <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action pointer text-truncate text-center medium-size" role="tab"
+                data-toggle="list" (click)='selectAnimal(animal.animalId)' *ngFor="let animal of animals">
+                {{animal.name}}
+                <span class="float-right btn btn-light flex-fill" (click)="deleteAnimal(animal.animalId)">
+                    <img src="/assets/images/icons8-xbox-x-24.png" alt="delete">
+                </span>
+            </a>
+        </div> -->
     </div>
 </div>

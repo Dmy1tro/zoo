@@ -1,0 +1,17 @@
+
+.mat-action-list a {
+    background-color: #fff;
+    border-radius: 3px;
+    border: solid 0.5px silver;
+    margin-bottom: 2px;
+  }
+
+.mat-action-list a.active {
+    background: #673ab7;
+    color: white;
+  }
+
+  .mat-action-list span {
+      position: absolute;
+      right: 7%;
+  }

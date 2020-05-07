@@ -3,24 +3,26 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { IAnimal } from 'src/app/core/interfaces/animal.interface';
-import { enumSelector, convertToISOFormat, configureToastr, hasCustomErrorImport, hasPatternErrorImport, getButtonStateImport } from 'src/app/core/helpers';
+import { enumSelector, convertToISOFormat, configureToastr, hasCustomErrorImport, hasPatternErrorImport,
+         getButtonStateImport, deleteConfirmImport } from 'src/app/core/helpers';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { enums } from 'src/app/core/constants/enums';
 import { AnimalService } from '../common/animal.service';
 import { ICreatedId } from 'src/app/core/interfaces/createdId-interface';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-animal-details',
   templateUrl: './animal-details.component.html',
-  styleUrls: [],
+  styleUrls: ['./animal-details.component.css'],
   providers: [DatePipe]
 })
 export class AnimalDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
               private router: Router,
+              private route: ActivatedRoute,
               private animalService: AnimalService,
               private toastr: ToastrService,
               private datePipe: DatePipe) { }
@@ -28,12 +30,13 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
   animals: IAnimal[];
   animalForm: FormGroup;
   genders: any;
+  animalId: number;
 
   private update: boolean;
-  private animalId: number;
   private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
+    this.animalId = +this.route.snapshot.params.animalId;
     this.update = false;
     this.getAnimals();
     this.genders = enumSelector(enums.GENDER);
@@ -60,7 +63,12 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
   getAnimals(): void {
     this.animalService.getAnimals()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(data => this.animals = data);
+      .subscribe(data => {
+        this.animals = data;
+        if (this.animalId) {
+          this.selectAnimal(this.animalId);
+        }
+      });
   }
 
   createAnimal(): void {
@@ -109,6 +117,10 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteAnimal(id) {
+    if (!deleteConfirmImport(this.animals.find(x => x.animalId === id).name)) {
+      return;
+    }
+
     this.animalService.deleteAnimal(id)
       .pipe(
         finalize(() => this.getAnimals()),
@@ -127,14 +139,14 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     this.update = true;
     this.animalId = animal.animalId;
     this.animalForm.patchValue({
-      name: [animal.name, [Validators.required, Validators.maxLength(100)]],
-      gender: [animal.gender, Validators.required],
-      dateOfBirth: [this.datePipe.transform(animal.dateOfBirth, 'yyyy-MM-dd'), Validators.required],
+      name: animal.name,
+      gender: animal.gender,
+      dateOfBirth: this.datePipe.transform(animal.dateOfBirth, 'yyyy-MM-dd')
     });
   }
 
-  goToAnimalRation(animalId: number) {
-    this.router.navigate(['/animal/ration', animalId]);
+  goToAnimalRation() {
+    this.router.navigate(['/animal/ration', this.animalId]);
   }
 
   resetForm(): void {
