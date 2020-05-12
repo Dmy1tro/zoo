@@ -2,82 +2,86 @@
     <h3>Animal management</h3>
 </div>
 <hr>
-<div class="row">
-    <div class="col-md-7">
-        <!-- <hr> -->
-        <form [formGroup]="animalForm" novalidate (ngSubmit)="onSubmit()">
-            <div class="row ml-1">
-                <div class="col-md-9">
-                    <div class="form-group">
-                        <label>Animal Name</label>
-                        <input type="text" class="form-control" placeholder="Animal Name" formControlName="name">
-                        <div class="alert alert-danger my-1" *ngIf="hasCustomError(animalForm, 'name')">
-                            Animal Name is required.
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Animal Gender</label>
-                        <select class="form-control" formControlName="gender">
-                            <option value=null disabled>Select Gender</option>
-                            <option *ngFor="let gender of genders" [ngValue]="gender.value">{{gender.title}}</option>
-                        </select>
-                        <div class="alert alert-danger my-1" *ngIf="hasCustomError(animalForm, 'gender')">
-                            Gender is required.
-                        </div>
-                    </div>
 
-                    <div class="form-group">
-                        <input type="date" class="form-control" placeholder="date of birth"
-                            formControlName="dateOfBirth">
-                        <div class="alert alert-danger my-1" *ngIf="hasCustomError(animalForm, 'dateOfBirth')">
-                            Date of birth is required.
-                        </div>
-                    </div>
-
-                    <div class="row pr-3">
-                        <div class="col-md-6">
-                            <button mat-raised-button class="btn-block " type="submit" color="primary">
-                                {{ getButtonState() }}
-                            </button>
-                        </div>
-                        <div class="col-md-4">
-                            <a mat-raised-button class="btn-block" color="accent" [disabled]="animalId == null"
-                                (click)="goToAnimalRation()">
-                                Edit ration
-                            </a>
-                        </div>
-                        <div class="col-md-2">
-                            <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
-                                <mat-icon>cached</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+<form [formGroup]="filterForm" novalidate (ngSubmit)="filterAnimals()">
+    <div class="row ml-1">
+        <div class="col-md-3">
+            <div class="form-group mt-2">
+                <input type="text" class="form-control" placeholder="Name" formControlName="name">
             </div>
-        </form>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <mat-form-field color="primary">
+                    <mat-label>From date</mat-label>
+                    <input class="mat-datepicker-input" matInput [matDatepicker]="picker1" formControlName='fromDate'
+                        readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <mat-form-field color="primary">
+                    <mat-label>By date</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName='byDate' readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2 disabled="false"></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <mat-button-toggle-group>
+                <button mat-raised-button color="primary" type="submit" class="px-5">
+                    Search
+                </button>
+                <mat-button-toggle (click)="resetForm()">
+                    <mat-icon>cached</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
     </div>
-    <hr>
-    <div class="col-md-5">
+</form>
 
-
-        <mat-action-list>
-            <a mat-list-item [class.active]="animal.animalId === animalId" 
-                *ngFor="let animal of animals" (click)='selectAnimal(animal.animalId)'>
-                {{ animal.name }}
-                <span class="float-right btn btn-light btn-sm" (click)="deleteAnimal(animal.animalId)">
-                    <img src="/assets/images/icons8-xbox-x-24.png" alt="delete">
-                </span>
-            </a>
-        </mat-action-list>
-
-        <!-- <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action pointer text-truncate text-center medium-size" role="tab"
-                data-toggle="list" (click)='selectAnimal(animal.animalId)' *ngFor="let animal of animals">
-                {{animal.name}}
-                <span class="float-right btn btn-light flex-fill" (click)="deleteAnimal(animal.animalId)">
-                    <img src="/assets/images/icons8-xbox-x-24.png" alt="delete">
-                </span>
-            </a>
-        </div> -->
-    </div>
+<div class="table-responsive px-2 mt-2">
+    <table class="table table-bordered text-center">
+        <thead class="thead-light">
+            <tr class="d-flex">
+                <th class="col-md-4 pointer" scope="col" (click)="sortBy('name')"><u>Name</u></th>
+                <th class="col-md-2" scope="col">Gender</th>
+                <th class="col-md-2 pointer" scope="col" (click)="sortBy('date')"><u>Date of birth</u></th>
+                <th class="col-md-4" scope="col" style="width: auto;">
+                    <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdate(null)">
+                        <mat-icon>add</mat-icon>
+                        Create Animal
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="d-flex" *ngFor="let animal of filteredAnimals">
+                <td class="col-md-4">
+                    {{ animal.name }}
+                </td>
+                <td class="col-md-2">
+                    {{ animal.gender }}
+                </td>
+                <td class="col-md-2">
+                    {{ animal.dateOfBirth }}
+                </td>
+                <td class="col-md-4">
+                    <button class="btn btn-info mr-3" (click)="goToRation(animal.animalId)">
+                        Ration
+                    </button>
+                    <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdate(animal.animalId)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button class="btn btn-sm btn-danger mx-1" (click)="deleteAnimal(animal.animalId)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

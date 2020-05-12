@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { IAnimal } from 'src/app/core/interfaces/animal.interface';
-import { enumSelector, convertToISOFormat, configureToastr, hasCustomErrorImport, hasPatternErrorImport,
-         getButtonStateImport, deleteConfirmImport } from 'src/app/core/helpers';
-import { takeUntil, finalize } from 'rxjs/operators';
-import { enums } from 'src/app/core/constants/enums';
+import { configureToastr, deleteConfirmImport } from 'src/app/core/helpers';
+import { takeUntil } from 'rxjs/operators';
 import { AnimalService } from '../common/animal.service';
-import { ICreatedId } from 'src/app/core/interfaces/createdId-interface';
 import { DatePipe } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { toastrTitle } from 'src/app/core/constants/enums';
+import { MatDialog } from '@angular/material/dialog';
+import { AnimalManagementComponent } from '../animal-management/animal-management.component';
 
 @Component({
   selector: 'app-animal-details',
@@ -20,43 +20,47 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AnimalDetailsComponent implements OnInit, OnDestroy {
 
-  constructor(private fb: FormBuilder,
-              private router: Router,
-              private route: ActivatedRoute,
-              private animalService: AnimalService,
-              private toastr: ToastrService,
-              private datePipe: DatePipe) { }
+  public animals: IAnimal[];
+  public filteredAnimals: IAnimal[];
+  public filterForm: FormGroup;
 
-  animals: IAnimal[];
-  animalForm: FormGroup;
-  genders: any;
-  animalId: number;
-
-  private update: boolean;
+  private sortValue = true;
   private destroy$ = new Subject<void>();
 
+  constructor(private fb: FormBuilder,
+              private router: Router,
+              private animalService: AnimalService,
+              private toastr: ToastrService,
+              private dialog: MatDialog) { }
+
   ngOnInit(): void {
-    this.animalId = +this.route.snapshot.params.animalId;
-    this.update = false;
     this.getAnimals();
-    this.genders = enumSelector(enums.GENDER);
     this.createForm();
     configureToastr(this.toastr);
   }
 
   createForm(): void {
-    this.animalForm = this.fb.group({
-      name: [null, [Validators.required, Validators.maxLength(100)]],
-      gender: [null, Validators.required],
-      dateOfBirth: [null, Validators.required],
+    this.filterForm = this.fb.group({
+      name: [null],
+      fromDate: [null],
+      byDate: [null]
     });
   }
 
-  onSubmit(): void {
-    if (this.animalForm.valid) {
-      this.update ? this.updateAnimal() : this.createAnimal();
-    } else {
-      this.animalForm.markAllAsTouched();
+  filterAnimals() {
+    const formValue = this.filterForm.value;
+    this.filteredAnimals = this.animals;
+
+    if (formValue.name) {
+      this.filteredAnimals = this.filteredAnimals.filter(x => x.name.toUpperCase().includes(formValue.name.toUpperCase()));
+    }
+
+    if (formValue.fromDate) {
+      this.filteredAnimals = this.filteredAnimals.filter(x => x.dateOfBirth >= formValue.fromDate);
+    }
+
+    if (formValue.byDate) {
+      this.filteredAnimals = this.filteredAnimals.filter(x => x.dateOfBirth <= formValue.byDate);
     }
   }
 
@@ -64,56 +68,10 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     this.animalService.getAnimals()
       .pipe(takeUntil(this.destroy$))
       .subscribe(data => {
+        data.forEach(x => x.dateOfBirth = x.dateOfBirth.slice(0, 10));
         this.animals = data;
-        if (this.animalId) {
-          this.selectAnimal(this.animalId);
-        }
+        this.filterAnimals();
       });
-  }
-
-  createAnimal(): void {
-    const formValue = {
-      name: this.animalForm.value.name,
-      gender: this.animalForm.value.gender,
-      dateOfBirth: convertToISOFormat(this.animalForm.value.dateOfBirth, this.datePipe)
-    };
-
-    this.animalService.createAnimal(formValue)
-      .pipe(
-        finalize(() => this.getAnimals()),
-        takeUntil(this.destroy$))
-      .subscribe(
-        (res: ICreatedId) => {
-          this.toastr.success('Animal created', enums.toastrTitle.Success);
-          this.resetForm();
-        },
-        (err) => {
-          this.toastr.error('Failed to create animal', enums.toastrTitle.Error);
-          console.log(err);
-        });
-  }
-
-  updateAnimal(): void {
-    const formValue = this.animalForm.value;
-
-    this.animalService.updateAnimal({
-      animalId: this.animalId,
-      name: formValue.name,
-      gender: formValue.gender,
-      dateOfBirth: convertToISOFormat(formValue.dateOfBirth, this.datePipe)
-    })
-      .pipe(
-        finalize(() => this.getAnimals()),
-        takeUntil(this.destroy$))
-      .subscribe(
-        () => {
-        this.resetForm();
-        this.toastr.success('Animal updated', enums.toastrTitle.Success);
-        },
-        (err) => {
-          this.toastr.error('Failed to update animal', enums.toastrTitle.Error);
-          console.log(err);
-        });
   }
 
   deleteAnimal(id) {
@@ -122,47 +80,59 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     }
 
     this.animalService.deleteAnimal(id)
-      .pipe(
-        finalize(() => this.getAnimals()),
-        takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
-        () => this.toastr.success('Animal deleted', enums.toastrTitle.Success),
+        () => {
+          this.animals = this.animals.filter(x => x.animalId !== id);
+          this.filterAnimals();
+          this.toastr.success('Animal deleted', toastrTitle.Success);
+        },
         (err) => {
-          this.toastr.error('Failed to delete animal', enums.toastrTitle.Error);
+          this.toastr.error('Failed to delete animal', toastrTitle.Error);
           console.log(err);
         }
       );
   }
 
-  selectAnimal(id) {
-    const animal = this.animals.find(x => x.animalId === id);
-    this.update = true;
-    this.animalId = animal.animalId;
-    this.animalForm.patchValue({
-      name: animal.name,
-      gender: animal.gender,
-      dateOfBirth: this.datePipe.transform(animal.dateOfBirth, 'yyyy-MM-dd')
-    });
+  goToRation(id) {
+    this.router.navigate(['/animal/ration', id]);
   }
 
-  goToAnimalRation() {
-    this.router.navigate(['/animal/ration', this.animalId]);
+  addOrUpdate(id) {
+    const animal = this.findOrDefaultAnimal(id);
+
+    this.dialog.open(AnimalManagementComponent, { width: '28%', autoFocus: true, data: animal })
+      .afterClosed()
+      .subscribe(() => {
+        this.getAnimals();
+       });
+  }
+
+  sortBy(value) {
+    if (value === 'name') {
+      this.filteredAnimals.sort((a, b) => (this.sortValue ? (a.name > b.name) : (a.name < b.name)) ? 1 : -1);
+    }
+
+    if (value === 'date') {
+      this.filteredAnimals.sort((a, b) =>
+        (this.sortValue ? (a.dateOfBirth > b.dateOfBirth) : (a.dateOfBirth < b.dateOfBirth)) ? 1 : -1);
+    }
+
+    this.sortValue = !this.sortValue;
+  }
+
+  findOrDefaultAnimal(id): IAnimal {
+    if (id) {
+      return this.animals.find(x => x.animalId === id);
+    }
+
+    return { animalId: null, name: null, gender: null, dateOfBirth: null };
   }
 
   resetForm(): void {
-    this.animalForm.reset();
-    this.update = false;
-    this.animalId = null;
+    this.filterForm.reset();
+    this.filteredAnimals = this.animals;
   }
-
-  getButtonState = (): string =>
-    getButtonStateImport(this.update, 'Animal')
-
-  hasCustomError = (form: FormGroup, control: string): boolean =>
-    hasCustomErrorImport(form, control)
-
-  hasPatternError = (form: FormGroup, control: string): boolean =>
-    hasPatternErrorImport(form, control)
 
   ngOnDestroy(): void {
     this.destroy$.next();

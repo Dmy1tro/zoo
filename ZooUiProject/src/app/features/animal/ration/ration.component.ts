@@ -7,9 +7,9 @@ import { configureToastr, getButtonStateImport, hasPatternErrorImport, hasCustom
 import { ToastrService } from 'ngx-toastr';
 import { RationService } from '../common/ration.service';
 import { takeUntil, finalize } from 'rxjs/operators';
-import { enums } from 'src/app/core/constants/enums';
 import { AnimalService } from '../common/animal.service';
 import { IAnimal } from 'src/app/core/interfaces/animal.interface';
+import { toastrTitle } from 'src/app/core/constants/enums';
 
 @Component({
   selector: 'app-ration',
@@ -90,11 +90,11 @@ export class RationComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          this.toastr.success('Ration created', enums.toastrTitle.Success);
+          this.toastr.success('Ration created', toastrTitle.Success);
           this.resetForm();
         },
         (err) => {
-          this.toastr.error('Failed to create ration', enums.toastrTitle.Error);
+          this.toastr.error('Failed to create ration', toastrTitle.Error);
           console.log(err);
         }
       );
@@ -113,10 +113,10 @@ export class RationComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.resetForm();
-          this.toastr.success('Ration updated', enums.toastrTitle.Success);
+          this.toastr.success('Ration updated', toastrTitle.Success);
         },
         (err) => {
-          this.toastr.error('Failed to update ration', enums.toastrTitle.Error);
+          this.toastr.error('Failed to update ration', toastrTitle.Error);
           console.log(err);
         }
       );
@@ -132,16 +132,16 @@ export class RationComponent implements OnInit, OnDestroy {
         finalize(() => this.getRations()),
         takeUntil(this.destroy$))
       .subscribe(
-        () => this.toastr.success('Ration deleted', enums.toastrTitle.Success),
+        () => this.toastr.success('Ration deleted', toastrTitle.Success),
         (err) => {
-          this.toastr.error('Failed to delete ratin', enums.toastrTitle.Error);
+          this.toastr.error('Failed to delete ratin', toastrTitle.Error);
           console.log(err);
         }
       );
   }
 
   backToAnimals() {
-    this.router.navigate(['/animal/details', this.animalId]);
+    this.router.navigate(['/animal/details']);
   }
 
   resetForm(): void {
