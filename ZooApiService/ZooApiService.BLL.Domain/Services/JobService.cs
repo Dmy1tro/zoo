@@ -118,11 +118,9 @@ namespace ZooApiService.BLL.Domain.Services
                 ? JobStatus.Created
                 : _mapper.Map<JobStatus>(minStatus);
 
-            var jobsDbo = await _dbContext.EmployeeJobs
+            var jobsDbo = await _dbContext.Jobs
                 .AsNoTracking()
-                .Include(x => x.Job)
                 .Where(x => x.EmployeeId == employeeId)
-                .Select(x => x.Job)
                 .Where(x => x.Status >= statusDbo)
                 .ToListAsync();
 

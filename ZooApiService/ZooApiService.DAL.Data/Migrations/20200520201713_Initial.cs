@@ -40,7 +40,7 @@ namespace ZooApiService.DAL.Data.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 36, nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -65,24 +65,6 @@ namespace ZooApiService.DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Jobs",
-                columns: table => new
-                {
-                    JobId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(maxLength: 100, nullable: false),
-                    Description = table.Column<string>(maxLength: 300, nullable: true),
-                    Status = table.Column<int>(nullable: false),
-                    CreationDate = table.Column<DateTime>(nullable: false),
-                    StartDate = table.Column<DateTime>(nullable: true),
-                    FinishDate = table.Column<DateTime>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Jobs", x => x.JobId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Rations",
                 columns: table => new
                 {
@@ -97,6 +79,26 @@ namespace ZooApiService.DAL.Data.Migrations
                     table.PrimaryKey("PK_Rations", x => x.RationId);
                     table.ForeignKey(
                         name: "FK_Rations_Animals_AnimalId",
+                        column: x => x.AnimalId,
+                        principalTable: "Animals",
+                        principalColumn: "AnimalId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SmartDevices",
+                columns: table => new
+                {
+                    SmartDeviceId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AnimalId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SmartDevices", x => x.SmartDeviceId);
+                    table.ForeignKey(
+                        name: "FK_SmartDevices_Animals_AnimalId",
                         column: x => x.AnimalId,
                         principalTable: "Animals",
                         principalColumn: "AnimalId",
@@ -210,28 +212,48 @@ namespace ZooApiService.DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeJobs",
+                name: "Jobs",
                 columns: table => new
                 {
-                    EmployeeJobId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<string>(nullable: false),
                     JobId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeId = table.Column<string>(maxLength: 36, nullable: false),
+                    Title = table.Column<string>(maxLength: 100, nullable: false),
+                    Description = table.Column<string>(maxLength: 300, nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: true),
+                    FinishDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeJobs", x => x.EmployeeJobId);
+                    table.PrimaryKey("PK_Jobs", x => x.JobId);
                     table.ForeignKey(
-                        name: "FK_EmployeeJobs_Employees_EmployeeId",
+                        name: "FK_Jobs_Employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeviceRecords",
+                columns: table => new
+                {
+                    DeviceRecordId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SmartDeviceId = table.Column<int>(nullable: false),
+                    Value = table.Column<string>(maxLength: 300, nullable: false),
+                    Date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceRecords", x => x.DeviceRecordId);
                     table.ForeignKey(
-                        name: "FK_EmployeeJobs_Jobs_JobId",
-                        column: x => x.JobId,
-                        principalTable: "Jobs",
-                        principalColumn: "JobId",
+                        name: "FK_DeviceRecords_SmartDevices_SmartDeviceId",
+                        column: x => x.SmartDeviceId,
+                        principalTable: "SmartDevices",
+                        principalColumn: "SmartDeviceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -263,14 +285,9 @@ namespace ZooApiService.DAL.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeJobs_EmployeeId",
-                table: "EmployeeJobs",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmployeeJobs_JobId",
-                table: "EmployeeJobs",
-                column: "JobId");
+                name: "IX_DeviceRecords_SmartDeviceId",
+                table: "DeviceRecords",
+                column: "SmartDeviceId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -285,8 +302,18 @@ namespace ZooApiService.DAL.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Jobs_EmployeeId",
+                table: "Jobs",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rations_AnimalId",
                 table: "Rations",
+                column: "AnimalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SmartDevices_AnimalId",
+                table: "SmartDevices",
                 column: "AnimalId");
         }
 
@@ -308,7 +335,10 @@ namespace ZooApiService.DAL.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "EmployeeJobs");
+                name: "DeviceRecords");
+
+            migrationBuilder.DropTable(
+                name: "Jobs");
 
             migrationBuilder.DropTable(
                 name: "Rations");
@@ -317,10 +347,10 @@ namespace ZooApiService.DAL.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "SmartDevices");
 
             migrationBuilder.DropTable(
-                name: "Jobs");
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "Animals");

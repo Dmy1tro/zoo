@@ -6,6 +6,8 @@ namespace ZooApiService.BLL.Contracts.DTO
     {
         public int JobId { get; set; }
 
+        public string EmployeeId { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }

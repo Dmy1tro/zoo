@@ -14,12 +14,21 @@ namespace ZooApiService.DAL.Data.DataConfiguration
 
             builder.HasKey(x => x.JobId);
 
+            builder.Property(x => x.EmployeeId)
+                .IsRequired()
+                .HasMaxLength(36);
+
             builder.Property(x => x.Title)
                 .IsRequired()
                 .HasMaxLength(LengthConstants.SmallLength);
 
             builder.Property(x => x.Description)
                 .HasMaxLength(LengthConstants.MediumLength);
+
+            builder.HasOne(x => x.Employee)
+                .WithMany(e => e.Jobs)
+                .HasForeignKey(x => x.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

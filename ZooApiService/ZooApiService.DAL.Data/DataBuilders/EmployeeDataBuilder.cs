@@ -25,7 +25,6 @@ namespace ZooApiService.DAL.Data.DataBuilders
 
             var admin = new Employee
             {
-                Id = Guid.NewGuid().ToString(),
                 Email = "admin@admin.com",
                 UserName = "Super Admin",
                 DateOfBirth = new DateTime(2000, 03, 13),

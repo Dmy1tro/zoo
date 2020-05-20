@@ -9,6 +9,9 @@ namespace ZooApiService.API.ViewModels.JobViewModels
         public int JobId { get; set; }
 
         [Required]
+        public string EmployeeId { get; set; }
+
+        [Required]
         [MaxLength(LengthConstants.SmallLength)]
         public string Title { get; set; }
 

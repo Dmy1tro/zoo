@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ZooApiService.DAL.Data.Enums;
 
 namespace ZooApiService.DAL.Data.Entities
@@ -12,5 +13,7 @@ namespace ZooApiService.DAL.Data.Entities
         public Gender Gender { get; set; }
 
         public DateTime DateOfBirth { get; set; }
+
+        public ICollection<SmartDevice> SmartDevices { get; set; }
     }
 }

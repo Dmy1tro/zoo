@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { IAnimal } from 'src/app/core/interfaces/animal.interface';
 import { configureToastr, deleteConfirmImport } from 'src/app/core/helpers';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, takeWhile } from 'rxjs/operators';
 import { AnimalService } from '../common/animal.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -103,6 +103,7 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
 
     this.dialog.open(AnimalManagementComponent, { width: '28%', autoFocus: true, data: animal })
       .afterClosed()
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.getAnimals();
        });

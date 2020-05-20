@@ -7,6 +7,8 @@ namespace ZooApiService.DAL.Data.Entities
     {
         public int JobId { get; set; }
 
+        public string EmployeeId { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -18,5 +20,7 @@ namespace ZooApiService.DAL.Data.Entities
         public DateTime? StartDate { get; set; }
 
         public DateTime? FinishDate { get; set; }
+
+        public Employee Employee { get; set; }
     }
 }

@@ -55,6 +55,9 @@ namespace ZooApiService.API.Mapping
             CreateMap<Animal, AnimalDto>()
                 .ReverseMap();
 
+            CreateMap<DeviceRecord, DeviceRecordDto>()
+                .ReverseMap();
+
             CreateMap<Employee, EmployeeDto>()
                 .ReverseMap();
 
@@ -62,6 +65,9 @@ namespace ZooApiService.API.Mapping
                 .ReverseMap();
 
             CreateMap<Ration, RationDto>()
+                .ReverseMap();
+
+            CreateMap<SmartDevice, SmartDeviceDto>()
                 .ReverseMap();
         }
     }

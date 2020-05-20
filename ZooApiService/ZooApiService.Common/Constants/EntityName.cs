@@ -11,5 +11,7 @@
         public const string Job = "Job";
 
         public const string Ration = "Ration";
+
+        public const string SmartDevice = "SmartDevice";
     }
 }
