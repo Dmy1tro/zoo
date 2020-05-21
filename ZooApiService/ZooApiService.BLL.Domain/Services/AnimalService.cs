@@ -23,9 +23,10 @@ namespace ZooApiService.BLL.Domain.Services
             _mapper = mapper;
         }
 
-        public async Task<AnimalDto> GetAnimalAsync(int id)
+        public async Task<AnimalFullDto> GetAnimalAsync(int id)
         {
             var animalDbo = await _dbContext.Animals
+                .Include(x => x.AnimalType)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.AnimalId == id);
 
@@ -34,18 +35,19 @@ namespace ZooApiService.BLL.Domain.Services
                 throw new NotFoundException(EntityName.Animal, id);
             }
 
-            var animalDto = _mapper.Map<AnimalDto>(animalDbo);
+            var animalDto = _mapper.Map<AnimalFullDto>(animalDbo);
 
             return animalDto;
         }
 
-        public async Task<IList<AnimalDto>> GetAnimalsAsync()
+        public async Task<IList<AnimalFullDto>> GetAnimalsAsync()
         {
             var animalDbo = await _dbContext.Animals
+                .Include(x => x.AnimalType)
                 .AsNoTracking()
                 .ToListAsync();
 
-            var animalsDto = _mapper.Map<List<AnimalDto>>(animalDbo);
+            var animalsDto = _mapper.Map<List<AnimalFullDto>>(animalDbo);
 
             return animalsDto;
         }

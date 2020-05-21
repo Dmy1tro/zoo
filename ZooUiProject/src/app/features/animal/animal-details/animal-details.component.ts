@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { IAnimal } from 'src/app/core/interfaces/animal.interface';
+import { IAnimal, IAnimalFull } from 'src/app/core/interfaces/animal.interface';
 import { configureToastr, deleteConfirmImport } from 'src/app/core/helpers';
-import { takeUntil, takeWhile } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { AnimalService } from '../common/animal.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -20,8 +20,8 @@ import { AnimalManagementComponent } from '../animal-management/animal-managemen
 })
 export class AnimalDetailsComponent implements OnInit, OnDestroy {
 
-  public animals: IAnimal[];
-  public filteredAnimals: IAnimal[];
+  public animals: IAnimalFull[];
+  public filteredAnimals: IAnimalFull[];
   public filterForm: FormGroup;
 
   private sortValue = true;
@@ -39,6 +39,15 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     configureToastr(this.toastr);
   }
 
+  getAnimals(): void {
+    this.animalService.getAnimals()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        this.animals = data.sort((a, b) => Date.parse(a.dateOfBirth) < Date.parse(b.dateOfBirth) ? 1 : -1);
+        this.filterAnimals();
+      });
+  }
+
   createForm(): void {
     this.filterForm = this.fb.group({
       name: [null],
@@ -52,26 +61,19 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     this.filteredAnimals = this.animals;
 
     if (formValue.name) {
+      console.log('Filter Name');
       this.filteredAnimals = this.filteredAnimals.filter(x => x.name.toUpperCase().includes(formValue.name.toUpperCase()));
     }
 
     if (formValue.fromDate) {
-      this.filteredAnimals = this.filteredAnimals.filter(x => x.dateOfBirth >= formValue.fromDate);
+      console.log('from date');
+      this.filteredAnimals = this.filteredAnimals.filter(x => Date.parse(x.dateOfBirth) >= formValue.fromDate);
     }
 
     if (formValue.byDate) {
-      this.filteredAnimals = this.filteredAnimals.filter(x => x.dateOfBirth <= formValue.byDate);
+      console.log('by date');
+      this.filteredAnimals = this.filteredAnimals.filter(x => Date.parse(x.dateOfBirth) <= formValue.byDate);
     }
-  }
-
-  getAnimals(): void {
-    this.animalService.getAnimals()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => {
-        data.forEach(x => x.dateOfBirth = x.dateOfBirth.slice(0, 10));
-        this.animals = data;
-        this.filterAnimals();
-      });
   }
 
   deleteAnimal(id) {
@@ -119,6 +121,10 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
         (this.sortValue ? (a.dateOfBirth > b.dateOfBirth) : (a.dateOfBirth < b.dateOfBirth)) ? 1 : -1);
     }
 
+    if (value === 'type') {
+      this.filteredAnimals.sort((a, b) => (this.sortValue ? (a.typeName > b.typeName) : (a.typeName < b.typeName)) ? 1 : -1);
+    }
+
     this.sortValue = !this.sortValue;
   }
 
@@ -127,7 +133,7 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
       return this.animals.find(x => x.animalId === id);
     }
 
-    return { animalId: null, name: null, gender: null, dateOfBirth: null };
+    return { animalTypeId: null, animalId: null, name: null, gender: null, dateOfBirth: null };
   }
 
   resetForm(): void {

@@ -8,11 +8,15 @@ namespace ZooApiService.DAL.Data.Entities
     {
         public int AnimalId { get; set; }
 
+        public int AnimalTypeId { get; set; }
+
         public string Name { get; set; }
 
         public Gender Gender { get; set; }
 
         public DateTime DateOfBirth { get; set; }
+
+        public AnimalType AnimalType { get; set; }
 
         public ICollection<SmartDevice> SmartDevices { get; set; }
     }

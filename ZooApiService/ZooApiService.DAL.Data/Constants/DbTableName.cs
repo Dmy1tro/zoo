@@ -4,6 +4,8 @@
     {
         public const string Animal = "Animals";
 
+        public const string AnimalType = "AnimalTypes";
+
         public const string DeviceRecord = "DeviceRecords";
 
         public const string Employee = "Employees";

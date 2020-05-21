@@ -17,6 +17,11 @@ namespace ZooApiService.DAL.Data.DataConfiguration
             builder.Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(LengthConstants.SmallLength);
+
+            builder.HasOne(x => x.AnimalType)
+                .WithMany(t => t.Animals)
+                .HasForeignKey(x => x.AnimalTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

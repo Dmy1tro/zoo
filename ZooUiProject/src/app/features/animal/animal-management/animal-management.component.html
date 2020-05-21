@@ -10,10 +10,20 @@
     <hr>
     <form [formGroup]="animalForm" novalidate (ngSubmit)="onSubmit()">
         <div class="form-group">
+            <label>Animal type</label>
+            <select class="form-control" formControlName="animalTypeId">
+                <option value=null disabled>Select animal type</option>
+                <option *ngFor="let type of animalTypes" [ngValue]="type.animalTypeId">{{ type.typeName }}</option>
+            </select>
+            <mat-error *ngIf="hasCustomError(animalForm, 'animalTypeId')">Animal type is required.</mat-error>
+        </div>
+
+        <div class="form-group">
             <label>Animal Name</label>
             <input type="text" class="form-control" placeholder="Animal Name" formControlName="name">
             <mat-error *ngIf="hasCustomError(animalForm, 'name')">Animal Name is required.</mat-error>
         </div>
+
         <div class="form-group">
             <label>Animal Gender</label>
             <select class="form-control" formControlName="gender">

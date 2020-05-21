@@ -1,1 +1,46 @@
-<p>employee-details works!</p>
+<div class="pt-5" *ngIf="userList">
+    <li class="list-group-item">
+        <span class="bg-text-lg"> Title </span>
+        <br/>
+        <br/>
+        <br/>
+        <span class="bg-text"> Description </span>
+    </li>
+    <ul class="list-group">
+        <ng-container *ngFor="let user of userList; let i = index">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-5">
+                        <img class="img-fluid-1" src="assets/images/icon-account.png">
+                        &nbsp;
+                        <span class="bg-text pt-3">
+                            name | last name
+                        </span>
+                        <br/>
+                        <span class="bg-text-sm">
+                            limb zalupa
+                        </span>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="float-right pt-4">
+                            <button class="btn btn-danger btn-block btn-sm" (click)="delete(user)"
+                            [disabled]='userList[user]==null'> 
+                            Delete
+                           </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ng-container>
+    </ul>
+</div>
+<div class="container pt-5" *ngIf="userList==null">
+    <div class="d-flex justify-content-center">
+        <mat-progress-spinner
+            color="primary"
+            mode="indeterminate"
+            [diameter]="100"
+            value="70">
+        </mat-progress-spinner>
+    </div>
+</div>

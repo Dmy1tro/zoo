@@ -8,6 +8,8 @@ import { Subject } from 'rxjs';
 })
 export class EmployeeDetailsComponent implements OnInit, OnDestroy {
 
+  userList = [1, 2, 3, 4, 5];
+
   private destroy$ = new Subject<any>();
 
   constructor() { }
@@ -20,4 +22,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  delete(i) {
+    this.userList[i] = null;
+  }
 }

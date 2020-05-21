@@ -8,6 +8,8 @@ namespace ZooApiService.API.ViewModels.AnimalViewModels
     {
         public int AnimalId { get; set; }
 
+        public int AnimalTypeId { get; set; }
+
         [Required]
         [MaxLength(LengthConstants.SmallLength)]
         public string Name { get; set; }

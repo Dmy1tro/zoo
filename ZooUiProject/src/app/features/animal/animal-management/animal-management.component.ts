@@ -8,6 +8,9 @@ import { enumSelector, configureToastr, getButtonStateImport, convertToISOFormat
 import { GENDER, toastrTitle } from 'src/app/core/constants/enums';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
+import { IAnimal, IAnimalFull } from 'src/app/core/interfaces/animal.interface';
+import { IAnimalType } from 'src/app/core/interfaces/animal-type.interface';
+import { AnimalTypeService } from '../common/animal-type.service';
 
 @Component({
   selector: 'app-animal-management',
@@ -19,27 +22,41 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
 
   animalForm: FormGroup;
   genders: any;
-  animalId: number = null;
+  animalTypes: IAnimalType[] = [];
 
   private destroy$ = new Subject<void>();
 
   constructor(private fb: FormBuilder,
               private animalService: AnimalService,
-              @Inject(MAT_DIALOG_DATA) private data: any,
+              private animalTypeService: AnimalTypeService,
+              @Inject(MAT_DIALOG_DATA) private data: IAnimal,
               private matDialogRef: MatDialogRef<AnimalManagementComponent>,
               private toastr: ToastrService,
               private datePipe: DatePipe) { }
 
   ngOnInit(): void {
-    console.log(this.data.name);
-    this.animalId = this.data.animalId;
     this.genders = enumSelector(GENDER);
+    this.getAnimalTypes();
     this.createForm();
     configureToastr(this.toastr);
   }
 
+  getAnimalTypes() {
+    this.animalTypeService.getAnimalTypes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res) => {
+          this.animalTypes = res;
+        },
+        (err) => {
+          console.log(err);
+          this.toastr.error('Failed to load animal types', toastrTitle.Error);
+        });
+  }
+
   createForm() {
     this.animalForm = this.fb.group({
+      animalTypeId: [this.data.animalTypeId, Validators.required],
       name: [this.data.name, [Validators.required, Validators.maxLength(100)]],
       gender: [this.data.gender, Validators.required],
       dateOfBirth: [this.data.dateOfBirth, Validators.required],
@@ -48,7 +65,7 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.animalForm.valid) {
-      this.animalId == null ? this.createAnimal() : this.updateAnimal();
+      this.data.animalId == null ? this.createAnimal() : this.updateAnimal();
       this.matDialogRef.close();
     } else {
       this.animalForm.markAllAsTouched();
@@ -57,6 +74,7 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
 
   createAnimal() {
     this.animalService.createAnimal({
+      animalTypeId: this.animalForm.value.animalTypeId,
       name: this.animalForm.value.name,
       gender: this.animalForm.value.gender,
       dateOfBirth: convertToISOFormat(this.animalForm.value.dateOfBirth, this.datePipe)
@@ -75,7 +93,8 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
 
   updateAnimal() {
     this.animalService.updateAnimal({
-      animalId: this.animalId,
+      animalId: this.data.animalId,
+      animalTypeId: this.animalForm.value.animalTypeId,
       name: this.animalForm.value.name,
       gender: this.animalForm.value.gender,
       dateOfBirth: convertToISOFormat(this.animalForm.value.dateOfBirth, this.datePipe)
@@ -97,7 +116,7 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
   }
 
   getButtonState = () =>
-   getButtonStateImport(this.animalId != null, 'Animal')
+   getButtonStateImport(this.data.animalId != null, 'Animal')
 
   hasCustomError = (form: FormGroup, control: string) =>
    hasCustomErrorImport(form, control)

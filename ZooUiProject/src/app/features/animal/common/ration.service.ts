@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IRation } from 'src/app/core/interfaces/ration.interface';
 import { urls } from 'src/app/core/constants/urls';
-import { ICreatedId } from 'src/app/core/interfaces/createdId-interface';
+import { ICreatedId } from 'src/app/core/interfaces/createdId.interface';
 
 @Injectable({
   providedIn: 'root'

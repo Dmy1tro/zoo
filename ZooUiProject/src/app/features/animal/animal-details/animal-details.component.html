@@ -14,8 +14,7 @@
             <div class="form-group">
                 <mat-form-field color="primary">
                     <mat-label>From date</mat-label>
-                    <input class="mat-datepicker-input" matInput [matDatepicker]="picker1" formControlName='fromDate'
-                        readonly>
+                    <input class="mat-datepicker-input" matInput [matDatepicker]="picker1" formControlName='fromDate'>
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1 disabled="false"></mat-datepicker>
                 </mat-form-field>
@@ -25,7 +24,7 @@
             <div class="form-group">
                 <mat-form-field color="primary">
                     <mat-label>By date</mat-label>
-                    <input matInput [matDatepicker]="picker2" formControlName='byDate' readonly>
+                    <input matInput [matDatepicker]="picker2" formControlName='byDate'>
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2 disabled="false"></mat-datepicker>
                 </mat-form-field>
@@ -48,10 +47,13 @@
     <table class="table table-bordered text-center">
         <thead class="thead-light">
             <tr class="d-flex">
-                <th class="col-md-4 pointer" scope="col" (click)="sortBy('name')"><u>Name</u></th>
+                <th class="col-md-2 pointer" scope="col" (click)="sortBy('type')">
+                    <u>Type</u>
+                </th>
+                <th class="col-md-3 pointer" scope="col" (click)="sortBy('name')"><u>Name</u></th>
                 <th class="col-md-2" scope="col">Gender</th>
                 <th class="col-md-2 pointer" scope="col" (click)="sortBy('date')"><u>Date of birth</u></th>
-                <th class="col-md-4" scope="col" style="width: auto;">
+                <th class="col-md-3" scope="col">
                     <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdate(null)">
                         <mat-icon>add</mat-icon>
                         Create Animal
@@ -61,18 +63,21 @@
         </thead>
         <tbody>
             <tr class="d-flex" *ngFor="let animal of filteredAnimals">
-                <td class="col-md-4">
+                <td class="col-md-2">
+                    {{ animal.typeName }}
+                </td>
+                <td class="col-md-3">
                     {{ animal.name }}
                 </td>
                 <td class="col-md-2">
                     {{ animal.gender }}
                 </td>
                 <td class="col-md-2">
-                    {{ animal.dateOfBirth }}
+                    {{ animal.dateOfBirth | date: 'yyy-MM-dd' }}
                 </td>
-                <td class="col-md-4">
+                <td class="col-md-3">
                     <button class="btn btn-info mr-3" (click)="goToRation(animal.animalId)">
-                        Ration
+                        ration
                     </button>
                     <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdate(animal.animalId)">
                         <mat-icon>edit</mat-icon>

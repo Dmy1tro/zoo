@@ -7,6 +7,8 @@ namespace ZooApiService.DAL.Data.Context
     public class ZooDbContext : IdentityDbContext<Employee>
     {
         public DbSet<Animal> Animals { get; set; }
+
+        public DbSet<AnimalType> AnimalTypes { get; set; }
         
         public DbSet<DeviceRecord> DeviceRecords { get; set; }
 

@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AnimalDetailsComponent } from './animal-details/animal-details.component';
 import { RationComponent } from './ration/ration.component';
+import { AnimalTypeListComponent } from './animal-type-list/animal-type-list.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'details', pathMatch: 'full' },
   { path: 'details', component: AnimalDetailsComponent },
+  { path: 'type-list', component: AnimalTypeListComponent },
   { path: 'ration/:animalId', component: RationComponent }
 ];
 

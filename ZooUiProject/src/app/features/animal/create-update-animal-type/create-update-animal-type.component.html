@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="form-group float-right">
+        <div class="text-right">
+            <button mat-icon-button matSuffix mat-dialog-close>
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <h3 class="text-center">Animal type</h3>
+    <hr>
+    <form [formGroup]="animalTypeForm" novalidate (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label>Type Name</label>
+            <input type="text" class="form-control" placeholder="Animal Name" formControlName="typeName">
+            <mat-error *ngIf="hasCustomError(animalTypeForm, 'typeName')">type name is required.</mat-error>
+        </div>
+
+        <div class="row px-2 mt-4">
+            <div class="col-md-6">
+                <button mat-raised-button class="btn-block " type="submit" color="primary">
+                    {{ getButtonState() }}
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
+                    <mat-icon>cached</mat-icon>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

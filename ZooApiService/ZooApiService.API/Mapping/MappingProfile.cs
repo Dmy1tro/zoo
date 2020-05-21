@@ -55,6 +55,13 @@ namespace ZooApiService.API.Mapping
             CreateMap<Animal, AnimalDto>()
                 .ReverseMap();
 
+            CreateMap<Animal, AnimalFullDto>()
+                .IncludeBase<Animal, AnimalDto>()
+                .ForMember(d => d.TypeName, m => m.MapFrom(s => s.AnimalType.TypeName));
+
+            CreateMap<AnimalType, AnimalTypeDto>()
+                .ReverseMap();
+
             CreateMap<DeviceRecord, DeviceRecordDto>()
                 .ReverseMap();
 

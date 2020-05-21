@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { urls } from 'src/app/core/constants/urls';
-import { IAnimal } from 'src/app/core/interfaces/animal.interface';
-import { ICreatedId } from 'src/app/core/interfaces/createdId-interface';
+import { IAnimal, IAnimalFull } from 'src/app/core/interfaces/animal.interface';
+import { ICreatedId } from 'src/app/core/interfaces/createdId.interface';
+import { IAnimalType } from 'src/app/core/interfaces/animal-type.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,12 @@ export class AnimalService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAnimals(): Observable<IAnimal[]> {
-    return this.httpClient.get<IAnimal[]>(urls.animals);
+  getAnimals(): Observable<IAnimalFull[]> {
+    return this.httpClient.get<IAnimalFull[]>(urls.animals);
   }
 
-  getAnimal(id): Observable<IAnimal> {
-    return this.httpClient.get<IAnimal>(urls.animals + id);
+  getAnimal(id): Observable<IAnimalFull> {
+    return this.httpClient.get<IAnimalFull>(urls.animals + id);
   }
 
   createAnimal(data): Observable<ICreatedId> {
