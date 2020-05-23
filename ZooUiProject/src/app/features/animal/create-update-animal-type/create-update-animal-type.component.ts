@@ -69,7 +69,7 @@ export class CreateUpdateAnimalTypeComponent implements OnInit, OnDestroy {
     })
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        (res) => {
+        () => {
           this.toastr.success('Updated', toastrTitle.Success);
           this.resetForm();
         },

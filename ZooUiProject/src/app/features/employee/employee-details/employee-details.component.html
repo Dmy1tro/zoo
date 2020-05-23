@@ -1,46 +1,72 @@
-<div class="pt-5" *ngIf="userList">
-    <li class="list-group-item">
-        <span class="bg-text-lg"> Title </span>
-        <br/>
-        <br/>
-        <br/>
-        <span class="bg-text"> Description </span>
-    </li>
-    <ul class="list-group">
-        <ng-container *ngFor="let user of userList; let i = index">
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-md-5">
-                        <img class="img-fluid-1" src="assets/images/icon-account.png">
-                        &nbsp;
-                        <span class="bg-text pt-3">
-                            name | last name
-                        </span>
-                        <br/>
-                        <span class="bg-text-sm">
-                            limb zalupa
-                        </span>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="float-right pt-4">
-                            <button class="btn btn-danger btn-block btn-sm" (click)="delete(user)"
-                            [disabled]='userList[user]==null'> 
-                            Delete
-                           </button>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ng-container>
-    </ul>
+<div class="text-center my-2">
+    <h3>Employee management</h3>
 </div>
-<div class="container pt-5" *ngIf="userList==null">
-    <div class="d-flex justify-content-center">
-        <mat-progress-spinner
-            color="primary"
-            mode="indeterminate"
-            [diameter]="100"
-            value="70">
-        </mat-progress-spinner>
+<hr>
+
+<form [formGroup]="filterForm" novalidate (ngSubmit)="filterAnimals()">
+    <div class="row ml-1">
+        <div class="col-md-5">
+            <div class="form-group">
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <mat-button-toggle-group class="my-auto">
+                <mat-button-toggle (click)="resetForm()">
+                    <mat-icon>cached</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
     </div>
+</form>
+
+<div class="table-responsive px-2 mt-2">
+    <table class="table table-bordered text-center">
+        <thead class="thead-light">
+            <tr class="d-flex">
+                <th class="col-md-2 pointer" scope="col" (click)="sortBy('type')">
+                    <u>Type</u>
+                </th>
+                <th class="col-md-3 pointer" scope="col" (click)="sortBy('name')"><u>Name</u></th>
+                <th class="col-md-2" scope="col">Gender</th>
+                <th class="col-md-2 pointer" scope="col" (click)="sortBy('date')"><u>Date of birth</u></th>
+                <th class="col-md-3" scope="col">
+                    <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdate(null)">
+                        <mat-icon>add</mat-icon>
+                        Create Animal
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="d-flex" *ngFor="let animal of filteredAnimals">
+                <td class="col-md-2">
+                    {{ animal.typeName }}
+                </td>
+                <td class="col-md-3">
+                    {{ animal.name }}
+                </td>
+                <td class="col-md-2">
+                    {{ animal.gender }}
+                </td>
+                <td class="col-md-2">
+                    {{ animal.dateOfBirth | date: 'yyy-MM-dd' }}
+                </td>
+                <td class="col-md-3">
+                    <button class="btn btn-info mr-3" (click)="goToInfo(animal.animalId)">
+                        info
+                    </button>
+                    <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdate(animal.animalId)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button class="btn btn-sm btn-danger mx-1" (click)="deleteAnimal(animal.animalId)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -76,8 +76,8 @@
                     {{ animal.dateOfBirth | date: 'yyy-MM-dd' }}
                 </td>
                 <td class="col-md-3">
-                    <button class="btn btn-info mr-3" (click)="goToRation(animal.animalId)">
-                        ration
+                    <button class="btn btn-info mr-3" (click)="goToInfo(animal.animalId)">
+                        info
                     </button>
                     <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdate(animal.animalId)">
                         <mat-icon>edit</mat-icon>

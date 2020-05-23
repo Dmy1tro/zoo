@@ -96,8 +96,8 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
       );
   }
 
-  goToRation(id) {
-    this.router.navigate(['/animal/ration', id]);
+  goToInfo(id) {
+    this.router.navigate(['/animal/animal-info', id]);
   }
 
   addOrUpdate(id) {

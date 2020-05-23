@@ -1,63 +1,40 @@
-<div class="text-center my-2">
-    <h3>Ration for {{ animal?.name }}</h3>
-</div>
-<hr>
-<div class="row">
-    <div class="col-md-6">
-        <form [formGroup]="rationForm" novalidate (ngSubmit)="onSubmit()">
-            <div class="row ml-1">
-                <div class="col-md-9">
-                    <div class="form-group">
-                        <label>Food name</label>
-                        <input type="text" class="form-control" placeholder="food" formControlName="foodName">
-                        <div class="alert alert-danger my-1" *ngIf="hasCustomError(rationForm, 'foodName')">
-                            Food name is required.
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea class="form-control" rows="3" placeholder="ration description"
-                            formControlName="description"></textarea>
-                        <div class="alert alert-danger my-1" *ngIf="hasCustomError(rationForm, 'description')">
-                            Food name is required.
-                        </div>
-                    </div>
-                    <div class="row pr-3">
-                        <div class="col-md-6">
-                            <button mat-raised-button class="btn-block" color="primary" type="submit">
-                                {{ getButtonState() }}
-                            </button>
-                        </div>
-                        <div class="col-md-4">
-                            <a mat-raised-button class="btn-block" color="accent" (click)="backToAnimals()">
-                                Back
-                            </a>
-                        </div>
-                        <div class="col-md-2">
-                            <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
-                                <mat-icon>cached</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    <hr>
-    <div class="col-md-6">
-        <h4 class="text-center">Food</h4>
-        <hr>
-        <div *ngIf="rations.length === 0">
-            <p>There are not food for this animal!</p>
+<div class="container">
+    <div class="form-group float-right">
+        <div class="text-right">
+            <button mat-icon-button matSuffix mat-dialog-close>
+                <mat-icon>close</mat-icon>
+            </button>
         </div>
-        <mat-action-list>
-            <a mat-list-item [class.active]="ration.rationId === rationId" *ngFor="let ration of rations"
-                (click)='selectRation(ration.rationId)'>
-                {{ration.foodName}}
-                <span class="float-right btn btn-light btn-sm" (click)="deleteRation(ration.rationId)">
-                    <img src="/assets/images/icons8-xbox-x-24.png" alt="delete">
-                </span>
-            </a>
-        </mat-action-list>
     </div>
+    <h3 class="text-center">Ration</h3>
+    <hr>
+    <form [formGroup]="rationForm" novalidate (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label>Food name</label>
+            <input type="text" class="form-control" placeholder="food" formControlName="foodName">
+            <div class="alert alert-danger my-1" *ngIf="hasCustomError(rationForm, 'foodName')">
+                Food name is required.
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="3" placeholder="ration description"
+                formControlName="description"></textarea>
+            <div class="alert alert-danger my-1" *ngIf="hasCustomError(rationForm, 'description')">
+                Food name is required.
+            </div>
+        </div>
+        <div class="row px-2 mt-4">
+            <div class="col-md-6">
+                <button mat-raised-button class="btn-block" color="primary" type="submit">
+                    {{ getButtonState() }}
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
+                    <mat-icon>cached</mat-icon>
+                </button>
+            </div>
+        </div>
+    </form>
 </div>

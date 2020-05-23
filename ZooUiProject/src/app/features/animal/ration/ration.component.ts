@@ -1,15 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { IRation } from 'src/app/core/interfaces/ration.interface';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { configureToastr, getButtonStateImport, hasPatternErrorImport, hasCustomErrorImport, deleteConfirmImport } from 'src/app/core/helpers';
+import { configureToastr, getButtonStateImport, hasPatternErrorImport, hasCustomErrorImport } from 'src/app/core/helpers';
 import { ToastrService } from 'ngx-toastr';
 import { RationService } from '../common/ration.service';
-import { takeUntil, finalize } from 'rxjs/operators';
-import { AnimalService } from '../common/animal.service';
-import { IAnimal } from 'src/app/core/interfaces/animal.interface';
+import { takeUntil } from 'rxjs/operators';
 import { toastrTitle } from 'src/app/core/constants/enums';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-ration',
@@ -18,63 +16,32 @@ import { toastrTitle } from 'src/app/core/constants/enums';
 })
 export class RationComponent implements OnInit, OnDestroy {
 
-  animal: IAnimal;
-  rations: IRation[];
   rationForm: FormGroup;
-  rationId: number;
 
-  private update = false;
-  private animalId: number;
   private destroy$ = new Subject<any>();
 
   constructor(private fb: FormBuilder,
-              private route: ActivatedRoute,
-              private router: Router,
               private toastr: ToastrService,
               private rationService: RationService,
-              private animalSerivce: AnimalService) { }
+              @Inject(MAT_DIALOG_DATA) private data: IRation,
+              private matDialogRef: MatDialogRef<RationComponent>) { }
 
   ngOnInit(): void {
-    this.animalId = +this.route.snapshot.params.animalId;
     this.createForm();
-    this.getAnimal();
-    this.getRations();
     configureToastr(this.toastr);
   }
 
   createForm(): void {
     this.rationForm = this.fb.group({
-      foodName: [null, [Validators.required, Validators.maxLength(100)]],
-      description: [null, [Validators.required, Validators.maxLength(200)]]
-    });
-  }
-
-  getAnimal() {
-    this.animalSerivce.getAnimal(this.animalId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => this.animal = data);
-  }
-
-  getRations() {
-    this.rationService.getRationsForAnimal(this.animalId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => this.rations = data);
-  }
-
-  selectRation(id) {
-    const ration = this.rations.find(x => x.rationId === id);
-
-    this.update = true;
-    this.rationId = ration.rationId;
-    this.rationForm.patchValue({
-      foodName: ration.foodName,
-      description: ration.description
+      foodName: [this.data.foodName, [Validators.required, Validators.maxLength(100)]],
+      description: [this.data.description, [Validators.required, Validators.maxLength(200)]]
     });
   }
 
   onSubmit(): void {
     if (this.rationForm.valid) {
-      this.update ? this.updateRation() : this.createRation();
+      this.data.rationId !== null ? this.updateRation() : this.createRation();
+      this.matDialogRef.close();
     } else {
       this.rationForm.markAllAsTouched();
     }
@@ -82,19 +49,17 @@ export class RationComponent implements OnInit, OnDestroy {
 
   createRation() {
     this.rationService.createRation({
-      animalId: this.animalId,
+      animalId: this.data.animalId,
       ...this.rationForm.value
     })
-      .pipe(
-        finalize(() => this.getRations()),
-        takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          this.toastr.success('Ration created', toastrTitle.Success);
+          this.toastr.success('Created', toastrTitle.Success);
           this.resetForm();
         },
         (err) => {
-          this.toastr.error('Failed to create ration', toastrTitle.Error);
+          this.toastr.error('Failed', toastrTitle.Error);
           console.log(err);
         }
       );
@@ -102,56 +67,29 @@ export class RationComponent implements OnInit, OnDestroy {
 
   updateRation() {
     this.rationService.updateRation({
-      rationId: this.rationId,
-      animalId: this.animalId,
+      rationId: this.data.rationId,
+      animalId: this.data.animalId,
       ...this.rationForm.value
     })
-      .pipe(
-        finalize(() => this.getRations()),
-        takeUntil(this.destroy$)
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
           this.resetForm();
-          this.toastr.success('Ration updated', toastrTitle.Success);
+          this.toastr.success('Updated', toastrTitle.Success);
         },
         (err) => {
-          this.toastr.error('Failed to update ration', toastrTitle.Error);
+          this.toastr.error('Failed', toastrTitle.Error);
           console.log(err);
         }
       );
-  }
-
-  deleteRation(id) {
-    if (!deleteConfirmImport(this.rations.find(x => x.rationId === id).foodName)) {
-      return;
-    }
-
-    this.rationService.deleteRation(id)
-      .pipe(
-        finalize(() => this.getRations()),
-        takeUntil(this.destroy$))
-      .subscribe(
-        () => this.toastr.success('Ration deleted', toastrTitle.Success),
-        (err) => {
-          this.toastr.error('Failed to delete ratin', toastrTitle.Error);
-          console.log(err);
-        }
-      );
-  }
-
-  backToAnimals() {
-    this.router.navigate(['/animal/details']);
   }
 
   resetForm(): void {
-    this.rationForm.reset();
-    this.update = false;
-    this.rationId = null;
+    this.createForm();
   }
 
   getButtonState = (): string =>
-    getButtonStateImport(this.update, 'Ration')
+    getButtonStateImport(this.data.rationId !== null, 'Ration')
 
   hasCustomError = (form: FormGroup, control: string): boolean =>
     hasCustomErrorImport(form, control)

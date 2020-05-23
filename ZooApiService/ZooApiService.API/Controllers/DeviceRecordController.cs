@@ -6,7 +6,7 @@ using ZooApiService.BLL.Contracts.Interfaces;
 
 namespace ZooApiService.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/device-records")]
     [ApiController]
     public class DeviceRecordController : ControllerBase
     {

@@ -1,0 +1,120 @@
+<div class="row">
+    <div class="col-md-7">
+        <div class="text-center my-2">
+            <h3>Device management</h3>
+        </div>
+        <hr>
+        <form [formGroup]="filterForm" novalidate>
+            <div class="row ml-1">
+                <div class="col-md-5">
+                    <div class="form-group my-auto">
+                        <select class="form-control pointer" (change)="selectedAnimalType($event.target.value)"
+                            formControlName="typeName">
+                            <option [ngValue]="null">Select animal type</option>
+                            <option *ngFor="let type of typeNames" [ngValue]="type">{{ type }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group my-auto">
+                        <select class="form-control pointer" (change)="selectedAnimal($event.target.value)"
+                            formControlName="animalId">
+                            <option value=null disabled>Select animal</option>
+                            <option class="pointer" *ngFor="let animal of animalsFiltered" [ngValue]="animal.animalId">
+                                {{ animal.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <mat-button-toggle-group class="my-auto">
+                        <mat-button-toggle (click)="resetForm()">
+                            <mat-icon>cached</mat-icon>
+                        </mat-button-toggle>
+                    </mat-button-toggle-group>
+                </div>
+            </div>
+        </form>
+
+        <div class="table-responsive px-2 mt-3">
+            <table class="table table-bordered text-center">
+                <thead class="thead-light">
+                    <tr class="d-flex">
+                        <th class="col-md-7 pointer" scope="col">
+                            Device name
+                        </th>
+                        <th class="col-md-5" scope="col">
+                            <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdate(null)"
+                                [disabled]="!canCreate">
+                                <mat-icon>add</mat-icon>
+                                Create Device
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="d-flex" *ngFor="let device of devices">
+                        <td class="col-md-7">
+                            <u class="btn btn-link" (click)="openRecords(device.smartDeviceId)">{{ device.name }}</u>
+                        </td>
+                        <td class="col-md-5">
+                            <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdate(device.smartDeviceId)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button class="btn btn-sm btn-danger mx-1" (click)="delete(device.smartDeviceId)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="canCreate && devices.length === 0">
+                        <td>
+                            <p>No devices...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-5" *ngIf="canOpenRecords">
+        <div class="text-center my-2">
+            <h3>Device records</h3>
+        </div>
+        <hr>
+        <ul class="list-group mt-1">
+            <li class="list-group-item">
+                <div class="row px-2">
+                    <div class="col-md-9 my-auto">
+                        <h5>
+                            Message
+                        </h5>
+                    </div>
+                    <div class="col-md-3 my-auto">
+                        <h5>
+                            Date
+                        </h5>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let record of deviceRecords">
+                <div class="row px-2">
+                    <div class="col-md-8 my-auto">
+                        <h6>
+                            {{ record.value }}
+                        </h6>
+                    </div>
+                    <div class="col-md-4 my-auto">
+                        <h6>
+                            <small><i>{{ record.date | date: 'medium' }}</i></small>
+                        </h6>
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item" *ngIf="deviceRecords.length === 0">
+                <h6 class="px-2"><i>No messages yet...</i></h6>
+            </li>
+        </ul>
+    </div>
+</div>
