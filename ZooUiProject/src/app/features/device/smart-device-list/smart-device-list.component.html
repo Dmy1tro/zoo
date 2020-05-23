@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-md-5">
                     <div class="form-group my-auto">
-                        <select class="form-control pointer" (change)="selectedAnimal($event.target.value)"
+                        <select class="form-control pointer" (change)="selectAnimal($event.target.value)"
                             formControlName="animalId">
                             <option value=null disabled>Select animal</option>
                             <option class="pointer" *ngFor="let animal of animalsFiltered" [ngValue]="animal.animalId">

@@ -65,7 +65,13 @@ namespace ZooApiService.BLL.Domain.Services
         {
             var employeeDbo = _mapper.Map<Employee>(employeeDto);
 
-            _dbContext.Employees.Update(employeeDbo);
+            var loadedDbo = await _dbContext.Employees
+                .FirstOrDefaultAsync(x => x.Id == employeeDbo.Id);
+
+            loadedDbo.UserName = employeeDbo.UserName;
+            loadedDbo.DateOfBirth = employeeDbo.DateOfBirth;
+            loadedDbo.Gender = employeeDbo.Gender;
+            loadedDbo.Position = employeeDbo.Position;
 
             await _dbContext.SaveChangesAsync();
         }

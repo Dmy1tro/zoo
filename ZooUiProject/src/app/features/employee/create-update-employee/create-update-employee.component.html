@@ -1,0 +1,148 @@
+<div class="container">
+    <div class="form-group float-right">
+        <div class="text-right">
+            <button mat-icon-button matSuffix mat-dialog-close>
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <h3 class="text-center">Employee</h3>
+    <hr>
+    <form [formGroup]="employeeForm" novalidate (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <mat-form-field appearance="standard" style="width: auto;">
+                        <mat-label>First name</mat-label>
+                        <input matInput formControlName="firstName">
+                        <mat-error *ngIf="hasCustomError(employeeForm, 'firstName')">
+                            First name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Last name</mat-label>
+                        <input matInput formControlName="lastName">
+                        <mat-error *ngIf="hasCustomError(employeeForm, 'lastName')">
+                            Last name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 my-auto">
+                <div class="form-group">
+                    <mat-form-field color="primary" style="max-width: 90%;">
+                        <mat-label>Date of birth</mat-label>
+                        <input matInput [matDatepicker]="picker1" formControlName="dateOfBirth" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+                        <mat-error *ngIf="hasCustomError(employeeForm, 'dateOfBirth')">
+                            Date of birth is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-6 my-auto">
+                <div class="form-group">
+                    <mat-form-field class="pb-2" appearance="standard">
+                        <mat-label>Gender</mat-label>
+                        <mat-select formControlName="gender">
+                            <mat-option *ngFor="let item of genders" [value]="item.value">
+                                {{ item.title }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="hasCustomError(employeeForm, 'gender')">
+                            Gender is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Job position</mat-label>
+                        <mat-select formControlName="position">
+                            <mat-option *ngFor="let item of jobs" [value]="item.value">
+                                {{ item.title }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="hasCustomError(employeeForm, 'position')">
+                            Position is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Role</mat-label>
+                        <mat-select formControlName="role">
+                            <mat-option *ngFor="let item of roles" [value]="item.value">
+                                {{ item.title }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="hasCustomError(employeeForm, 'role')">
+                            Role is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="showPasswordForm">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide">
+                            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="hasCustomError(employeeForm, 'password')">
+                            Password is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Confirm password</mat-label>
+                        <input matInput [type]="hideConfirm ? 'password' : 'text'" 
+                            formControlName="confirmPassword" (input)="checkPasswordsMatch($event.target.value)">
+                        <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm"
+                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
+                            <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-error *ngIf="passError">
+                        {{ passError }}
+                    </mat-error>
+                </div>
+            </div>
+        </div>
+
+        <div class="row px-2 mt-4">
+            <div class="col-md-6">
+                <button mat-raised-button class="btn-block " type="submit" color="primary">
+                    {{ getButtonState() }}
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
+                    <mat-icon>cached</mat-icon>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

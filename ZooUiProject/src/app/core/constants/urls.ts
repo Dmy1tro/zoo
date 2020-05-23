@@ -2,6 +2,11 @@ import { environment } from 'src/environments/environment';
 
 // tslint:disable-next-line:no-namespace
 export namespace urls {
+    // account
+    export const account = environment.apiUrl + 'account/';
+    export const accountSignIn = account + 'sign-in/';
+    export const accountChangePassword = account + 'change-password/';
+
     // animal
     export const animals = environment.apiUrl + 'animals/';
 
@@ -14,6 +19,10 @@ export namespace urls {
 
     // device-records
     export const deviceRecords = environment.apiUrl + 'device-records/';
+
+    // employee
+    export const employees = environment.apiUrl + 'employees/';
+    export const employeeProfile = employees + 'profile/';
 
     // ration
     export const rations = environment.apiUrl + 'rations/';

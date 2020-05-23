@@ -28,7 +28,6 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
   public deviceRecords: IDeviceRecord[] = null;
   public filterForm: FormGroup;
 
-  private sortValue = true;
   private destroy$ = new Subject<void>();
 
   constructor(private fb: FormBuilder,
@@ -74,13 +73,9 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectedAnimal(value) {
+  selectAnimal(value) {
     this.deviceRecords = null;
-    this.deviceService.getDevicesForAnimal(this.filterForm.value.animalId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        data => this.devices = data.sort((a, b) => a.name > b.name ? 1 : -1),
-        err => console.log(err));
+    this.getDevicesForAnimal();
   }
 
   openRecords(id) {
@@ -105,13 +100,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
     this.dialog.open(CreateUpdateDeviceComponent, { width: '28%', autoFocus: true, data: device })
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.deviceService.getDevicesForAnimal(this.filterForm.value.animalId)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          data => this.devices = data.sort((a, b) => a.name > b.name ? 1 : -1),
-          err => console.log(err));
-      });
+      .subscribe(() => this.getDevicesForAnimal());
   }
 
   delete(id) {
@@ -148,8 +137,12 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
     this.deviceRecords = null;
   }
 
-  onChangeAnimal(value) {
-    console.log(value);
+  private getDevicesForAnimal() {
+    this.deviceService.getDevicesForAnimal(this.filterForm.value.animalId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        data => this.devices = data.sort((a, b) => a.name > b.name ? 1 : -1),
+        err => console.log(err));
   }
 
   ngOnDestroy() {

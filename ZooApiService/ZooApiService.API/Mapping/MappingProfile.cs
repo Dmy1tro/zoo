@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using ZooApiService.API.ViewModels.AnimalViewModels;
 using ZooApiService.API.ViewModels.EmployeeViewModels;
@@ -66,7 +67,10 @@ namespace ZooApiService.API.Mapping
                 .ReverseMap();
 
             CreateMap<Employee, EmployeeDto>()
-                .ReverseMap();
+                .ForMember(d => d.FirstName, m => m.MapFrom((s, d) => s.UserName.Split('|').First()))
+                .ForMember(d => d.LastName, m => m.MapFrom((s, d) => s.UserName.Split('|').Last()))
+                .ReverseMap()
+                .ForMember(d => d.UserName, m => m.MapFrom(s => string.Concat(s.FirstName.Trim(), '|', s.LastName.Trim())));
 
             CreateMap<Job, JobDto>()
                 .ReverseMap();

@@ -61,17 +61,14 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     this.filteredAnimals = this.animals;
 
     if (formValue.name) {
-      console.log('Filter Name');
       this.filteredAnimals = this.filteredAnimals.filter(x => x.name.toUpperCase().includes(formValue.name.toUpperCase()));
     }
 
     if (formValue.fromDate) {
-      console.log('from date');
       this.filteredAnimals = this.filteredAnimals.filter(x => Date.parse(x.dateOfBirth) >= formValue.fromDate);
     }
 
     if (formValue.byDate) {
-      console.log('by date');
       this.filteredAnimals = this.filteredAnimals.filter(x => Date.parse(x.dateOfBirth) <= formValue.byDate);
     }
   }

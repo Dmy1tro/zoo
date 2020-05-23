@@ -19,13 +19,13 @@
         </div>
 
         <div class="form-group">
-            <label>Animal Name</label>
+            <label>Animal name</label>
             <input type="text" class="form-control" placeholder="Animal Name" formControlName="name">
             <mat-error *ngIf="hasCustomError(animalForm, 'name')">Animal Name is required.</mat-error>
         </div>
 
         <div class="form-group">
-            <label>Animal Gender</label>
+            <label>Animal gender</label>
             <select class="form-control" formControlName="gender">
                 <option value=null disabled>Select Gender</option>
                 <option *ngFor="let gender of genders" [ngValue]="gender.value">{{gender.title}}</option>
@@ -35,7 +35,7 @@
 
         <div class="form-group ml-1">
             <mat-form-field color="primary">
-                <mat-label>dateOfBirth</mat-label>
+                <mat-label>Date of birth</mat-label>
                 <input matInput [matDatepicker]="picker1" formControlName='dateOfBirth' readonly>
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1 disabled="false"></mat-datepicker>

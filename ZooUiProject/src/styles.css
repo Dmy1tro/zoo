@@ -1,12 +1,25 @@
 body {
     background:#f9f9f9;
+    font-size: 14px;
     margin: 0;
+}
+
+th {
+    font-size: 18px;
+}
+
+td {
+    font-size: 18px;
 }
 
 .pointer {
     cursor: pointer;
 }
 
-.medium-size {
+.text-size-bg {
+    font-size: 24px;
+}
+
+.text-size-md {
     font-size: 18px;
 }
