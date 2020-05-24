@@ -24,6 +24,12 @@ export namespace urls {
     export const employees = environment.apiUrl + 'employees/';
     export const employeeProfile = employees + 'profile/';
 
+    // jobs
+    export const jobs = environment.apiUrl + 'jobs/';
+    export const jobsForEmployee = jobs + 'for-employee/';
+    export const jobsStart = jobs + 'start-job/';
+    export const jobsFinish = jobs + 'finish-job/';
+
     // ration
     export const rations = environment.apiUrl + 'rations/';
     export const rationsForAnimal = rations + 'for-animal/';

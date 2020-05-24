@@ -1,0 +1,105 @@
+<div class="text-center my-2">
+    <h3>Job management</h3>
+</div>
+<hr>
+<div class="row pl-2">
+    <div class="col-md-7">
+        <form [formGroup]="filterForm" novalidate>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Employee</mat-label>
+                            <mat-select formControlName="employeeId" (selectionChange)="selectEmployee($event.value)">
+                                <mat-option [value]="'*'">
+                                    All
+                                </mat-option>
+                                <mat-option *ngFor="let item of employees" [value]="item.id">
+                                    {{ item.firstName + ' ' + item.lastName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group my-auto">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Status</mat-label>
+                            <mat-select formControlName="status" (selectionChange)="selectStatus($event.value)">
+                                <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
+                                    {{ item.title }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <mat-button-toggle-group class="my-auto">
+                        <mat-button-toggle (click)="resetForm()">
+                            <mat-icon>cached</mat-icon>
+                        </mat-button-toggle>
+                    </mat-button-toggle-group>
+                </div>
+            </div>
+        </form>
+        <div class="px-2 mt-2">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-3 my-auto">
+                            <h4 class="font-weight-bold">
+                                <u>Title</u>
+                            </h4>
+                        </div>
+                        <div class="col-md-4 my-auto">
+                            <h4 class="font-weight-bold">
+                                <u>Description</u>
+                            </h4>
+                        </div>
+                        <div class="col-md-2 my-auto">
+                            <h4 class="font-weight-bold">
+                                <u>Status</u>
+                            </h4>
+                        </div>
+                        <div class="col-md-3">
+                            <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdate(null)">
+                                <mat-icon>add</mat-icon>
+                                Create
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item" *ngFor="let item of jobsFiltered">
+                    <div class="row">
+                        <div class="col-md-3 my-auto">
+                            <h5 class="btn btn-link" (click)="selectJob(item)">
+                                {{ item.title }}
+                            </h5>
+                        </div>
+                        <div class="col-md-4 my-auto">
+                            <h5>
+                                {{ item.description }}
+                            </h5>
+                        </div>
+                        <div class="col-md-2 my-auto">
+                            <h5>
+                                {{ item.status }}
+                            </h5>
+                        </div>
+                        <div class="col-md-3">
+                            <button mat-raised-button class="btn btn-sm ml-3" color="warn" (click)="delete(item.jobId)">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li *ngIf="jobsFiltered.length === 0">
+                    <i>No jobs...</i>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4" *ngIf="jobSelected">
+        <app-job-info [job]="jobSelected" (jobChanged)="jobChanged($event)"></app-job-info>
+    </div>
+</div>

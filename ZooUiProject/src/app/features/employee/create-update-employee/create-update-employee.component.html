@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <mat-form-field appearance="standard" style="width: auto;">
+                    <mat-form-field appearance="standard">
                         <mat-label>First name</mat-label>
                         <input matInput formControlName="firstName">
                         <mat-error *ngIf="hasCustomError(employeeForm, 'firstName')">
@@ -33,11 +33,19 @@
                 </div>
             </div>
         </div>
-
+        <div class="form-group">
+            <mat-form-field appearance="standard">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+                <mat-error *ngIf="hasCustomError(employeeForm, 'email')">
+                    Email is required
+                </mat-error>
+            </mat-form-field>
+        </div>
         <div class="row">
-            <div class="col-md-6 my-auto">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <mat-form-field color="primary" style="max-width: 90%;">
+                    <mat-form-field color="primary" appearance="standard">
                         <mat-label>Date of birth</mat-label>
                         <input matInput [matDatepicker]="picker1" formControlName="dateOfBirth" readonly>
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -48,9 +56,9 @@
                     </mat-form-field>
                 </div>
             </div>
-            <div class="col-md-6 my-auto">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <mat-form-field class="pb-2" appearance="standard">
+                    <mat-form-field appearance="standard">
                         <mat-label>Gender</mat-label>
                         <mat-select formControlName="gender">
                             <mat-option *ngFor="let item of genders" [value]="item.value">
@@ -119,17 +127,17 @@
                     <mat-form-field appearance="standard">
                         <mat-label>Confirm password</mat-label>
                         <input matInput [type]="hideConfirm ? 'password' : 'text'" 
-                            formControlName="confirmPassword" (input)="checkPasswordsMatch($event.target.value)">
+                            formControlName="confirmPassword" (input)="checkPasswordsMatch($event.value)">
                         <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm"
                             [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
                             <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
                         </button>
                     </mat-form-field>
-                    <mat-error *ngIf="passError">
-                        {{ passError }}
-                    </mat-error>
                 </div>
             </div>
+            <span class="text-danger text-size-sm ml-3" *ngIf="passError" style="margin-top: -15px;">
+                {{ passError }}
+            </span>
         </div>
 
         <div class="row px-2 mt-4">

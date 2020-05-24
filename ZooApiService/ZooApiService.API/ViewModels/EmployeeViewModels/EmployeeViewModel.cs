@@ -5,7 +5,6 @@ namespace ZooApiService.API.ViewModels.EmployeeViewModels
 {
     public class EmployeeViewModel
     {
-        [Required]
         public string Id { get; set; }
 
         [Required]
@@ -13,6 +12,9 @@ namespace ZooApiService.API.ViewModels.EmployeeViewModels
 
         [Required]
         public string LastName { get; set; }
+
+        [Required]
+        public string Email { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 

@@ -70,6 +70,9 @@ namespace ZooApiService.API.Mapping
                 .ForMember(d => d.FirstName, m => m.MapFrom((s, d) => s.UserName.Split('|').First()))
                 .ForMember(d => d.LastName, m => m.MapFrom((s, d) => s.UserName.Split('|').Last()))
                 .ReverseMap()
+                .ForMember(d => d.Id, m => m.MapFrom(s => string.IsNullOrEmpty(s.Id) 
+                    ? Guid.NewGuid().ToString() 
+                    : s.Id))
                 .ForMember(d => d.UserName, m => m.MapFrom(s => string.Concat(s.FirstName.Trim(), '|', s.LastName.Trim())));
 
             CreateMap<Job, JobDto>()

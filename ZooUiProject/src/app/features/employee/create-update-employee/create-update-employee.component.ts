@@ -46,9 +46,10 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
 
   createForm() {
     this.employeeForm = this.fb.group({
-      id: [this.data.id == null ? '' : this.data.id],
+      id: [this.data.id],
       firstName: [this.data.firstName, Validators.required],
       lastName: [this.data.lastName, Validators.required],
+      email: [this.data.email, Validators.required],
       dateOfBirth: [this.data.dateOfBirth, Validators.required],
       gender: [this.data.gender, Validators.required],
       position: [this.data.position, Validators.required],

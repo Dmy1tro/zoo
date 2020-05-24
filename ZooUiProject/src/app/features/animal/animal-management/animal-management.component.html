@@ -10,31 +10,62 @@
     <hr>
     <form [formGroup]="animalForm" novalidate (ngSubmit)="onSubmit()">
         <div class="form-group">
-            <label>Animal type</label>
+            <mat-form-field appearance="standard">
+                <mat-label>Animal type</mat-label>
+                <mat-select formControlName="animalTypeId">
+                    <mat-option *ngFor="let item of animalTypes" [value]="item.animalTypeId">
+                        {{ item.typeName }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasCustomError(animalForm, 'animalTypeId')">
+                    Animal type is required
+                </mat-error>
+            </mat-form-field>
+            <!-- <label>Animal type</label>
             <select class="form-control" formControlName="animalTypeId">
                 <option value=null disabled>Select animal type</option>
                 <option *ngFor="let type of animalTypes" [ngValue]="type.animalTypeId">{{ type.typeName }}</option>
             </select>
-            <mat-error *ngIf="hasCustomError(animalForm, 'animalTypeId')">Animal type is required.</mat-error>
+            <mat-error *ngIf="hasCustomError(animalForm, 'animalTypeId')">Animal type is required.</mat-error> -->
         </div>
 
         <div class="form-group">
-            <label>Animal name</label>
+            <mat-form-field appearance="standard">
+                <mat-label>Animal name</mat-label>
+                <input matInput formControlName="name">
+                <mat-error *ngIf="hasCustomError(animalForm, 'name')">
+                    Animal Name is required
+                </mat-error>
+            </mat-form-field>
+
+            <!-- <label>Animal name</label>
             <input type="text" class="form-control" placeholder="Animal Name" formControlName="name">
-            <mat-error *ngIf="hasCustomError(animalForm, 'name')">Animal Name is required.</mat-error>
+            <mat-error *ngIf="hasCustomError(animalForm, 'name')">Animal Name is required.</mat-error> -->
         </div>
 
         <div class="form-group">
-            <label>Animal gender</label>
+            <mat-form-field appearance="standard">
+                <mat-label>Gender</mat-label>
+                <mat-select formControlName="gender">
+                    <mat-option *ngFor="let item of genders" [value]="item.value">
+                        {{ item.title }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasCustomError(animalForm, 'gender')">
+                    Gender is required
+                </mat-error>
+            </mat-form-field>
+
+            <!-- <label>Animal gender</label>
             <select class="form-control" formControlName="gender">
                 <option value=null disabled>Select Gender</option>
                 <option *ngFor="let gender of genders" [ngValue]="gender.value">{{gender.title}}</option>
             </select>
-            <mat-error *ngIf="hasCustomError(animalForm, 'gender')">Gender is required.</mat-error>
+            <mat-error *ngIf="hasCustomError(animalForm, 'gender')">Gender is required.</mat-error> -->
         </div>
 
         <div class="form-group ml-1">
-            <mat-form-field color="primary">
+            <mat-form-field color="primary" appearance="standard">
                 <mat-label>Date of birth</mat-label>
                 <input matInput [matDatepicker]="picker1" formControlName='dateOfBirth' readonly>
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>

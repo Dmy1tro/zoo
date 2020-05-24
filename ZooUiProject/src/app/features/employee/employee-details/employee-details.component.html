@@ -2,7 +2,7 @@
     <h3>Employee management</h3>
 </div>
 <hr>
-<div class="row px-1">
+<div class="row pl-2">
     <div class="col-md-7">
         <form [formGroup]="filterForm" novalidate>
             <div class="row">
@@ -10,7 +10,7 @@
                     <div class="form-group">
                         <mat-form-field appearance="standard">
                             <mat-label>Select Job</mat-label>
-                            <mat-select formControlName="job" (change)="filterJobs($event.target.value)">
+                            <mat-select formControlName="job" (selectionChange)="filterJobs($event.value)">
                                 <mat-option *ngFor="let item of jobs" [value]="item.value">
                                     {{ item.title }}
                                 </mat-option>
@@ -22,7 +22,7 @@
                     <div class="form-group my-auto">
                         <mat-form-field appearance="standard">
                             <mat-label>Select employee</mat-label>
-                            <mat-select formControlName="id" (change)="findEmployee($event.target.value)">
+                            <mat-select formControlName="id" (selectionChange)="selectEmployee($event.value)">
                                 <mat-option *ngFor="let item of employeeFiltered" [value]="item.id">
                                     {{ item.lastName + ' ' + item.firstName }}
                                 </mat-option>
@@ -86,7 +86,7 @@
             </ul>
         </div>
     </div>
-    <div class="col-md-4" *ngIf="employeeSelected !== null">
+    <div class="col-md-4" *ngIf="employeeSelected">
         <div class="card">
             <div class="card-body my-auto">
                 <img src="./assets/Avatar.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
@@ -94,24 +94,27 @@
                     {{ employeeSelected.firstName + ' ' + employeeSelected.lastName }}
                 </h4>
                 <br>
-
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-size-md d-inline-flex">
+                    <li class="list-group-item d-inline-flex">
+                        <mat-icon>email</mat-icon>
+                        {{ employeeSelected.email }}
+                    </li>
+                    <li class="list-group-item d-inline-flex">
                         <mat-icon>business_center</mat-icon>
                         {{ employeeSelected.position }}
                     </li>
-                    <li class="list-group-item text-size-md d-inline-flex">
+                    <li class="list-group-item d-inline-flex">
                         <mat-icon>perm_contact_calendar</mat-icon>
                         {{ employeeSelected.dateOfBirth | date: 'yyyy-MM-dd' }}
                     </li>
-                    <li class="list-group-item text-size-md d-inline-flex">
+                    <li class="list-group-item d-inline-flex">
                         <mat-icon>person</mat-icon>
                         {{ employeeSelected.gender }}
                     </li>
                   </ul>
             </div>
             <div class="card-footer">
-                <div class="float-right ml-3">
+                <div class="d-flex justify-content-center">
                     <button class="btn btn-warning mx-1" (click)="addOrUpdate(employeeSelected.id)">Update</button>
                     <button class="btn btn-success mx-1">Manage jobs</button>
                 </div>

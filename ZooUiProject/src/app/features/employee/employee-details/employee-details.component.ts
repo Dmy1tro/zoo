@@ -64,14 +64,12 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
   }
 
   addOrUpdate(id) {
-    const employee = this.findOrDefaultEmployee(id);
+    const employee = this.selectedOrDefaultEmployee(id);
 
     this.dialog.open(CreateUpdateEmployeeComponent, { width: '34%', autoFocus: true, data: employee })
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.getEmployees();
-      });
+      .subscribe(() => this.getEmployees());
   }
 
   filterJobs(value) {
@@ -79,21 +77,18 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
       x.position.toUpperCase().includes(this.filterForm.value.job.toUpperCase()));
   }
 
-  findEmployee(value) {
-    this.employeeFiltered = this.employees.filter(x => x.id === this.filterForm.value.id);
-  }
-
   resetForm() {
     this.filterForm.reset();
+    this.employeeSelected = null;
     this.employeeFiltered = this.employees;
   }
 
-  findOrDefaultEmployee(id): IEmployee {
+  selectedOrDefaultEmployee(id): IEmployee {
     if (id) {
-      return this.employeeSelected;
+      return this.employeeFiltered.find(x => x.id === id);
     }
 
-    return { id: null, firstName: null, lastName: null, gender: null, dateOfBirth: null, position: null };
+    return { id: null, firstName: null, lastName: null, gender: null, dateOfBirth: null, position: null, email: null };
   }
 
   ngOnDestroy(): void {

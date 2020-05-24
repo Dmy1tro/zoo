@@ -133,7 +133,23 @@ namespace ZooApiService.BLL.Domain.Services
         {
             var jobDbo = _mapper.Map<Job>(jobDto);
 
-            _dbContext.Jobs.Update(jobDbo);
+            ValidateJob(jobDbo);
+
+            var loaded = await _dbContext.Jobs
+                .FirstOrDefaultAsync(x => x.JobId == jobDbo.JobId);
+
+            if (loaded is null)
+            {
+                throw new NotFoundException(EntityName.Job, jobDto.JobId);
+            }
+
+            loaded.Title = jobDbo.Title;
+            loaded.Description = jobDbo.Description;
+            loaded.EmployeeId = jobDbo.EmployeeId;
+            loaded.Status = jobDbo.Status;
+            loaded.CreationDate = jobDbo.CreationDate;
+            loaded.StartDate = jobDbo.StartDate;
+            loaded.FinishDate = jobDbo.FinishDate;
 
             await _dbContext.SaveChangesAsync();
         }
@@ -146,6 +162,20 @@ namespace ZooApiService.BLL.Domain.Services
             _dbContext.Jobs.Remove(jobDbo);
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        private void ValidateJob(Job job)
+        {
+            if ((job.StartDate.HasValue && job.Status == JobStatus.Created) ||
+                (job.FinishDate.HasValue && job.Status != JobStatus.Finished) ||
+                (job.FinishDate.HasValue && job.StartDate is null) ||
+                (job.StartDate.HasValue && job.FinishDate is null && job.Status != JobStatus.InProgress) ||
+                (job.StartDate is null && job.FinishDate is null && job.Status != JobStatus.Created) ||
+                (job.StartDate > job.FinishDate) ||
+                (job.CreationDate > job.StartDate))
+            {
+                throw new ValidationException("Job status and job dates is not synchronized");
+            }
         }
     }
 }

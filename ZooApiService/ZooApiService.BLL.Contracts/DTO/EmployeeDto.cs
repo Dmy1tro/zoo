@@ -10,6 +10,8 @@ namespace ZooApiService.BLL.Contracts.DTO
 
         public string LastName { get; set; }
 
+        public string Email { get; set; }
+
         public DateTime DateOfBirth { get; set; }
 
         public string Gender { get; set; }

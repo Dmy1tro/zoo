@@ -16,6 +16,12 @@ export enum Job {
     Vet = 'Vet'
 }
 
+export enum JobStatus {
+    Created = 'Created',
+    InProgress = 'InProgress',
+    Finished = 'Finished'
+}
+
 export enum Role {
     Manager = 'Manager',
     Worker = 'Worker'

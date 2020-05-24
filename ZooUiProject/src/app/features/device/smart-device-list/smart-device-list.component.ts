@@ -57,13 +57,13 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
 
   createForm() {
     this.filterForm = this.fb.group({
-      typeName: null,
+      typeName: '*',
       animalId: null
     });
   }
 
   selectedAnimalType(value) {
-    if (this.filterForm.value.typeName == null) {
+    if (this.filterForm.value.typeName === '*') {
       this.animalsFiltered = this.animals;
     } else {
       this.filterForm.get('animalId').setValue(null);
