@@ -7,45 +7,27 @@
         <form [formGroup]="filterForm" novalidate>
             <div class="row ml-1">
                 <div class="col-md-5">
-                    <div class="form-group my-auto">
-                        <mat-form-field appearance="standard">
-                            <mat-label>Animal type</mat-label>
-                            <mat-select formControlName="typeName" (selectionChange)="selectedAnimalType($event.value)">
-                                <mat-option [value]="'*'">
-                                    All
-                                </mat-option>
-                                <mat-option *ngFor="let item of typeNames" [value]="item">
-                                    {{ item }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <!-- <select class="form-control pointer" (change)="selectedAnimalType($event.target.value)"
-                            formControlName="typeName">
-                            <option [ngValue]="null">Select animal type</option>
-                            <option *ngFor="let type of typeNames" [ngValue]="type">{{ type }}</option>
-                        </select> -->
-                    </div>
+                    <mat-form-field appearance="standard">
+                        <mat-label>Animal type</mat-label>
+                        <mat-select formControlName="typeName" (selectionChange)="selectedAnimalType($event.value)">
+                            <mat-option [value]="'*'">
+                                All
+                            </mat-option>
+                            <mat-option *ngFor="let item of typeNames" [value]="item">
+                                {{ item }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="col-md-5">
-                    <div class="form-group my-auto">
-                        <mat-form-field appearance="standard">
-                            <mat-label>Animal type</mat-label>
-                            <mat-select formControlName="animalId" (selectionChange)="selectAnimal($event.value)">
-                                <mat-option *ngFor="let item of animalsFiltered" [value]="item.animalId">
-                                    {{ item.name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <!-- <select class="form-control pointer" (change)="selectAnimal($event.target.value)"
-                            formControlName="animalId">
-                            <option value=null disabled>Select animal</option>
-                            <option class="pointer" *ngFor="let animal of animalsFiltered" [ngValue]="animal.animalId">
-                                {{ animal.name }}
-                            </option>
-                        </select> -->
-                    </div>
+                    <mat-form-field appearance="standard">
+                        <mat-label>Animal type</mat-label>
+                        <mat-select formControlName="animalId" (selectionChange)="selectAnimal($event.value)">
+                            <mat-option *ngFor="let item of animalsFiltered" [value]="item.animalId">
+                                {{ item.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="col-md-2">
                     <mat-button-toggle-group class="my-auto">

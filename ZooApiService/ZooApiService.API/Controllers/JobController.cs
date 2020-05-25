@@ -51,7 +51,7 @@ namespace ZooApiService.API.Controllers
         //[Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Create(CreateJobViewModel model)
         {
-            var createdId = await _jobService.CreateJobAsync(model.Title, model.Description);
+            var createdId = await _jobService.CreateJobAsync(model.EmployeeId, model.Title, model.Description);
 
             return Ok(createdId);
         }

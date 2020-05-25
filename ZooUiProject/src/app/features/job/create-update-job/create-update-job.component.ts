@@ -89,7 +89,10 @@ export class CreateUpdateJobComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    this.jobService.update(this.jobForm.value)
+    this.jobService.update({
+      jobId: this.data.jobId,
+      ...this.jobForm.value
+    })
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {

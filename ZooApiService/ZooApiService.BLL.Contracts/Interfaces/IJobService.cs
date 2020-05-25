@@ -13,7 +13,7 @@ namespace ZooApiService.BLL.Contracts.Interfaces
 
         Task<IList<JobDto>> GetJobsForEmployeeAsync(string employeeId, string minStatus);
 
-        Task<CreatedData> CreateJobAsync(string title, string description);
+        Task<CreatedData> CreateJobAsync(string employeeId, string title, string description);
 
         Task StartJobAsync(int id);
 

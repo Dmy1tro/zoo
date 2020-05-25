@@ -7,28 +7,24 @@
         <form [formGroup]="filterForm" novalidate>
             <div class="row">
                 <div class="col-md-5">
-                    <div class="form-group">
-                        <mat-form-field appearance="standard">
-                            <mat-label>Select Job</mat-label>
-                            <mat-select formControlName="job" (selectionChange)="filterJobs($event.value)">
-                                <mat-option *ngFor="let item of jobs" [value]="item.value">
-                                    {{ item.title }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+                    <mat-form-field appearance="standard">
+                        <mat-label>Select Job</mat-label>
+                        <mat-select formControlName="job" (selectionChange)="filterJobs($event.value)">
+                            <mat-option *ngFor="let item of jobs" [value]="item.value">
+                                {{ item.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="col-md-5">
-                    <div class="form-group my-auto">
-                        <mat-form-field appearance="standard">
-                            <mat-label>Select employee</mat-label>
-                            <mat-select formControlName="id" (selectionChange)="selectEmployee($event.value)">
-                                <mat-option *ngFor="let item of employeeFiltered" [value]="item.id">
-                                    {{ item.lastName + ' ' + item.firstName }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+                    <mat-form-field appearance="standard">
+                        <mat-label>Select employee</mat-label>
+                        <mat-select formControlName="id" (selectionChange)="selectEmployee($event.value)">
+                            <mat-option *ngFor="let item of employeeFiltered" [value]="item.id">
+                                {{ item.lastName + ' ' + item.firstName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="col-md-2">
                     <mat-button-toggle-group class="my-auto">
@@ -40,17 +36,17 @@
             </div>
         </form>
         <div class="px-2 mt-2">
-            <ul class="list-group list-group-flush">
+            <ul class="list-group">
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-md-6 my-auto">
                             <h4 class="font-weight-bold">
-                                <u>Employees</u>
+                                <i>Employees</i>
                             </h4>
                         </div>
                         <div class="col-md-3 my-auto">
                             <h4 class="font-weight-bold">
-                                <u>Position</u>
+                                <i>Position</i>
                             </h4>
                         </div>
                         <div class="col-md-3">
@@ -74,13 +70,13 @@
                             </h5>
                         </div>
                         <div class="col-md-3">
-                            <button mat-raised-button class="btn btn-sm ml-3" color="accent">
-                                Jobs
+                            <button mat-raised-button class="btn btn-sm ml-3" color="warn" (click)="delete(employee)">
+                                Delete
                             </button>
                         </div>
                     </div>
                 </li>
-                <li *ngIf="employeeFiltered.length === 0">
+                <li class="list-group-item" *ngIf="employeeFiltered.length === 0">
                     <i>No employees...</i>
                 </li>
             </ul>
@@ -116,7 +112,7 @@
             <div class="card-footer">
                 <div class="d-flex justify-content-center">
                     <button class="btn btn-warning mx-1" (click)="addOrUpdate(employeeSelected.id)">Update</button>
-                    <button class="btn btn-success mx-1">Manage jobs</button>
+                    <button class="btn btn-success mx-1" (click)="goToJobs(employeeSelected.id)">Manage jobs</button>
                 </div>
             </div>
         </div>

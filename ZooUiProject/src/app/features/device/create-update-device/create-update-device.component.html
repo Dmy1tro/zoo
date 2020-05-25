@@ -9,11 +9,13 @@
     <h3 class="text-center">Device</h3>
     <hr>
     <form [formGroup]="deviceForm" novalidate (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label>Device Name</label>
-            <input type="text" class="form-control" placeholder="Animal Name" formControlName="name">
-            <mat-error *ngIf="hasCustomError(deviceForm, 'name')">device name is required.</mat-error>
-        </div>
+        <mat-form-field appearance="standard">
+            <mat-label>Device Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngIf="hasCustomError(deviceForm, 'name')">
+                Device name is required
+            </mat-error>
+        </mat-form-field>
 
         <div class="row px-2 mt-4">
             <div class="col-md-6">

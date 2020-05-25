@@ -2,36 +2,32 @@
     <h3>Job management</h3>
 </div>
 <hr>
-<div class="row pl-2">
-    <div class="col-md-7">
+<div class="row pl-1">
+    <div class="col-md-8">
         <form [formGroup]="filterForm" novalidate>
             <div class="row">
-                <div class="col-md-7">
-                    <div class="form-group">
-                        <mat-form-field appearance="standard">
-                            <mat-label>Employee</mat-label>
-                            <mat-select formControlName="employeeId" (selectionChange)="selectEmployee($event.value)">
-                                <mat-option [value]="'*'">
-                                    All
-                                </mat-option>
-                                <mat-option *ngFor="let item of employees" [value]="item.id">
-                                    {{ item.firstName + ' ' + item.lastName }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+                <div class="col-md-5">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Employee</mat-label>
+                        <mat-select formControlName="employeeId" (selectionChange)="selectEmployee($event.value)">
+                            <mat-option [value]="'*'">
+                                All
+                            </mat-option>
+                            <mat-option *ngFor="let item of employees" [value]="item.id">
+                                {{ item.firstName + ' ' + item.lastName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group my-auto">
-                        <mat-form-field appearance="standard">
-                            <mat-label>Status</mat-label>
-                            <mat-select formControlName="status" (selectionChange)="selectStatus($event.value)">
-                                <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
-                                    {{ item.title }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Status</mat-label>
+                        <mat-select formControlName="status" (selectionChange)="selectStatus($event.value)">
+                            <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
+                                {{ item.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="col-md-2">
                     <mat-button-toggle-group class="my-auto">
@@ -42,44 +38,93 @@
                 </div>
             </div>
         </form>
-        <div class="px-2 mt-2">
-            <ul class="list-group list-group-flush">
+
+        <table class="table table-bordered text-center mt-2">
+            <thead class="thead-light">
+                <tr class="d-flex">
+                    <th class="col-md-3" scope="col">
+                        Title
+                    </th>
+                    <th class="col-md-4" scope="col">
+                        Descritpion
+                    </th>
+                    <th class="col-md-2" scope="col">
+                        Status
+                    </th>
+                    <th class="col-md-3" scope="col">
+                        <button mat-raised-button class="btn btn-sm w-75" color="primary" (click)="create()">
+                            <mat-icon>add</mat-icon>
+                            Create
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="d-flex" *ngFor="let item of jobsFiltered">
+                    <td class="col-md-3">
+                        {{ item.title }}
+                    </td>
+                    <td class="col-md-4">
+                        {{ item.description}}
+                    </td>
+                    <td class="col-md-2">
+                        {{ item.status  }}
+                    </td>
+                    <td class="col-md-3">
+                        <button class="btn btn-info w-75 d-inline-flex justify-content-center" (click)="selectJob(item)"
+                            [class.disabled]="jobSelected && jobSelected.jobId === item.jobId">
+                            <mat-icon class="mr-1">info</mat-icon>
+                            Info
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="jobsFiltered.length === 0">
+                <td>
+                    <p>There are no jobs...</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- <div class="px-2 mt-2">
+            <ul class="list-group">
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-md-3 my-auto">
                             <h4 class="font-weight-bold">
-                                <u>Title</u>
+                                <i>Title</i>
                             </h4>
                         </div>
                         <div class="col-md-4 my-auto">
                             <h4 class="font-weight-bold">
-                                <u>Description</u>
+                                <i>Description</i>
                             </h4>
                         </div>
                         <div class="col-md-2 my-auto">
                             <h4 class="font-weight-bold">
-                                <u>Status</u>
+                                <i>Status</i>
                             </h4>
                         </div>
                         <div class="col-md-3">
-                            <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdate(null)">
+                            <button mat-raised-button class="btn btn-sm w-75" color="primary" (click)="create()">
                                 <mat-icon>add</mat-icon>
                                 Create
                             </button>
                         </div>
                     </div>
                 </li>
-                <li class="list-group-item" *ngFor="let item of jobsFiltered">
+                <li class="list-group-item" *ngFor="let item of jobsFiltered" 
+                    [class.selected-bg]="jobSelected && jobSelected.jobId === item.jobId">
                     <div class="row">
                         <div class="col-md-3 my-auto">
-                            <h5 class="btn btn-link" (click)="selectJob(item)">
+                            <h5>
                                 {{ item.title }}
                             </h5>
                         </div>
                         <div class="col-md-4 my-auto">
-                            <h5>
+                            <h6>
                                 {{ item.description }}
-                            </h5>
+                            </h6>
                         </div>
                         <div class="col-md-2 my-auto">
                             <h5>
@@ -87,17 +132,17 @@
                             </h5>
                         </div>
                         <div class="col-md-3">
-                            <button mat-raised-button class="btn btn-sm ml-3" color="warn" (click)="delete(item.jobId)">
-                                Delete
+                            <button class="btn w-75 btn-info" (click)="selectJob(item)">
+                                Info
                             </button>
                         </div>
                     </div>
                 </li>
-                <li *ngIf="jobsFiltered.length === 0">
+                <li class="list-group-item" *ngIf="jobsFiltered.length === 0">
                     <i>No jobs...</i>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
     <div class="col-md-4" *ngIf="jobSelected">
         <app-job-info [job]="jobSelected" (jobChanged)="jobChanged($event)"></app-job-info>

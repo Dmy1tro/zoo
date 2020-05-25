@@ -6,29 +6,26 @@
 <form [formGroup]="filterForm" novalidate (ngSubmit)="filterAnimals()">
     <div class="row ml-1">
         <div class="col-md-3">
-            <div class="form-group mt-2">
-                <input type="text" class="form-control" placeholder="Name" formControlName="name">
-            </div>
+            <mat-form-field appearance="standard">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="title" formControlName="name">
+            </mat-form-field>
         </div>
         <div class="col-md-3">
-            <div class="form-group">
-                <mat-form-field color="primary" appearance="standard">
-                    <mat-label>From date</mat-label>
-                    <input class="mat-datepicker-input" matInput [matDatepicker]="picker1" formControlName='fromDate'>
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1 disabled="false"></mat-datepicker>
-                </mat-form-field>
-            </div>
+            <mat-form-field color="primary" appearance="standard">
+                <mat-label>From date</mat-label>
+                <input class="mat-datepicker-input" matInput [matDatepicker]="picker1" formControlName='fromDate'>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+            </mat-form-field>
         </div>
         <div class="col-md-3">
-            <div class="form-group">
-                <mat-form-field color="primary" appearance="standard">
-                    <mat-label>By date</mat-label>
-                    <input matInput [matDatepicker]="picker2" formControlName='byDate'>
-                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2 disabled="false"></mat-datepicker>
-                </mat-form-field>
-            </div>
+            <mat-form-field color="primary" appearance="standard">
+                <mat-label>By date</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName='byDate'>
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2 disabled="false"></mat-datepicker>
+            </mat-form-field>
         </div>
         <div class="col-md-3">
             <mat-button-toggle-group>
@@ -76,8 +73,9 @@
                     {{ animal.dateOfBirth | date: 'yyyy-MM-dd' }}
                 </td>
                 <td class="col-md-3">
-                    <button class="btn btn-info mr-3" (click)="goToInfo(animal.animalId)">
-                        info
+                    <button class="btn btn-info mr-3 d-inline-flex justify-content-center" (click)="goToInfo(animal.animalId)">
+                        <mat-icon class="mr-1">info</mat-icon>
+                        Info
                     </button>
                     <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdate(animal.animalId)">
                         <mat-icon>edit</mat-icon>

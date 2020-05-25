@@ -11,129 +11,111 @@
     <form [formGroup]="employeeForm" novalidate (ngSubmit)="onSubmit()">
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
-                    <mat-form-field appearance="standard">
-                        <mat-label>First name</mat-label>
-                        <input matInput formControlName="firstName">
-                        <mat-error *ngIf="hasCustomError(employeeForm, 'firstName')">
-                            First name is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="standard">
+                    <mat-label>First name</mat-label>
+                    <input matInput formControlName="firstName">
+                    <mat-error *ngIf="hasCustomError(employeeForm, 'firstName')">
+                        First name is required
+                    </mat-error>
+                </mat-form-field>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <mat-form-field appearance="standard">
-                        <mat-label>Last name</mat-label>
-                        <input matInput formControlName="lastName">
-                        <mat-error *ngIf="hasCustomError(employeeForm, 'lastName')">
-                            Last name is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="standard">
+                    <mat-label>Last name</mat-label>
+                    <input matInput formControlName="lastName">
+                    <mat-error *ngIf="hasCustomError(employeeForm, 'lastName')">
+                        Last name is required
+                    </mat-error>
+                </mat-form-field>
             </div>
         </div>
-        <div class="form-group">
-            <mat-form-field appearance="standard">
-                <mat-label>Email</mat-label>
-                <input matInput formControlName="email">
-                <mat-error *ngIf="hasCustomError(employeeForm, 'email')">
-                    Email is required
-                </mat-error>
-            </mat-form-field>
-        </div>
+        <mat-form-field appearance="standard">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+            <mat-error *ngIf="hasCustomError(employeeForm, 'email')">
+                Email is required
+            </mat-error>
+        </mat-form-field>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
-                    <mat-form-field color="primary" appearance="standard">
-                        <mat-label>Date of birth</mat-label>
-                        <input matInput [matDatepicker]="picker1" formControlName="dateOfBirth" readonly>
-                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                        <mat-datepicker #picker1 disabled="false"></mat-datepicker>
-                        <mat-error *ngIf="hasCustomError(employeeForm, 'dateOfBirth')">
-                            Date of birth is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                <mat-form-field color="primary" appearance="standard">
+                    <mat-label>Date of birth</mat-label>
+                    <input matInput [matDatepicker]="picker1" formControlName="dateOfBirth" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+                    <mat-error *ngIf="hasCustomError(employeeForm, 'dateOfBirth')">
+                        Date of birth is required
+                    </mat-error>
+                </mat-form-field>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <mat-form-field appearance="standard">
-                        <mat-label>Gender</mat-label>
-                        <mat-select formControlName="gender">
-                            <mat-option *ngFor="let item of genders" [value]="item.value">
-                                {{ item.title }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="hasCustomError(employeeForm, 'gender')">
-                            Gender is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="standard">
+                    <mat-label>Gender</mat-label>
+                    <mat-select formControlName="gender">
+                        <mat-option *ngFor="let item of genders" [value]="item.value">
+                            {{ item.title }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="hasCustomError(employeeForm, 'gender')">
+                        Gender is required
+                    </mat-error>
+                </mat-form-field>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
-                    <mat-form-field appearance="standard">
-                        <mat-label>Job position</mat-label>
-                        <mat-select formControlName="position">
-                            <mat-option *ngFor="let item of jobs" [value]="item.value">
-                                {{ item.title }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="hasCustomError(employeeForm, 'position')">
-                            Position is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="standard">
+                    <mat-label>Job position</mat-label>
+                    <mat-select formControlName="position">
+                        <mat-option *ngFor="let item of jobs" [value]="item.value">
+                            {{ item.title }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="hasCustomError(employeeForm, 'position')">
+                        Position is required
+                    </mat-error>
+                </mat-form-field>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <mat-form-field appearance="standard">
-                        <mat-label>Role</mat-label>
-                        <mat-select formControlName="role">
-                            <mat-option *ngFor="let item of roles" [value]="item.value">
-                                {{ item.title }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="hasCustomError(employeeForm, 'role')">
-                            Role is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="standard">
+                    <mat-label>Role</mat-label>
+                    <mat-select formControlName="role">
+                        <mat-option *ngFor="let item of roles" [value]="item.value">
+                            {{ item.title }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="hasCustomError(employeeForm, 'role')">
+                        Role is required
+                    </mat-error>
+                </mat-form-field>
             </div>
         </div>
 
         <div class="row" *ngIf="showPasswordForm">
             <div class="col-md-6">
-                <div class="form-group">
-                    <mat-form-field appearance="standard">
-                        <mat-label>Password</mat-label>
-                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
-                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                            [attr.aria-pressed]="hide">
-                            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-                        </button>
-                        <mat-error *ngIf="hasCustomError(employeeForm, 'password')">
-                            Password is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="standard">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide">
+                        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="hasCustomError(employeeForm, 'password')">
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <mat-form-field appearance="standard">
-                        <mat-label>Confirm password</mat-label>
-                        <input matInput [type]="hideConfirm ? 'password' : 'text'" 
-                            formControlName="confirmPassword" (input)="checkPasswordsMatch($event.value)">
-                        <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm"
-                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
-                            <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
-                        </button>
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="standard">
+                    <mat-label>Confirm password</mat-label>
+                    <input matInput [type]="hideConfirm ? 'password' : 'text'" 
+                        formControlName="confirmPassword" (input)="checkPasswordsMatch($event.value)">
+                    <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
+                        <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                </mat-form-field>
             </div>
             <span class="text-danger text-size-sm ml-3" *ngIf="passError" style="margin-top: -15px;">
                 {{ passError }}

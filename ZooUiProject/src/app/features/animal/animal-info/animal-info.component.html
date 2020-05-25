@@ -29,14 +29,17 @@
                 <mat-spinner></mat-spinner>
             </div>
         </div>
-        <div class="row pr-3">
+        <div class="row justify-content-center">
             <div class="col-md-4">
-                <a mat-raised-button class="btn-block" color="secondary" (click)="backToAnimals()">
+                <button mat-raised-button class="btn-block" 
+                    color="secondary" (click)="backToAnimals()">
+                    <mat-icon>arrow_back_ios</mat-icon>
                     Back
-                </a>
+                </button>
             </div>
             <div class="col-md-6">
                 <button mat-raised-button class="btn-block" color="accent" (click)="updateAnimal()">
+                    <mat-icon>edit</mat-icon>
                     Update
                 </button>
             </div>
@@ -87,18 +90,5 @@
                 </tr>
             </tbody>
         </table>
-
-        <!-- <div *ngIf="rations.length === 0">
-            <p>There are not food for this animal!</p>
-        </div>
-        <mat-action-list>
-            <a mat-list-item [class.active]="ration.rationId === rationId" *ngFor="let ration of rations"
-                (click)='selectRation(ration.rationId)'>
-                {{ration.foodName}}
-                <span class="float-right btn btn-light btn-sm" (click)="deleteRation(ration.rationId)">
-                    <img src="/assets/images/icons8-xbox-x-24.png" alt="delete">
-                </span>
-            </a>
-        </mat-action-list> -->
     </div>
 </div>

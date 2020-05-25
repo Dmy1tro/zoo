@@ -9,21 +9,22 @@
     <h3 class="text-center">Ration</h3>
     <hr>
     <form [formGroup]="rationForm" novalidate (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label>Food name</label>
-            <input type="text" class="form-control" placeholder="food" formControlName="foodName">
-            <div class="alert alert-danger my-1" *ngIf="hasCustomError(rationForm, 'foodName')">
-                Food name is required.
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Description</label>
-            <textarea class="form-control" rows="3" placeholder="ration description"
-                formControlName="description"></textarea>
-            <div class="alert alert-danger my-1" *ngIf="hasCustomError(rationForm, 'description')">
-                Food name is required.
-            </div>
-        </div>
+        <mat-form-field appearance="standard">
+            <mat-label>Food name</mat-label>
+            <input matInput formControlName="foodName">
+            <mat-error *ngIf="hasCustomError(rationForm, 'foodName')">
+                Food name is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Some description" formControlName="description" rows="3"></textarea>
+            <mat-error *ngIf="hasCustomError(rationForm, 'description')">
+                Description is required
+            </mat-error>
+        </mat-form-field>
+
         <div class="row px-2 mt-4">
             <div class="col-md-6">
                 <button mat-raised-button class="btn-block" color="primary" type="submit">

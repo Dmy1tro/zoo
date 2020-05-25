@@ -1,41 +1,71 @@
-<div class="card">
+<div class="card" *ngIf="job">
     <div class="card-body my-auto">
-        <h4>
+        <h4 class="text-center">
             {{ job.title }}
         </h4>
         <hr>
-        <ul class="list-group">
-            <li class="list-group-item d-inline-flex">
-                <mat-icon>person</mat-icon>
-                <b>Responsible: </b>
-                {{ employee.firstName + ' ' + employee.lastName }}
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngIf="employee">
+                <span class="d-inline-flex">
+                    <mat-icon>person</mat-icon>
+                    <b>Responsible: </b>
+                </span>
+                <br>
+                <span class="ml-1">
+                    {{ employee.firstName + ' ' + employee.lastName }}
+                </span>
             </li>
-            <li class="list-group-item d-inline-flex">
-                <mat-icon>business_center</mat-icon>
-                <b>Description: </b>
-                {{ job.description }}
+            <li class="list-group-item">
+                <span class="d-inline-flex">
+                    <mat-icon>business_center</mat-icon>
+                    <b>Description: </b>
+                </span>
+                <br>
+                <span class="ml-1">
+                    {{ job.description != null ? job.description : 'No description' }}
+                </span>
             </li>
-            <li class="list-group-item d-inline-flex">
-                <mat-icon>perm_contact_calendar</mat-icon>
-                <b>Status: </b>
-                {{ job.status }}
+            <li class="list-group-item">
+                <span class="d-inline-flex">
+                    <mat-icon>perm_contact_calendar</mat-icon>
+                    <b>Status: </b>
+                </span>
+                <br>
+                <span class="ml-1">
+                    {{ job.status }}
+                </span>
             </li>
-            <li class="list-group-item d-inline-flex">
-                <b>Creation date: </b>
-                <mat-icon>person</mat-icon>
-                {{ job.creationDate }}
+            <li class="list-group-item">
+                <span class="d-inline-flex">
+                    <b>Creation date: </b>
+                    <mat-icon>person</mat-icon>
+                </span>
+                <br>
+                <span class="ml-1">
+                    {{ job.creationDate | date: 'medium' }}
+                </span>
             </li>
-            <li class="list-group-item d-inline-flex">
-                <b>Start date: </b>
-                <mat-icon>person</mat-icon>
-                {{ job.startDate }}
+            <li class="list-group-item">
+                <span class="d-inline-flex">
+                    <b>Start date: </b>
+                    <mat-icon>person</mat-icon>
+                </span>
+                <br>
+                <span class="ml-1">
+                    {{ job.startDate !== null ? (job.startDate | date: 'medium') : 'Not started' }}
+                </span>
             </li>
-            <li class="list-group-item d-inline-flex">
-                <b>Finish date: </b>
-                <mat-icon>person</mat-icon>
-                {{ job.finishDate }}
+            <li class="list-group-item">
+                <span class="d-inline-flex">
+                    <b>Finish date: </b>
+                    <mat-icon>person</mat-icon>
+                </span>
+                <br>
+                <span class="ml-1">
+                    {{ job.finishDate !== null ? (job.finishDate | date: 'medium') : 'Not finished'  }}
+                </span>
             </li>
-          </ul>
+        </ul>
     </div>
     <div class="card-footer">
         <div class="d-flex justify-content-center">

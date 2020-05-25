@@ -6,9 +6,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
-import { enumSelector } from 'src/app/core/helpers';
-import { Job } from 'src/app/core/constants/enums';
+import { enumSelector, deleteConfirmImport } from 'src/app/core/helpers';
+import { Job, toastrTitle } from 'src/app/core/constants/enums';
 import { CreateUpdateEmployeeComponent } from '../create-update-employee/create-update-employee.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-details',
@@ -27,6 +28,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
               private employeeService: EmployeeService,
+              private router: Router,
               private toastr: ToastrService,
               private dialog: MatDialog) { }
 
@@ -70,6 +72,25 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.getEmployees());
+  }
+
+  delete(employee: IEmployee) {
+    if (!deleteConfirmImport(employee.firstName + ' ' + employee.lastName)) {
+      return;
+    }
+
+    this.employeeService.delete(employee.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => this.employees = this.employees.filter(x => x.id !== employee.id),
+        (err) => {
+          this.toastr.error('Failed', toastrTitle.Error);
+          console.log(err);
+        });
+  }
+
+  goToJobs(id) {
+    this.router.navigate(['/job/job-list/', id]);
   }
 
   filterJobs(value) {

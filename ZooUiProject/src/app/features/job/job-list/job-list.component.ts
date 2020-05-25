@@ -9,7 +9,9 @@ import { IEmployee } from 'src/app/core/interfaces/employee-interface';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { EmployeeService } from '../../employee/common/employee.service';
-import { configureToastr } from 'src/app/core/helpers';
+import { configureToastr, enumSelector } from 'src/app/core/helpers';
+import { JobStatus } from 'src/app/core/constants/enums';
+import { CreateUpdateJobComponent } from '../create-update-job/create-update-job.component';
 
 @Component({
   selector: 'app-job-list',
@@ -24,6 +26,7 @@ export class JobListComponent implements OnInit, OnDestroy {
   jobsFiltered: IJob[] = [];
   jobSelected: IJob = null;
   employees: IEmployee[] = [];
+  jobStatuses: any;
 
   private destroy$ = new Subject<void>();
 
@@ -38,6 +41,7 @@ export class JobListComponent implements OnInit, OnDestroy {
     if (this.route.snapshot.params.employeeId) {
       this.employeeId = this.route.snapshot.params.employeeId;
     }
+    this.jobStatuses = enumSelector(JobStatus);
     this.createForm();
     this.getJobs();
     this.getEmployees();
@@ -57,20 +61,24 @@ export class JobListComponent implements OnInit, OnDestroy {
     } else {
       this.getAllJobs();
     }
-
-    this.jobsFiltered = this.jobs;
   }
 
   getAllJobs() {
     this.jobService.all()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(data => this.jobs = data);
+      .subscribe(data => {
+        this.jobs = data;
+        this.jobsFiltered = this.jobs;
+      });
   }
 
   getJobsForEmployee(id) {
     this.jobService.getForEmployee(id)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(data => this.jobs = data);
+      .subscribe(data => {
+        this.jobs = data;
+        this.jobsFiltered = this.jobs;
+      });
   }
 
   getEmployees() {
@@ -79,8 +87,28 @@ export class JobListComponent implements OnInit, OnDestroy {
       .subscribe(data => this.employees = data);
   }
 
+  selectEmployee(value) {
+    this.employeeId = value === '*'
+      ? null
+      : value;
+    this.getJobs();
+  }
+
+  selectStatus(value) {
+    this.jobsFiltered = this.jobs.filter(x => x.status === value);
+  }
+
   selectJob(data) {
     this.jobSelected = data;
+  }
+
+  create() {
+    const defaultJob = this.getDefaultFob();
+
+    this.dialog.open(CreateUpdateJobComponent, { width: '30%', autoFocus: true, data: defaultJob })
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.getJobs());
   }
 
   jobChanged(value) {
@@ -88,13 +116,28 @@ export class JobListComponent implements OnInit, OnDestroy {
       const index = this.jobs.findIndex(x => x.jobId === value.data.jobId);
       this.jobs[index] = value.data;
     } else {
-      this.jobs = this.jobs.filter(x => x.jobId !== value.data.jobId);
+      const index = this.jobs.findIndex(x => x.jobId === value.data.jobId);
+      this.jobs.splice(index, 1);
     }
   }
 
   resetForm() {
     this.createForm();
     this.jobsFiltered = this.jobs;
+    this.jobSelected = null;
+  }
+
+  private getDefaultFob(): IJob {
+    return {
+      employeeId: this.employeeId,
+      jobId: null,
+      title: null,
+      description: null,
+      status: null,
+      startDate: null,
+      creationDate: null,
+      finishDate: null
+    };
   }
 
   ngOnDestroy() {

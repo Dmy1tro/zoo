@@ -53,10 +53,11 @@ namespace ZooApiService.BLL.Domain.Services
             return jobsDto;
         }
 
-        public async Task<CreatedData> CreateJobAsync(string title, string description)
+        public async Task<CreatedData> CreateJobAsync(string employeeId, string title, string description)
         {
             var jobDbo = new Job
             {
+                EmployeeId = employeeId,
                 Title = title,
                 Description = description,
                 Status = JobStatus.Created,

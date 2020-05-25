@@ -30,6 +30,7 @@ export class JobInfoComponent implements OnInit, OnDestroy {
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.getEmployee();
     configureToastr(this.toastr);
   }
 
