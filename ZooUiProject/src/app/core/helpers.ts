@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { IEnumSelect } from './interfaces/enum-select.interface';
 
-export function enumSelector(data) {
+export function enumSelector(data): IEnumSelect[] {
     return Object.keys(data)
         .map(key => ({ value: data[key], title: data[key] }));
 }
@@ -13,8 +13,8 @@ export const convertToISOFormat = (date, datePipe: DatePipe): string => {
 };
 
 export const configureToastr = (toastr: ToastrService) => {
-    toastr.toastrConfig.maxOpened = 1;
-    toastr.toastrConfig.timeOut = 1500;
+    toastr.toastrConfig.maxOpened = 2;
+    toastr.toastrConfig.timeOut = 1780;
 };
 
 export const deleteConfirmImport = (name: string): boolean =>
@@ -22,6 +22,15 @@ export const deleteConfirmImport = (name: string): boolean =>
 
 export const getButtonStateImport = (update: boolean, name: string): string =>
     update ? `Update ${name}` : `Create ${name}`;
+
+export const refreshDataImport = (action: string, arr: Array<any>, item, predicate: (val) => boolean): void => {
+    if (action === 'create') {
+        arr.push(item);
+    } else if (action === 'update') {
+        const index = arr.findIndex(predicate);
+        arr[index] = item;
+    }
+};
 
 export const hasCustomErrorImport = (form: FormGroup, control: string): boolean =>
     form.get(`${control}`).invalid && (form.get(`${control}`).dirty || form.get(`${control}`).touched);

@@ -23,6 +23,17 @@ namespace ZooApiService.BLL.Domain.Services
             _mapper = mapper;
         }
 
+        public async Task<AnimalTypeDto> GetAsync(int id)
+        {
+            var type = await _context.AnimalTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.AnimalTypeId == id);
+
+            var dto = _mapper.Map<AnimalTypeDto>(type);
+
+            return dto;
+        }
+
         public async Task<IList<AnimalTypeDto>> GetAnimalTypes()
         {
             var types = await _context.AnimalTypes

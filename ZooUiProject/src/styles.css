@@ -40,6 +40,10 @@ mat-form-field {
     width: 97% !important;
 }
 
+.btn-link {
+    font-size: 18px;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -53,5 +57,5 @@ mat-form-field {
 }
 
 .text-size-sm {
-    font-size: 11px;
+    font-size: 12px;
 }

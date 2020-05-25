@@ -18,7 +18,7 @@ export class RationComponent implements OnInit, OnDestroy {
 
   rationForm: FormGroup;
 
-  private destroy$ = new Subject<any>();
+  private destroy$ = new Subject<void>();
 
   constructor(private fb: FormBuilder,
               private toastr: ToastrService,
@@ -41,7 +41,6 @@ export class RationComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.rationForm.valid) {
       this.data.rationId !== null ? this.updateRation() : this.createRation();
-      this.matDialogRef.close();
     } else {
       this.rationForm.markAllAsTouched();
     }
@@ -56,7 +55,7 @@ export class RationComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.toastr.success('Created', toastrTitle.Success);
-          this.resetForm();
+          this.matDialogRef.close({ action: 'create', data: res.createdId });
         },
         (err) => {
           this.toastr.error('Failed', toastrTitle.Error);
@@ -74,8 +73,8 @@ export class RationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.resetForm();
           this.toastr.success('Updated', toastrTitle.Success);
+          this.matDialogRef.close({ action: 'update', data: this.data.rationId });
         },
         (err) => {
           this.toastr.error('Failed', toastrTitle.Error);

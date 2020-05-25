@@ -8,7 +8,7 @@ import { enumSelector, configureToastr, getButtonStateImport, convertToISOFormat
 import { GENDER, toastrTitle } from 'src/app/core/constants/enums';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
-import { IAnimal, IAnimalFull } from 'src/app/core/interfaces/animal.interface';
+import { IAnimal } from 'src/app/core/interfaces/animal.interface';
 import { IAnimalType } from 'src/app/core/interfaces/animal-type.interface';
 import { AnimalTypeService } from '../common/animal-type.service';
 
@@ -66,7 +66,6 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.animalForm.valid) {
       this.data.animalId == null ? this.createAnimal() : this.updateAnimal();
-      this.matDialogRef.close();
     } else {
       this.animalForm.markAllAsTouched();
     }
@@ -83,7 +82,7 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.toastr.success('Animal created', toastrTitle.Success);
-          this.resetForm();
+          this.matDialogRef.close({ action: 'create', data: res.createdId });
         },
         (err) => {
           this.toastr.error('Failed to create animal', toastrTitle.Error);
@@ -102,8 +101,8 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-        this.resetForm();
-        this.toastr.success('Animal updated', toastrTitle.Success);
+          this.toastr.success('Animal updated', toastrTitle.Success);
+          this.matDialogRef.close({ action: 'update', data: this.data.animalId });
         },
         (err) => {
           this.toastr.error('Failed to update animal', toastrTitle.Error);
@@ -116,10 +115,10 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
   }
 
   getButtonState = () =>
-   getButtonStateImport(this.data.animalId != null, 'Animal')
+    getButtonStateImport(this.data.animalId != null, 'Animal')
 
   hasCustomError = (form: FormGroup, control: string) =>
-   hasCustomErrorImport(form, control)
+    hasCustomErrorImport(form, control)
 
   ngOnDestroy(): void {
     this.destroy$.next();

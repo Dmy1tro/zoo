@@ -57,7 +57,7 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
     });
 
     if (!this.isUpdate) {
-      this.employeeForm.addControl('password', new FormControl(null, Validators.required));
+      this.employeeForm.addControl('password', new FormControl(null, [Validators.required, Validators.minLength(6)]));
       this.employeeForm.addControl('confirmPassword', new FormControl(null, Validators.required));
     }
   }
@@ -86,8 +86,7 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.toastr.success('Created', toastrTitle.Success);
-          this.resetForm();
-          this.matDialogRef.close();
+          this.matDialogRef.close({ action: 'create', data: res.createdId });
         },
         (err) => {
           this.toastr.error('Failed to create', toastrTitle.Error);
@@ -101,8 +100,7 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.toastr.success('Updated', toastrTitle.Success);
-          this.resetForm();
-          this.matDialogRef.close();
+          this.matDialogRef.close({ action: 'update', data: this.data.id });
         },
         (err) => {
           this.toastr.error('Failed to update', toastrTitle.Error);
@@ -113,7 +111,18 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
   checkPasswordsMatch(value): boolean {
     const formValue = this.employeeForm.value;
 
+    if (!formValue.password || !formValue.confirmPassword) {
+      this.passError = null;
+      return false;
+    }
+
+    console.log(formValue);
+
     if (formValue.password !== formValue.confirmPassword) {
+      this.employeeForm.get('confirmPassword').setErrors({
+        error: 'Password does not match with confirm password'
+      });
+
       this.passError = 'Password does not match with confirm password';
       return false;
     } else {

@@ -27,6 +27,14 @@ namespace ZooApiService.API.Controllers
             return Ok(types);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var type = await _animalTypeService.GetAsync(id);
+
+            return Ok(type);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(AnimalTypeCreateViewModel model)
         {

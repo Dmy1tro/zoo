@@ -18,7 +18,7 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
 
   deviceForm: FormGroup;
 
-  private destroy$ = new Subject<any>();
+  private destroy$ = new Subject<void>();
 
   constructor(private fb: FormBuilder,
               private deviceService: DeviceService,
@@ -40,7 +40,6 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.deviceForm.valid) {
       this.data.smartDeviceId == null ? this.create() : this.update();
-      this.matDialogRef.close({ refresh: true });
     } else {
       this.deviceForm.markAllAsTouched();
     }
@@ -55,7 +54,7 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.toastr.success('Created', toastrTitle.Success);
-          this.resetForm();
+          this.matDialogRef.close({ action: 'create', data: res.createdId });
         },
         (err) => {
           this.toastr.error('Failed to create', toastrTitle.Error);
@@ -72,7 +71,7 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
      .subscribe(
       () => {
         this.toastr.success('Updated', toastrTitle.Success);
-        this.resetForm();
+        this.matDialogRef.close({ action: 'update', data: this.data.smartDeviceId });
       },
       (err) => {
         this.toastr.error('Failed to update', toastrTitle.Error);

@@ -34,7 +34,7 @@ export class JobInfoComponent implements OnInit, OnDestroy {
     configureToastr(this.toastr);
   }
 
-  getJob() {
+  refreshJob() {
     this.jobService.get(this.job.jobId)
       .pipe(
         finalize(() => this.getEmployee()),
@@ -55,7 +55,7 @@ export class JobInfoComponent implements OnInit, OnDestroy {
     this.dialog.open(CreateUpdateJobComponent, { width: '34%', autoFocus: true, data: this.job })
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.getJob());
+      .subscribe(() => this.refreshJob());
   }
 
   delete() {
@@ -76,6 +76,33 @@ export class JobInfoComponent implements OnInit, OnDestroy {
           console.log(err);
         }
       );
+  }
+
+  startJob() {
+    this.jobService.startJob(this.job.jobId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          this.toastr.success('Started', toastrTitle.Success);
+          this.refreshJob();
+        },
+        (err) => {
+          this.toastr.error('Failed', toastrTitle.Error);
+          console.log(err);
+        });
+  }
+
+  finishJob() {
+    this.jobService.finishJob(this.job.jobId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.toastr.success('Finished', toastrTitle.Success);
+        this.refreshJob();
+      },
+        (err) => {
+          this.toastr.error('Failed', toastrTitle.Error);
+          console.log(err);
+        });
   }
 
   ngOnDestroy() {

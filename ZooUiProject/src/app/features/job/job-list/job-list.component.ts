@@ -9,7 +9,7 @@ import { IEmployee } from 'src/app/core/interfaces/employee-interface';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { EmployeeService } from '../../employee/common/employee.service';
-import { configureToastr, enumSelector } from 'src/app/core/helpers';
+import { configureToastr, enumSelector, refreshDataImport } from 'src/app/core/helpers';
 import { JobStatus } from 'src/app/core/constants/enums';
 import { CreateUpdateJobComponent } from '../create-update-job/create-update-job.component';
 
@@ -108,14 +108,18 @@ export class JobListComponent implements OnInit, OnDestroy {
     this.dialog.open(CreateUpdateJobComponent, { width: '30%', autoFocus: true, data: defaultJob })
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.getJobs());
+      .subscribe((res) => {
+        if (res) {
+          this.refreshData(res);
+        }
+      });
   }
 
   jobChanged(value) {
     if (value.action === 'update') {
       const index = this.jobs.findIndex(x => x.jobId === value.data.jobId);
       this.jobs[index] = value.data;
-    } else {
+    } else if (value.action === 'delete') {
       const index = this.jobs.findIndex(x => x.jobId === value.data.jobId);
       this.jobs.splice(index, 1);
     }
@@ -125,6 +129,21 @@ export class JobListComponent implements OnInit, OnDestroy {
     this.createForm();
     this.jobsFiltered = this.jobs;
     this.jobSelected = null;
+  }
+
+  private refreshData(result) {
+    const id = result.data;
+    const action = result.action;
+
+    this.jobService.get(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        refreshDataImport(action, this.jobs, data, (x: IJob) => x.jobId === id);
+
+        if (this.jobSelected && this.jobSelected.jobId === id) {
+          this.jobSelected = data;
+        }
+      });
   }
 
   private getDefaultFob(): IJob {

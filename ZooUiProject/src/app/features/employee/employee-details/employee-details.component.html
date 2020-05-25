@@ -1,9 +1,9 @@
-<div class="text-center my-2">
-    <h3>Employee management</h3>
-</div>
-<hr>
 <div class="row pl-2">
     <div class="col-md-7">
+        <div class="text-center my-2">
+            <h3>Employee management</h3>
+        </div>
+        <hr>
         <form [formGroup]="filterForm" novalidate>
             <div class="row">
                 <div class="col-md-5">
@@ -83,6 +83,10 @@
         </div>
     </div>
     <div class="col-md-4" *ngIf="employeeSelected">
+        <div class="text-center my-2">
+            <h3>Employee info</h3>
+        </div>
+        <hr>
         <div class="card">
             <div class="card-body my-auto">
                 <img src="./assets/Avatar.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">

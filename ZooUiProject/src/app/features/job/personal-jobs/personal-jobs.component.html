@@ -1,26 +1,12 @@
 <div class="row pl-1">
     <div class="col-md-8">
         <div class="text-center my-2">
-            <h3>Job management</h3>
+            <h3>My jobs</h3>
         </div>
         <hr>
-
         <form [formGroup]="filterForm" novalidate>
             <div class="row">
-                <div class="col-md-5">
-                    <mat-form-field appearance="standard">
-                        <mat-label>Employee</mat-label>
-                        <mat-select formControlName="employeeId" (selectionChange)="selectEmployee($event.value)">
-                            <mat-option [value]="'*'">
-                                All
-                            </mat-option>
-                            <mat-option *ngFor="let item of employees" [value]="item.id">
-                                {{ item.firstName + ' ' + item.lastName }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <mat-form-field appearance="standard">
                         <mat-label>Status</mat-label>
                         <mat-select formControlName="status" (selectionChange)="selectStatus($event.value)">
@@ -30,7 +16,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <mat-button-toggle-group class="my-auto">
                         <mat-button-toggle (click)="resetForm()">
                             <mat-icon>cached</mat-icon>
@@ -53,10 +39,7 @@
                         Status
                     </th>
                     <th class="col-md-3" scope="col">
-                        <button mat-raised-button class="btn btn-sm w-75" color="primary" (click)="create()">
-                            <mat-icon>add</mat-icon>
-                            Create
-                        </button>
+                        Details
                     </th>
                 </tr>
             </thead>
@@ -72,18 +55,18 @@
                         {{ item.status  }}
                     </td>
                     <td class="col-md-3">
-                        <button class="btn btn-info w-75 d-inline-flex justify-content-center" (click)="selectJob(item)"
-                            [class.disabled]="jobSelected && jobSelected.jobId === item.jobId">
+                        <button class="btn btn-info w-75 d-inline-flex justify-content-center" 
+                            [class.disabled]="jobSelected && jobSelected.jobId === item.jobId" (click)="selectJob(item)">
                             <mat-icon class="mr-1">info</mat-icon>
                             Info
                         </button>
                     </td>
                 </tr>
                 <tr *ngIf="jobsFiltered.length === 0">
-                <td>
-                    <p>There are no jobs...</p>
-                </td>
-            </tr>
+                    <td>
+                        <p>There are no jobs...</p>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

@@ -26,7 +26,7 @@ export class AnimalInfoComponent implements OnInit, OnDestroy {
   rationForm: FormGroup;
   animalId: number;
 
-  private destroy$ = new Subject<any>();
+  private destroy$ = new Subject<void>();
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -62,8 +62,10 @@ export class AnimalInfoComponent implements OnInit, OnDestroy {
     this.dialog.open(AnimalManagementComponent, { width: '28%', autoFocus: true, data: this.animal })
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.getAnimal();
+      .subscribe((res) => {
+        if (res) {
+          this.getAnimal();
+        }
        });
   }
 

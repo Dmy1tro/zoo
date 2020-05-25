@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { IAnimal, IAnimalFull } from 'src/app/core/interfaces/animal.interface';
-import { configureToastr, deleteConfirmImport } from 'src/app/core/helpers';
+import { configureToastr, deleteConfirmImport, refreshDataImport } from 'src/app/core/helpers';
 import { takeUntil } from 'rxjs/operators';
 import { AnimalService } from '../common/animal.service';
 import { DatePipe } from '@angular/common';
@@ -43,7 +43,8 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     this.animalService.getAnimals()
       .pipe(takeUntil(this.destroy$))
       .subscribe(data => {
-        this.animals = data.sort((a, b) => Date.parse(a.dateOfBirth) < Date.parse(b.dateOfBirth) ? 1 : -1);
+        this.animals = data;
+        this.defaultSort();
         this.filterAnimals();
       });
   }
@@ -103,8 +104,10 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     this.dialog.open(AnimalManagementComponent, { width: '28%', autoFocus: true, data: animal })
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.getAnimals();
+      .subscribe((res) => {
+        if (res) {
+          this.refreshData(res);
+        }
        });
   }
 
@@ -131,6 +134,21 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     }
 
     return { animalTypeId: null, animalId: null, name: null, gender: null, dateOfBirth: null };
+  }
+
+  private refreshData(dialogInfo) {
+    const id = dialogInfo.data;
+    this.animalService.getAnimal(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        refreshDataImport(dialogInfo.action, this.animals, data, (x: IAnimalFull) => x.animalId === id);
+        this.defaultSort();
+        this.filterAnimals();
+      });
+  }
+
+  private defaultSort() {
+    this.animals.sort((a, b) => Date.parse(a.dateOfBirth) <= Date.parse(b.dateOfBirth) ? 1 : -1);
   }
 
   resetForm(): void {

@@ -7,6 +7,8 @@ namespace ZooApiService.BLL.Contracts.Interfaces
 {
     public interface IAnimalTypeService
     {
+        Task<AnimalTypeDto> GetAsync(int id);
+
         Task<IList<AnimalTypeDto>> GetAnimalTypes();
 
         Task<CreatedData> CreateAnimalTypeAsync(string typeName);

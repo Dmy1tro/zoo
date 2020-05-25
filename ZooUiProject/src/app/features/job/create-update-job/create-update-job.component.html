@@ -51,7 +51,7 @@
             <div class="col-md-6">
                 <mat-form-field color="primary" appearance="standard">
                     <mat-label>Creation Date</mat-label>
-                    <input matInput [matDatepicker]="picker1" formControlName="creationDate" readonly>
+                    <input matInput [matDatepicker]="picker1" formControlName="creationDate">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1 disabled="false"></mat-datepicker>
                     <mat-error *ngIf="hasCustomError(jobForm, 'creationDate')">
@@ -62,7 +62,7 @@
             <div class="col-md-6">
                 <mat-form-field color="primary" appearance="standard">
                     <mat-label>Start date</mat-label>
-                    <input matInput [matDatepicker]="picker2" formControlName="startDate" readonly>
+                    <input matInput [matDatepicker]="picker2" formControlName="startDate">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2 disabled="false"></mat-datepicker>
                 </mat-form-field>
@@ -70,7 +70,7 @@
             <div class="col-md-6">
                 <mat-form-field color="primary" appearance="standard">
                     <mat-label>Finish date</mat-label>
-                    <input matInput [matDatepicker]="picker3" formControlName="finishDate" readonly>
+                    <input matInput [matDatepicker]="picker3" formControlName="finishDate">
                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                     <mat-datepicker #picker3 disabled="false"></mat-datepicker>
                 </mat-form-field>

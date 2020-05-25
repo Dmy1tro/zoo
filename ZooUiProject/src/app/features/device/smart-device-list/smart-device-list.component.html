@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-md-5">
                     <mat-form-field appearance="standard">
-                        <mat-label>Animal type</mat-label>
+                        <mat-label>Animal name</mat-label>
                         <mat-select formControlName="animalId" (selectionChange)="selectAnimal($event.value)">
                             <mat-option *ngFor="let item of animalsFiltered" [value]="item.animalId">
                                 {{ item.name }}
@@ -69,7 +69,7 @@
                             </button>
                         </td>
                     </tr>
-                    <tr *ngIf="canCreate && devices.length === 0">
+                    <tr *ngIf="devices.length === 0">
                         <td>
                             <p>No devices...</p>
                         </td>

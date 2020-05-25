@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { IAnimalFull, IAnimal } from 'src/app/core/interfaces/animal.interface';
-import { configureToastr, deleteConfirmImport } from 'src/app/core/helpers';
+import { configureToastr, deleteConfirmImport, refreshDataImport } from 'src/app/core/helpers';
 import { DeviceService } from '../services/device.service';
 import { IDevice } from 'src/app/core/interfaces/device.interface';
 import { toastrTitle } from 'src/app/core/constants/enums';
@@ -43,6 +43,13 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
     configureToastr(this.toastr);
   }
 
+  createForm() {
+    this.filterForm = this.fb.group({
+      typeName: '*',
+      animalId: null
+    });
+  }
+
   getAnimals(): void {
     this.animalService.getAnimals()
       .pipe(takeUntil(this.destroy$))
@@ -52,14 +59,18 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
         this.typeNames = this.animals
           .map(x => x.typeName)
           .filter((item, index, arr) => arr.indexOf(item) === index);
+
+        if (this.animalsFiltered.length > 0) {
+          this.filterForm.get('animalId').setValue(this.animalsFiltered[0].animalId);
+          this.selectAnimal(this.animalsFiltered[0].animalId);
+        }
       });
   }
 
-  createForm() {
-    this.filterForm = this.fb.group({
-      typeName: '*',
-      animalId: null
-    });
+  getDevices() {
+    this.deviceService.getDevices()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => this.devices = data);
   }
 
   selectedAnimalType(value) {
@@ -100,7 +111,11 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
     this.dialog.open(CreateUpdateDeviceComponent, { width: '28%', autoFocus: true, data: device })
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.getDevicesForAnimal());
+      .subscribe((res) => {
+        if (res) {
+          this.refreshData(res);
+        }
+      });
   }
 
   delete(id) {
@@ -143,6 +158,17 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
       .subscribe(
         data => this.devices = data.sort((a, b) => a.name > b.name ? 1 : -1),
         err => console.log(err));
+  }
+
+  private refreshData(dialogInfo) {
+    const id = dialogInfo.data;
+    const action = dialogInfo.action;
+    this.deviceService.getDevice(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        refreshDataImport(action, this.devices, data, (x: IDevice) => x.smartDeviceId === id);
+        this.devices.sort((a, b) => a.name > b.name ? 1 : -1);
+      });
   }
 
   ngOnDestroy() {

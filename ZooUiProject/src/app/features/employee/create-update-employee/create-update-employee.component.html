@@ -96,13 +96,14 @@
             <div class="col-md-6">
                 <mat-form-field appearance="standard">
                     <mat-label>Password</mat-label>
-                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
-                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    <input matInput [type]="hide ? 'password' : 'text'" 
+                        formControlName="password" (input)="checkPasswordsMatch($event.value)">
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                         [attr.aria-pressed]="hide">
                         <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
-                    <mat-error *ngIf="hasCustomError(employeeForm, 'password')">
-                        Password is required
+                    <mat-error>
+                        Password is required. Minimum 6 characters 
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -111,15 +112,15 @@
                     <mat-label>Confirm password</mat-label>
                     <input matInput [type]="hideConfirm ? 'password' : 'text'" 
                         formControlName="confirmPassword" (input)="checkPasswordsMatch($event.value)">
-                    <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm"
+                    <button type="button" mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
                         <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
+                    <mat-error>
+                        {{ passError }}
+                    </mat-error>
                 </mat-form-field>
             </div>
-            <span class="text-danger text-size-sm ml-3" *ngIf="passError" style="margin-top: -15px;">
-                {{ passError }}
-            </span>
         </div>
 
         <div class="row px-2 mt-4">

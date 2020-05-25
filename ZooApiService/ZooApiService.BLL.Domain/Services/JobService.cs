@@ -87,7 +87,7 @@ namespace ZooApiService.BLL.Domain.Services
             }
 
             jobDbo.Status = JobStatus.InProgress;
-            jobDbo.CreationDate = DateTime.UtcNow;
+            jobDbo.StartDate = DateTime.UtcNow;
 
             await _dbContext.SaveChangesAsync();
         }

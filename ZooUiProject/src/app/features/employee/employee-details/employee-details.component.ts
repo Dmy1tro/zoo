@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
-import { enumSelector, deleteConfirmImport } from 'src/app/core/helpers';
+import { enumSelector, deleteConfirmImport, refreshDataImport } from 'src/app/core/helpers';
 import { Job, toastrTitle } from 'src/app/core/constants/enums';
 import { CreateUpdateEmployeeComponent } from '../create-update-employee/create-update-employee.component';
 import { Router } from '@angular/router';
@@ -71,7 +71,11 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     this.dialog.open(CreateUpdateEmployeeComponent, { width: '34%', autoFocus: true, data: employee })
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.getEmployees());
+      .subscribe((res) => {
+        if (res) {
+          this.refreshData(res);
+        }
+      });
   }
 
   delete(employee: IEmployee) {
@@ -102,6 +106,20 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
     this.filterForm.reset();
     this.employeeSelected = null;
     this.employeeFiltered = this.employees;
+  }
+
+  private refreshData(dialogResult) {
+    const id = dialogResult.data;
+    const action = dialogResult.action;
+    this.employeeService.get(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        refreshDataImport(action, this.employees, data, (x: IEmployee) => x.id === id);
+
+        if (this.employeeSelected && this.employeeSelected.id === id) {
+          this.employeeSelected = data;
+        }
+      });
   }
 
   selectedOrDefaultEmployee(id): IEmployee {

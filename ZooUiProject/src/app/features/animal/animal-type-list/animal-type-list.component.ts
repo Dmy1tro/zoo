@@ -1,16 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IAnimalType } from 'src/app/core/interfaces/animal-type.interface';
 import { Subject } from 'rxjs';
-import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AnimalTypeService } from '../common/animal-type.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { toastrTitle } from 'src/app/core/constants/enums';
-import { deleteConfirmImport } from 'src/app/core/helpers';
+import { deleteConfirmImport, refreshDataImport } from 'src/app/core/helpers';
 import { CreateUpdateAnimalTypeComponent } from '../create-update-animal-type/create-update-animal-type.component';
-import { Type } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-animal-type-list',
@@ -21,11 +18,9 @@ export class AnimalTypeListComponent implements OnInit, OnDestroy {
 
   animalTypes: IAnimalType[] = [];
 
-  private destroy$ = new Subject<any>();
+  private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder,
-              private router: Router,
-              private animalTypeService: AnimalTypeService,
+  constructor(private animalTypeService: AnimalTypeService,
               private toastr: ToastrService,
               private dialog: MatDialog) { }
 
@@ -52,8 +47,10 @@ export class AnimalTypeListComponent implements OnInit, OnDestroy {
     this.dialog.open(CreateUpdateAnimalTypeComponent, { width: '28%', autoFocus: true, data: animalType })
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.getAnimalTypes();
+      .subscribe((res) => {
+        if (res) {
+          this.refreshData(res);
+        }
        });
   }
 
@@ -82,6 +79,17 @@ export class AnimalTypeListComponent implements OnInit, OnDestroy {
     }
 
     return { animalTypeId: null, typeName: null };
+  }
+
+  private refreshData(dialogResult) {
+    const id = dialogResult.data;
+    const action = dialogResult.action;
+    this.animalTypeService.get(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        refreshDataImport(action, this.animalTypes, data, (x: IAnimalType) => x.animalTypeId === id);
+        this.animalTypes.sort((a, b) => a.typeName > b.typeName ? 1 : -1);
+      });
   }
 
   ngOnDestroy(): void {

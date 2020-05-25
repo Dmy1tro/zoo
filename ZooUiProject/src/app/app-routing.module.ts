@@ -9,6 +9,10 @@ const routes: Routes = [
     loadChildren: () => import('./features/animal/animal.module').then(m => m.AnimalModule)
   },
   {
+    path: 'authentication',
+    loadChildren: () => import('./features/authentication/authentication.module').then(m => m.AuthenticationModule)
+  },
+  {
     path: 'device',
     loadChildren: () => import('./features/device/device.module').then(m => m.DeviceModule)
   },

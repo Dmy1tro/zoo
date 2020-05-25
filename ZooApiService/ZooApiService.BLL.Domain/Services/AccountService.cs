@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ZooApiService.BLL.Contracts.DTO;
+using ZooApiService.BLL.Contracts.DTO.ServiceResults;
 using ZooApiService.BLL.Contracts.Interfaces;
 using ZooApiService.Common.Authentication;
 using ZooApiService.Common.Exceptions;
@@ -49,7 +51,7 @@ namespace ZooApiService.BLL.Domain.Services
             return token;
         }
 
-        public async Task SignUp(EmployeeDto employeeDto, string password, string role)
+        public async Task<CreatedData> SignUp(EmployeeDto employeeDto, string password, string role)
         {
             var employee = _mapper.Map<Employee>(employeeDto);
 
@@ -61,6 +63,8 @@ namespace ZooApiService.BLL.Domain.Services
             await CheckRoleExists(role);
 
             await _userManager.AddToRoleAsync(employee, role);
+
+            return new CreatedData(employee.Id);
         }
 
         public async Task ChangePassword(string id, string oldPassword, string newPassword)
@@ -89,8 +93,9 @@ namespace ZooApiService.BLL.Domain.Services
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, employee.Id),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, role)
+                new Claim(CustomClaimName.Id, employee.Id),
+                new Claim(CustomClaimName.Role, role),
+                new Claim(CustomClaimName.UserName, employee.UserName.Replace('|', ' '))
             };
 
             var expires = DateTime.Now.AddHours(2);

@@ -12,6 +12,10 @@ export class AnimalTypeService {
 
   constructor(private httpClient: HttpClient) { }
 
+  get(id): Observable<IAnimalType> {
+    return this.httpClient.get<IAnimalType>(urls.animalTypes + id);
+  }
+
   getAnimalTypes(): Observable<IAnimalType[]> {
     return this.httpClient.get<IAnimalType[]>(urls.animalTypes);
   }
