@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AnimalService } from '../common/animal.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { toastrTitle } from 'src/app/core/constants/enums';
+import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { AnimalManagementComponent } from '../animal-management/animal-management.component';
 
@@ -83,8 +83,7 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.animals = this.animals.filter(x => x.animalId !== id);
-          this.filterAnimals();
+          refreshDataImport(DataAction.Delete, this.animals, null, (x: IAnimalFull) => x.animalId === id);
           this.toastr.success('Animal deleted', toastrTitle.Success);
         },
         (err) => {

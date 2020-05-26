@@ -69,7 +69,7 @@
                         {{ item.creationDate | date: 'medium' }}
                     </td>
                     <td class="col-md-2">
-                        {{ item.status  }}
+                        {{ jobStatus[item.status]  }}
                     </td>
                     <td class="col-md-3">
                         <button class="btn btn-info w-75 d-inline-flex justify-content-center" (click)="selectJob(item)"

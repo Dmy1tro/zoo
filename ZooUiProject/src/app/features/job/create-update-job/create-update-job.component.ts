@@ -9,7 +9,7 @@ import { configureToastr, getButtonStateImport, hasCustomErrorImport, enumSelect
 import { IEmployee } from 'src/app/core/interfaces/employee-interface';
 import { EmployeeService } from '../../employee/common/employee.service';
 import { takeUntil } from 'rxjs/operators';
-import { toastrTitle, JobStatus } from 'src/app/core/constants/enums';
+import { toastrTitle, JobStatus, DataAction } from 'src/app/core/constants/enums';
 
 @Component({
   selector: 'app-create-update-job',
@@ -77,11 +77,11 @@ export class CreateUpdateJobComponent implements OnInit, OnDestroy {
     this.jobService.create(this.jobForm.value)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        res => {
+        (res) => {
           this.toastr.success('Created', toastrTitle.Success);
-          this.matDialogRef.close();
+          this.matDialogRef.close({ action: DataAction.Create, data: res.createdId });
         },
-        err => {
+        (err) => {
           this.toastr.error('Failed to create', toastrTitle.Error);
           console.log(err);
         }
@@ -97,7 +97,7 @@ export class CreateUpdateJobComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.toastr.success('Updated', toastrTitle.Success);
-          this.matDialogRef.close();
+          this.matDialogRef.close({ action: DataAction.Update, data: this.data.jobId });
         },
         err => {
           this.toastr.error('Failed', toastrTitle.Error);

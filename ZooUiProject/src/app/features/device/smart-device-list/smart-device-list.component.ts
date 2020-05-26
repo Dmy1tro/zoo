@@ -9,7 +9,7 @@ import { IAnimalFull, IAnimal } from 'src/app/core/interfaces/animal.interface';
 import { configureToastr, deleteConfirmImport, refreshDataImport } from 'src/app/core/helpers';
 import { DeviceService } from '../services/device.service';
 import { IDevice } from 'src/app/core/interfaces/device.interface';
-import { toastrTitle } from 'src/app/core/constants/enums';
+import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 import { CreateUpdateDeviceComponent } from '../create-update-device/create-update-device.component';
 import { IDeviceRecord } from 'src/app/core/interfaces/device-record.interface';
 import { DeviceRecordService } from '../services/device-record.service';
@@ -127,7 +127,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.devices = this.devices.filter(x => x.smartDeviceId !== id);
+          refreshDataImport(DataAction.Delete, this.devices, null, (x: IDevice) => x.smartDeviceId === id);
           this.toastr.success('Created', toastrTitle.Success);
         },
         (err) => {

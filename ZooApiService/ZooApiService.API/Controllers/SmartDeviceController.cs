@@ -1,12 +1,15 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZooApiService.API.ViewModels.SmartDeviceViewModels;
 using ZooApiService.BLL.Contracts.Interfaces;
+using ZooApiService.Common.Authentication;
 
 namespace ZooApiService.API.Controllers
 {
     [Route("api/devices")]
     [ApiController]
+    [Authorize(Policy = PolicyName.ForAllUsers)]
     public class SmartDeviceController : ControllerBase
     {
         private readonly ISmartDeviceService _smartDeviceService;

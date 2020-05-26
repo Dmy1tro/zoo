@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using System.Text;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +21,7 @@ namespace ZooApiService.API.Configuration
         public static IServiceCollection ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContextPool<ZooDbContext>(options =>
-                options.UseSqlServer(configuration.GetSection("ConnectionStrings:ZooDb").Get<string>(),
+                options.UseSqlServer(configuration["ConnectionStrings:ZooDb"],
                     m => m.MigrationsAssembly(typeof(ZooDbContext).Assembly.FullName)));
 
             return services;
@@ -129,10 +128,10 @@ namespace ZooApiService.API.Configuration
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(PolicyName.ForAllUsers, configure =>
-                    configure.RequireClaim(ClaimsIdentity.DefaultRoleClaimType, Role.Manager, Role.Worker));
+                    configure.RequireClaim(CustomClaimName.Role, Role.Manager, Role.Worker));
 
                 options.AddPolicy(PolicyName.ForManagersOnly, configure =>
-                    configure.RequireClaim(ClaimsIdentity.DefaultRoleClaimType, Role.Manager));
+                    configure.RequireClaim(CustomClaimName.Role, Role.Manager));
             });
 
             return services;

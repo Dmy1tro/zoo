@@ -5,7 +5,7 @@ import { AnimalTypeService } from '../common/animal-type.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
-import { toastrTitle } from 'src/app/core/constants/enums';
+import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 import { deleteConfirmImport, refreshDataImport } from 'src/app/core/helpers';
 import { CreateUpdateAnimalTypeComponent } from '../create-update-animal-type/create-update-animal-type.component';
 
@@ -63,7 +63,7 @@ export class AnimalTypeListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.animalTypes = this.animalTypes.filter(x => x.animalTypeId !== id);
+          refreshDataImport(DataAction.Delete, this.animalTypes, null, (x: IAnimalType) => x.animalTypeId === id);
           this.toastr.success('Animal deleted', toastrTitle.Success);
         },
         (err) => {

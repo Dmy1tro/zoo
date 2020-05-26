@@ -31,7 +31,7 @@
         </div>
         <mat-form-field appearance="standard">
             <mat-label>Email</mat-label>
-            <input matInput formControlName="email">
+            <input matInput formControlName="email" type="email">
             <mat-error *ngIf="hasCustomError(employeeForm, 'email')">
                 Email is required
             </mat-error>
@@ -125,7 +125,7 @@
 
         <div class="row px-2 mt-4">
             <div class="col-md-6">
-                <button mat-raised-button class="btn-block " type="submit" color="primary">
+                <button mat-raised-button class="btn-block" type="submit" color="primary">
                     {{ getButtonState() }}
                 </button>
             </div>

@@ -1,13 +1,16 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZooApiService.API.ViewModels.AnimalTypeViewModels;
 using ZooApiService.BLL.Contracts.Interfaces;
+using ZooApiService.Common.Authentication;
 
 namespace ZooApiService.API.Controllers
 {
     [Route("api/animalTypes")]
     [ApiController]
+    [Authorize(Policy = PolicyName.ForAllUsers)]
     public class AnimalTypeController : ControllerBase
     {
         private readonly IAnimalTypeService _animalTypeService;

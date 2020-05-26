@@ -11,7 +11,7 @@ namespace ZooApiService.API.Controllers
 {
     [Route("api/rations")]
     [ApiController]
-    //[Authorize(Policy = PolicyName.ForAllUsers)]
+    [Authorize(Policy = PolicyName.ForAllUsers)]
     public class RationController : ControllerBase
     {
         private readonly IRationService _rationService;

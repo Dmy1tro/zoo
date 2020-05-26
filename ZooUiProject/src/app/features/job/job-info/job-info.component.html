@@ -33,7 +33,7 @@
                 </span>
                 <br>
                 <span class="ml-1">
-                    {{ job.status }}
+                    {{ jobStatus[job.status] }}
                 </span>
             </li>
             <li class="list-group-item">
@@ -70,12 +70,12 @@
     </div>
     <div class="card-footer">
         <div class="d-flex justify-content-center">
-            <ng-container *ngIf="true">
+            <ng-container *ngIf="isManager">
                 <button class="btn btn-warning mx-1" (click)="update()">Update</button>
                 <button class="btn btn-danger mx-1" (click)="delete()">Delete</button>
             </ng-container>
 
-            <ng-container *ngIf="true">
+            <ng-container *ngIf="canDoJob">
                 <button mat-raised-button class="w-50" color="primary" 
                     *ngIf="job.status === 'Created'" (click)="startJob()">
                     <mat-icon>play_arrow</mat-icon>

@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZooApiService.API.ViewModels.AccountViewModels;
 using ZooApiService.API.ViewModels.EmployeeViewModels;
 using ZooApiService.BLL.Contracts.DTO;
 using ZooApiService.BLL.Contracts.Interfaces;
+using ZooApiService.Common.Authentication;
 
 namespace ZooApiService.API.Controllers
 {
@@ -30,20 +32,21 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Create(CreateEmployeeViewModel model)
         {
             var employeeDto = _mapper.Map<EmployeeDto>((EmployeeViewModel)model);
 
-            await _accountService.SignUp(employeeDto, model.Password, model.Role);
+            var createdData = await _accountService.SignUp(employeeDto, model.Password, model.Role);
 
-            return NoContent();
+            return Ok(createdData);
         }
 
         [HttpPut("change-password")]
-        //[Authorize(Policy = PolicyName.ForAllUsers)]
+        [Authorize(Policy = PolicyName.ForAllUsers)]
         public async Task<IActionResult> ChangePassword(ChangePassword model)
         {
-            await _accountService.ChangePassword(CurrentUser.UserId, model.OldPassword, model.NewPassword);
+            await _accountService.ChangePassword(CurrentUser.UserId, model.CurrentPassword, model.NewPassword);
 
             return NoContent();
         }

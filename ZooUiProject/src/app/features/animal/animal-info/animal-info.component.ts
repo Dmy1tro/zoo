@@ -8,11 +8,11 @@ import { ToastrService } from 'ngx-toastr';
 import { RationService } from '../common/ration.service';
 import { AnimalService } from '../common/animal.service';
 import { takeUntil } from 'rxjs/operators';
-import { configureToastr, deleteConfirmImport } from 'src/app/core/helpers';
+import { configureToastr, deleteConfirmImport, refreshDataImport } from 'src/app/core/helpers';
 import { MatDialog } from '@angular/material/dialog';
 import { AnimalManagementComponent } from '../animal-management/animal-management.component';
 import { RationComponent } from '../ration/ration.component';
-import { toastrTitle } from 'src/app/core/constants/enums';
+import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 
 @Component({
   selector: 'app-animal-info',
@@ -87,7 +87,7 @@ export class AnimalInfoComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-        this.rations = this.rations.filter(x => x.rationId !== id);
+        refreshDataImport(DataAction.Delete, this.rations, null, (x: IRation) => x.rationId === id);
         this.toastr.success('Deleted', toastrTitle.Success);
         },
         (err) => {

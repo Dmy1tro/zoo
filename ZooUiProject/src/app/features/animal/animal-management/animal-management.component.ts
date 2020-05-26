@@ -5,7 +5,7 @@ import { AnimalService } from '../common/animal.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { enumSelector, configureToastr, getButtonStateImport, convertToISOFormat, hasCustomErrorImport } from 'src/app/core/helpers';
-import { GENDER, toastrTitle } from 'src/app/core/constants/enums';
+import { GENDER, toastrTitle, DataAction } from 'src/app/core/constants/enums';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { IAnimal } from 'src/app/core/interfaces/animal.interface';
@@ -82,7 +82,7 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.toastr.success('Animal created', toastrTitle.Success);
-          this.matDialogRef.close({ action: 'create', data: res.createdId });
+          this.matDialogRef.close({ action: DataAction.Create, data: res.createdId });
         },
         (err) => {
           this.toastr.error('Failed to create animal', toastrTitle.Error);
@@ -102,7 +102,7 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.toastr.success('Animal updated', toastrTitle.Success);
-          this.matDialogRef.close({ action: 'update', data: this.data.animalId });
+          this.matDialogRef.close({ action: DataAction.Update, data: this.data.animalId });
         },
         (err) => {
           this.toastr.error('Failed to update animal', toastrTitle.Error);

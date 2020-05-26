@@ -40,14 +40,14 @@
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-md-6 my-auto">
-                            <h4 class="font-weight-bold">
+                            <h5 class="font-weight-bold">
                                 <i>Employees</i>
-                            </h4>
+                            </h5>
                         </div>
                         <div class="col-md-3 my-auto">
-                            <h4 class="font-weight-bold">
+                            <h5 class="font-weight-bold">
                                 <i>Position</i>
-                            </h4>
+                            </h5>
                         </div>
                         <div class="col-md-3">
                             <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdate(null)">
@@ -60,9 +60,11 @@
                 <li class="list-group-item" *ngFor="let employee of employeeFiltered">
                     <div class="row">
                         <div class="col-md-6 my-auto">
-                            <h5 class="btn btn-link" (click)="selectEmployee(employee.id)">
-                                {{ employee.firstName + ' ' + employee.lastName }}
-                            </h5>
+                            <button mat-button color="primary" (click)="selectEmployee(employee.id)">
+                                <h6>
+                                    <u>{{ employee.firstName + ' ' + employee.lastName }}</u>
+                                </h6>
+                            </button>
                         </div>
                         <div class="col-md-3 my-auto">
                             <h5>
@@ -70,7 +72,7 @@
                             </h5>
                         </div>
                         <div class="col-md-3">
-                            <button mat-raised-button class="btn btn-sm ml-3" color="warn" (click)="delete(employee)">
+                            <button mat-raised-button class="ml-3" color="warn" (click)="delete(employee)">
                                 Delete
                             </button>
                         </div>

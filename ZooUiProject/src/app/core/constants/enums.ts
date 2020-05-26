@@ -6,8 +6,8 @@ export const enum toastrTitle {
 }
 
 export enum GENDER {
-    MALE = 'Male',
-    FEMALE = 'Female'
+    Male = 'Male',
+    Female = 'Female'
 }
 
 export enum Job {
@@ -18,11 +18,17 @@ export enum Job {
 
 export enum JobStatus {
     Created = 'Created',
-    InProgress = 'InProgress',
+    InProgress = 'In progress',
     Finished = 'Finished'
 }
 
 export enum Role {
     Manager = 'Manager',
     Worker = 'Worker'
+}
+
+export enum DataAction {
+    Create = 'create',
+    Update = 'update',
+    Delete = 'delete'
 }

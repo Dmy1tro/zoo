@@ -2,10 +2,11 @@ import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
 import { IEnumSelect } from './interfaces/enum-select.interface';
+import { DataAction } from './constants/enums';
 
 export function enumSelector(data): IEnumSelect[] {
     return Object.keys(data)
-        .map(key => ({ value: data[key], title: data[key] }));
+        .map(key => ({ value: key, title: data[key] }));
 }
 
 export const convertToISOFormat = (date, datePipe: DatePipe): string => {
@@ -24,11 +25,20 @@ export const getButtonStateImport = (update: boolean, name: string): string =>
     update ? `Update ${name}` : `Create ${name}`;
 
 export const refreshDataImport = (action: string, arr: Array<any>, item, predicate: (val) => boolean): void => {
-    if (action === 'create') {
-        arr.push(item);
-    } else if (action === 'update') {
-        const index = arr.findIndex(predicate);
-        arr[index] = item;
+    switch (action) {
+        case DataAction.Create: {
+            arr.push(item);
+            break;
+        }
+        case DataAction.Update: {
+            const index = arr.findIndex(predicate);
+            arr[index] = item;
+            break;
+        }
+        case DataAction.Delete: {
+            const index = arr.findIndex(predicate);
+            arr.splice(index, 1);
+        }
     }
 };
 

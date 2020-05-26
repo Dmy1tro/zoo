@@ -27,6 +27,7 @@ export class JobListComponent implements OnInit, OnDestroy {
   jobSelected: IJob = null;
   employees: IEmployee[] = [];
   jobStatuses: any;
+  jobStatus = JobStatus;
 
   private destroy$ = new Subject<void>();
 
@@ -116,13 +117,7 @@ export class JobListComponent implements OnInit, OnDestroy {
   }
 
   jobChanged(value) {
-    if (value.action === 'update') {
-      const index = this.jobs.findIndex(x => x.jobId === value.data.jobId);
-      this.jobs[index] = value.data;
-    } else if (value.action === 'delete') {
-      const index = this.jobs.findIndex(x => x.jobId === value.data.jobId);
-      this.jobs.splice(index, 1);
-    }
+    refreshDataImport(value.action, this.jobs, value.data, (x: IJob) => x.jobId === value.data.jobId);
   }
 
   resetForm() {

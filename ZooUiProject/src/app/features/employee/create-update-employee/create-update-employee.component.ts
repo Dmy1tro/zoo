@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { configureToastr, getButtonStateImport, hasCustomErrorImport, enumSelector } from 'src/app/core/helpers';
 import { takeUntil } from 'rxjs/operators';
-import { toastrTitle, GENDER, Job, Role } from 'src/app/core/constants/enums';
+import { toastrTitle, GENDER, Job, Role, DataAction } from 'src/app/core/constants/enums';
 import { EmployeeService } from '../common/employee.service';
 
 @Component({
@@ -49,7 +49,7 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
       id: [this.data.id],
       firstName: [this.data.firstName, Validators.required],
       lastName: [this.data.lastName, Validators.required],
-      email: [this.data.email, Validators.required],
+      email: [this.data.email, [Validators.required, Validators.email]],
       dateOfBirth: [this.data.dateOfBirth, Validators.required],
       gender: [this.data.gender, Validators.required],
       position: [this.data.position, Validators.required],
@@ -86,7 +86,7 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.toastr.success('Created', toastrTitle.Success);
-          this.matDialogRef.close({ action: 'create', data: res.createdId });
+          this.matDialogRef.close({ action: DataAction.Create, data: res.createdId });
         },
         (err) => {
           this.toastr.error('Failed to create', toastrTitle.Error);
@@ -100,7 +100,7 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.toastr.success('Updated', toastrTitle.Success);
-          this.matDialogRef.close({ action: 'update', data: this.data.id });
+          this.matDialogRef.close({ action: DataAction.Update, data: this.data.id });
         },
         (err) => {
           this.toastr.error('Failed to update', toastrTitle.Error);
@@ -115,8 +115,6 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
       this.passError = null;
       return false;
     }
-
-    console.log(formValue);
 
     if (formValue.password !== formValue.confirmPassword) {
       this.employeeForm.get('confirmPassword').setErrors({

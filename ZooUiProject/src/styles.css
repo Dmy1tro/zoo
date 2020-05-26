@@ -1,3 +1,7 @@
+html, body {
+    height: 100%;
+}
+
 body {
     background:#f9f9f9;
     font-size: 14px;
@@ -58,4 +62,8 @@ mat-form-field {
 
 .text-size-sm {
     font-size: 12px;
+}
+
+.text-overflow-hidden {
+    word-wrap: break-word;
 }

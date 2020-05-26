@@ -10,6 +10,9 @@
                     <mat-form-field appearance="standard">
                         <mat-label>Status</mat-label>
                         <mat-select formControlName="status" (selectionChange)="selectStatus($event.value)">
+                            <mat-option [value]="'*'">
+                                All
+                            </mat-option>
                             <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
                                 {{ item.title }}
                             </mat-option>
@@ -52,7 +55,7 @@
                         {{ item.creationDate | date: 'medium' }}
                     </td>
                     <td class="col-md-2">
-                        {{ item.status  }}
+                        {{ jobStatus[item.status]  }}
                     </td>
                     <td class="col-md-3">
                         <button class="btn btn-info w-75 d-inline-flex justify-content-center" 

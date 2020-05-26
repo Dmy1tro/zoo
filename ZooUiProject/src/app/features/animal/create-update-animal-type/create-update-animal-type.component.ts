@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { configureToastr, getButtonStateImport, hasCustomErrorImport } from 'src/app/core/helpers';
 import { takeUntil } from 'rxjs/operators';
-import { toastrTitle } from 'src/app/core/constants/enums';
+import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 
 @Component({
   selector: 'app-create-update-animal-type',
@@ -53,7 +53,7 @@ export class CreateUpdateAnimalTypeComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.toastr.success('Created', toastrTitle.Success);
-          this.matDialogRef.close({ action: 'create', data: res.createdId });
+          this.matDialogRef.close({ action: DataAction.Create, data: res.createdId });
         },
         (err) => {
           this.toastr.error('Failed to create', toastrTitle.Error);
@@ -70,7 +70,7 @@ export class CreateUpdateAnimalTypeComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.toastr.success('Updated', toastrTitle.Success);
-          this.matDialogRef.close({ action: 'update', data: this.data.animalTypeId });
+          this.matDialogRef.close({ action: DataAction.Update, data: this.data.animalTypeId });
         },
         (err) => {
           this.toastr.error('Failed to update', toastrTitle.Error);

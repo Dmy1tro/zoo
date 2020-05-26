@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using ZooApiService.API.ViewModels.UserViewModels;
+using ZooApiService.Common.Authentication;
 
 namespace ZooApiService.API.Infrastructure
 {
@@ -14,8 +15,8 @@ namespace ZooApiService.API.Infrastructure
 
             var userData = new UserData
             {
-                UserId = GetClaimValue(claims, ClaimsIdentity.DefaultNameClaimType),
-                Role = GetClaimValue(claims, ClaimsIdentity.DefaultRoleClaimType)
+                UserId = GetClaimValue(claims, CustomClaimName.Id),
+                Role = GetClaimValue(claims, CustomClaimName.Role)
             };
 
             return userData;

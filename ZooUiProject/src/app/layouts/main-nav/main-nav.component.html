@@ -1,29 +1,52 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav"
-      fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="opened$">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item [routerLink]="['/animal/type-list']" routerLinkActive="active">Animal types</a>
-      <a mat-list-item [routerLink]="['/animal/animal-list']" routerLinkActive="active">Animals</a>
-      <a mat-list-item [routerLink]="['/device/device-list']" routerLinkActive="active">Devices</a>
-      <a mat-list-item [routerLink]="['/employee']" routerLinkActive="active">Employees</a>
-      <a mat-list-item [routerLink]="['/job/job-list']" routerLinkActive="active">Jobs</a>
-      <a mat-list-item [routerLink]="['/job/personal-jobs']" routerLinkActive="active">My jobs</a>
+      <ng-container *ngIf="isAuthenticated">
+        <a mat-list-item [routerLink]="['/animal/type-list']" routerLinkActive="active">Animal types</a>
+        <a mat-list-item [routerLink]="['/animal/animal-list']" routerLinkActive="active">Animals</a>
+        <a mat-list-item [routerLink]="['/device/device-list']" routerLinkActive="active">Devices</a>
+
+        <ng-container *ngIf="isManager">
+          <a mat-list-item [routerLink]="['/employee']" routerLinkActive="active">Employees</a>
+          <a mat-list-item [routerLink]="['/job/job-list']" routerLinkActive="active">Jobs</a>
+        </ng-container>
+
+        <a mat-list-item [routerLink]="['/job/personal-jobs']" routerLinkActive="active">My jobs</a>
+      </ng-container>
+      <ng-container *ngIf="!isAuthenticated">
+        <a mat-list-item [routerLink]="['/authentication']" routerLinkActive="active">Sign in</a>
+      </ng-container>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span>ZooUiProject</span>
+      <mat-toolbar-row>
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <span class="mr-2">Zoo service</span>
+        <ng-container *ngIf="isAuthenticated">
+          <div class="profile-block">
+            <button class="profile" mat-button #menuTrigger="matMenuTrigger"
+              [matMenuTriggerFor]="menu">
+              <mat-icon>person</mat-icon>
+              Profile
+            </button>
+            <mat-menu class="menu" #menu="matMenu">
+              <button mat-menu-item (click)="changePassword()">
+                <mat-icon>lock</mat-icon>
+                Change password
+              </button>
+              <button mat-menu-item (click)="logOut()">
+                <mat-icon>exit_to_app</mat-icon>
+                Log out
+              </button>
+            </mat-menu>
+          </div>
+        </ng-container>
+      </mat-toolbar-row>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

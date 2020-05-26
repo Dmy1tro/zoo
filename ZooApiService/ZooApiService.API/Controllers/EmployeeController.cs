@@ -1,15 +1,17 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZooApiService.API.ViewModels.EmployeeViewModels;
 using ZooApiService.BLL.Contracts.DTO;
 using ZooApiService.BLL.Contracts.Interfaces;
+using ZooApiService.Common.Authentication;
 
 namespace ZooApiService.API.Controllers
 {
     [Route("api/employees")]
     [ApiController]
-    //[Authorize(Policy = PolicyName.ForManagersOnly)]
+    [Authorize]
     public class EmployeeController : BaseApiController
     {
         private readonly IEmployeeService _employeeService;
@@ -38,7 +40,6 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpGet("profile")]
-        //[Authorize(Policy = PolicyName.ForAllUsers)]
         public async Task<IActionResult> Profile()
         {
             var employeeDto = await _employeeService.GetEmployeeAsync(CurrentUser.UserId);
@@ -47,6 +48,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Put(EmployeeViewModel model)
         {
             var employeeDto = _mapper.Map<EmployeeDto>(model);
@@ -57,6 +59,7 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PolicyName.ForManagersOnly)]
         public async Task<IActionResult> Delete(string id)
         {
             await _employeeService.DeleteEmployeeAsync(id);
