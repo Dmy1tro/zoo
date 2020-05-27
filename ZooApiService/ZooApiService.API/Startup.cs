@@ -59,7 +59,7 @@ namespace ZooApiService.API
             app.UseMiddleware<RequestPerformanceMiddleware>();
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseCors(options =>
                 options.AllowAnyOrigin()
