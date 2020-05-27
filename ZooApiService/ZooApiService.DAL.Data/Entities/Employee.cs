@@ -9,6 +9,12 @@ namespace ZooApiService.DAL.Data.Entities
     {
         public DateTime DateOfBirth { get; set; }
 
+        public string Role { get; set; }
+
+        public byte[] Picture { get; set; }
+
+        public string ContentType { get; set; }
+
         public Gender Gender { get; set; }
 
         public JobPosition Position { get; set; }

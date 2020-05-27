@@ -53,7 +53,7 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
       dateOfBirth: [this.data.dateOfBirth, Validators.required],
       gender: [this.data.gender, Validators.required],
       position: [this.data.position, Validators.required],
-      role: [null, Validators.required],
+      role: [this.data.role, Validators.required],
     });
 
     if (!this.isUpdate) {

@@ -15,6 +15,8 @@ namespace ZooApiService.BLL.Contracts.Interfaces
 
         Task UpdateEmployeeAsync(EmployeeDto employeeDto);
 
+        Task UpdatePicture(string id, byte[] pictureBytes, string contentType);
+
         Task DeleteEmployeeAsync(string id);
     }
 }

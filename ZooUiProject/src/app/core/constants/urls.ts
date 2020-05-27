@@ -23,6 +23,7 @@ export namespace urls {
     // employee
     export const employees = environment.apiUrl + 'employees/';
     export const employeeProfile = employees + 'profile/';
+    export const changePicture = employees + 'change-avatar/';
 
     // jobs
     export const jobs = environment.apiUrl + 'jobs/';

@@ -40,7 +40,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
 
   createForm() {
     this.filterForm = this.fb.group({
-      job: null,
+      job: '*',
       id: null
     });
   }
@@ -98,6 +98,11 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
   }
 
   filterJobs(value) {
+    if (value === '*') {
+      this.employeeFiltered = this.employees;
+      return;
+    }
+
     this.employeeFiltered = this.employees.filter(x =>
       x.position.toUpperCase().includes(this.filterForm.value.job.toUpperCase()));
   }
@@ -127,7 +132,18 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
       return this.employeeFiltered.find(x => x.id === id);
     }
 
-    return { id: null, firstName: null, lastName: null, gender: null, dateOfBirth: null, position: null, email: null };
+    return {
+      id: null,
+      firstName: null,
+      lastName: null,
+      gender: null,
+      dateOfBirth: null,
+      position: null,
+      email: null,
+      role: null,
+      picture: null,
+      contentType: null
+    };
   }
 
   ngOnDestroy(): void {

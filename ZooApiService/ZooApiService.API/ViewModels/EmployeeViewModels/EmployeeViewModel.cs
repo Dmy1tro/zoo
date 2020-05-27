@@ -23,5 +23,8 @@ namespace ZooApiService.API.ViewModels.EmployeeViewModels
 
         [Required]
         public string Position { get; set; }
+
+        [Required]
+        public string Role { get; set; }
     }
 }

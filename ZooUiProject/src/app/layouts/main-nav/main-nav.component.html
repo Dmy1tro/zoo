@@ -29,15 +29,14 @@
         <span class="mr-2">Zoo service</span>
         <ng-container *ngIf="isAuthenticated">
           <div class="profile-block">
-            <button class="profile" mat-button #menuTrigger="matMenuTrigger"
-              [matMenuTriggerFor]="menu">
+            <button class="profile" mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">
               <mat-icon>person</mat-icon>
               Profile
             </button>
             <mat-menu class="menu" #menu="matMenu">
-              <button mat-menu-item (click)="changePassword()">
-                <mat-icon>lock</mat-icon>
-                Change password
+              <button mat-menu-item (click)="goProfile()">
+                <mat-icon>account_circle</mat-icon>
+                Profile
               </button>
               <button mat-menu-item (click)="logOut()">
                 <mat-icon>exit_to_app</mat-icon>

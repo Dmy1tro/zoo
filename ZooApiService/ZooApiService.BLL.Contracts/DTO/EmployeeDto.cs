@@ -17,5 +17,11 @@ namespace ZooApiService.BLL.Contracts.DTO
         public string Gender { get; set; }
 
         public string Position { get; set; }
+
+        public string Role { get; set; }
+
+        public byte[] Picture { get; set; }
+
+        public string ContentType { get; set; }
     }
 }

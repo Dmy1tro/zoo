@@ -1,0 +1,43 @@
+<div class="card col-md-5 d-block mx-auto mt-4" *ngIf="employee">
+    <div class="card-body my-auto">
+        <img [src]="employee.picture" alt="" class="img-fluid rounded-circle w-50 mb-3 d-block mx-auto">
+        <h4 class="text-center">
+            {{ employee.firstName + ' ' + employee.lastName }}
+        </h4>
+        <br>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-inline-flex">
+                <mat-icon>email</mat-icon>
+                {{ employee.email }}
+            </li>
+            <li class="list-group-item d-inline-flex">
+                <mat-icon> vpn_key</mat-icon>
+                {{ 'Role: ' + employee.role }}
+            </li>
+            <li class="list-group-item d-inline-flex">
+                <mat-icon>business_center</mat-icon>
+                {{ employee.position }}
+            </li>
+            <li class="list-group-item d-inline-flex">
+                <mat-icon>perm_contact_calendar</mat-icon>
+                {{ employee.dateOfBirth | date: 'yyyy-MM-dd' }}
+            </li>
+            <li class="list-group-item d-inline-flex">
+                <mat-icon>person</mat-icon>
+                {{ employee.gender }}
+            </li>
+        </ul>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-center">
+            <!-- <button class="btn btn-warning mx-1" (click)="changeAvatar()">Change avatar</button> -->
+            <button mat-raised-button class="mx-2" color="primary" (click)="changeAvatar()">
+                Change avatar
+            </button>
+            <button mat-raised-button class="mx-2" color="accent" (click)="changePassword()">
+                Change password
+            </button>
+        </div>
+    </div>
+</div>
+<mat-spinner class="d-block mx-auto mt-5" *ngIf="!employee"></mat-spinner>

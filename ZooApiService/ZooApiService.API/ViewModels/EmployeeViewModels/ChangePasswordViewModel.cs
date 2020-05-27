@@ -1,6 +1,6 @@
 ﻿namespace ZooApiService.API.ViewModels.EmployeeViewModels
 {
-    public class ChangePassword
+    public class ChangePasswordViewModel
     {
         public string CurrentPassword { get; set; }
 

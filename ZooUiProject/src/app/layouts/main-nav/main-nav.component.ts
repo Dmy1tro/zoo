@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { IUserInfo } from 'src/app/core/interfaces/user-info.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from 'src/app/features/authentication/change-password/change-password.component';
+import { ChangeAvatarComponent } from 'src/app/features/employee/change-avatar/change-avatar.component';
 
 @Component({
   selector: 'app-main-nav',
@@ -47,8 +48,8 @@ export class MainNavComponent implements OnInit, OnDestroy {
     return this.authService.isManager;
   }
 
-  changePassword() {
-    this.matDialog.open(ChangePasswordComponent, { width: '30%', autoFocus: true });
+  goProfile() {
+    this.router.navigate(['/employee/profile']);
   }
 
   logOut() {

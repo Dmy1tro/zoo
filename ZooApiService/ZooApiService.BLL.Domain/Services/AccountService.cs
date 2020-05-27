@@ -13,7 +13,9 @@ using ZooApiService.BLL.Contracts.DTO;
 using ZooApiService.BLL.Contracts.DTO.ServiceResults;
 using ZooApiService.BLL.Contracts.Interfaces;
 using ZooApiService.Common.Authentication;
+using ZooApiService.Common.Constants;
 using ZooApiService.Common.Exceptions;
+using ZooApiService.Common.Exceptions.BusinessLogic;
 using ZooApiService.DAL.Data.Entities;
 
 namespace ZooApiService.BLL.Domain.Services
@@ -76,6 +78,22 @@ namespace ZooApiService.BLL.Domain.Services
             {
                 throw new BusinessLogicException(string.Join("\n", result.Errors.Select(x => x.Description)));
             }
+        }
+
+        public async Task ChangeRole(string id, string role)
+        {
+            var employee = await _userManager.FindByIdAsync(id);
+
+            if (employee is null)
+            {
+                throw new NotFoundException(EntityName.Employee, id);
+            }
+
+            var roles = await _userManager.GetRolesAsync(employee);
+            await _userManager.RemoveFromRolesAsync(employee, roles);
+
+            await CheckRoleExists(role);
+            await _userManager.AddToRoleAsync(employee, role);
         }
 
         private async Task CheckRoleExists(string role)

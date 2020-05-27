@@ -6,4 +6,7 @@ export interface IEmployee {
     dateOfBirth: string;
     gender: string;
     position: string;
+    role: string;
+    picture: any;
+    contentType: string;
 }

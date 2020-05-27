@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ZooApiService.API.ViewModels.EmployeeViewModels;
 using ZooApiService.BLL.Contracts.DTO;
@@ -15,11 +17,15 @@ namespace ZooApiService.API.Controllers
     public class EmployeeController : BaseApiController
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeService employeeService, IMapper mapper)
+        public EmployeeController(IEmployeeService employeeService, 
+                                  IAccountService accountService, 
+                                  IMapper mapper)
         {
             _employeeService = employeeService;
+            _accountService = accountService;
             _mapper = mapper;
         }
 
@@ -54,6 +60,20 @@ namespace ZooApiService.API.Controllers
             var employeeDto = _mapper.Map<EmployeeDto>(model);
 
             await _employeeService.UpdateEmployeeAsync(employeeDto);
+            await _accountService.ChangeRole(employeeDto.Id, employeeDto.Role);
+
+            return NoContent();
+        }
+
+        [HttpPut("change-avatar")]
+        [DisableRequestSizeLimit]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> ChangeAvatar([FromForm] ChangeAvatarViewModel model)
+        {
+            var picture = ConvertFileToBytes(model.Picture);
+            var contentType = model.Picture.ContentType;
+
+            await _employeeService.UpdatePicture(CurrentUser.UserId, picture, contentType);
 
             return NoContent();
         }
@@ -65,6 +85,20 @@ namespace ZooApiService.API.Controllers
             await _employeeService.DeleteEmployeeAsync(id);
 
             return NoContent();
+        }
+
+        private byte[] ConvertFileToBytes(IFormFile file)
+        {
+            if (file is null)
+            {
+                return null;
+            }
+
+            using var ms = new MemoryStream();
+
+            file.CopyTo(ms);
+
+            return ms.ToArray();
         }
     }
 }

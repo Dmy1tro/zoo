@@ -44,7 +44,7 @@ namespace ZooApiService.API.Controllers
 
         [HttpPut("change-password")]
         [Authorize(Policy = PolicyName.ForAllUsers)]
-        public async Task<IActionResult> ChangePassword(ChangePassword model)
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             await _accountService.ChangePassword(CurrentUser.UserId, model.CurrentPassword, model.NewPassword);
 

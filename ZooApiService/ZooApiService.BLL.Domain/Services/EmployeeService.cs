@@ -68,10 +68,32 @@ namespace ZooApiService.BLL.Domain.Services
             var loadedDbo = await _dbContext.Employees
                 .FirstOrDefaultAsync(x => x.Id == employeeDbo.Id);
 
+            if (loadedDbo is null)
+            {
+                throw new NotFoundException(EntityName.Employee, employeeDto.Id);
+            }
+
             loadedDbo.UserName = employeeDbo.UserName;
             loadedDbo.DateOfBirth = employeeDbo.DateOfBirth;
             loadedDbo.Gender = employeeDbo.Gender;
             loadedDbo.Position = employeeDbo.Position;
+            loadedDbo.Role = employeeDto.Role;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdatePicture(string id, byte[] pictureBytes, string contentType)
+        {
+            var loadedDbo = await _dbContext.Employees
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (loadedDbo is null)
+            {
+                throw new NotFoundException(EntityName.Employee, id);
+            }
+
+            loadedDbo.Picture = pictureBytes;
+            loadedDbo.ContentType = contentType;
 
             await _dbContext.SaveChangesAsync();
         }

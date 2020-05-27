@@ -10,6 +10,9 @@
                     <mat-form-field appearance="standard">
                         <mat-label>Select Job</mat-label>
                         <mat-select formControlName="job" (selectionChange)="filterJobs($event.value)">
+                            <mat-option [value]="'*'">
+                                All
+                            </mat-option>
                             <mat-option *ngFor="let item of jobs" [value]="item.value">
                                 {{ item.title }}
                             </mat-option>
@@ -91,7 +94,7 @@
         <hr>
         <div class="card">
             <div class="card-body my-auto">
-                <img src="./assets/Avatar.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                <img [src]="employeeSelected.picture" alt="" class="img-fluid rounded-circle w-50 mb-3 d-block mx-auto">
                 <h4>
                     {{ employeeSelected.firstName + ' ' + employeeSelected.lastName }}
                 </h4>
@@ -100,6 +103,10 @@
                     <li class="list-group-item d-inline-flex">
                         <mat-icon>email</mat-icon>
                         {{ employeeSelected.email }}
+                    </li>
+                    <li class="list-group-item d-inline-flex">
+                        <mat-icon> vpn_key</mat-icon>
+                        {{ 'Role: ' + employeeSelected.role }}
                     </li>
                     <li class="list-group-item d-inline-flex">
                         <mat-icon>business_center</mat-icon>

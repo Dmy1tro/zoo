@@ -11,5 +11,7 @@ namespace ZooApiService.BLL.Contracts.Interfaces
         Task<CreatedData> SignUp(EmployeeDto employee, string password, string role);
 
         Task ChangePassword(string id, string oldPassword, string newPassword);
+
+        Task ChangeRole(string id, string role);
     }
 }
