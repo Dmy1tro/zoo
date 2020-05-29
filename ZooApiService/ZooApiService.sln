@@ -25,7 +25,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{BF18CE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZooApiService.Mobile.Android", "ZooApiService.Mobile\ZooApiService.Mobile.Android\ZooApiService.Mobile.Android.csproj", "{41C49B81-0DA4-42FF-97B6-BBA6FF0B31FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZooApiService.Mobile", "ZooApiService.Mobile\ZooApiService.Mobile\ZooApiService.Mobile.csproj", "{7A474DE3-D92F-48F3-A50B-F20E77148141}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZooApiService.Mobile", "ZooApiService.Mobile\ZooApiService.Mobile\ZooApiService.Mobile.csproj", "{7A474DE3-D92F-48F3-A50B-F20E77148141}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoT", "IoT", "{4DD7AF62-E258-4F64-A2A6-259372051CD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZooApiService.IoT", "ZooApiService.IoT\ZooApiService.IoT.csproj", "{1534DB11-EC9B-4C77-A7A3-478377241F05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,10 @@ Global
 		{7A474DE3-D92F-48F3-A50B-F20E77148141}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A474DE3-D92F-48F3-A50B-F20E77148141}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A474DE3-D92F-48F3-A50B-F20E77148141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1534DB11-EC9B-4C77-A7A3-478377241F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1534DB11-EC9B-4C77-A7A3-478377241F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1534DB11-EC9B-4C77-A7A3-478377241F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1534DB11-EC9B-4C77-A7A3-478377241F05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +83,7 @@ Global
 		{8E0FBBA8-29F3-401B-B236-2F67F4668271} = {2733DA68-9F82-47AC-AD53-2505BA8FF64C}
 		{41C49B81-0DA4-42FF-97B6-BBA6FF0B31FF} = {BF18CE14-02C8-4F6A-93BA-017AB42B0AF8}
 		{7A474DE3-D92F-48F3-A50B-F20E77148141} = {BF18CE14-02C8-4F6A-93BA-017AB42B0AF8}
+		{1534DB11-EC9B-4C77-A7A3-478377241F05} = {4DD7AF62-E258-4F64-A2A6-259372051CD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF086711-EC8F-4EC6-BA86-2BA9ED6479D4}
