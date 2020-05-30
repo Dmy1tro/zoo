@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AnimalService } from '../../animal/common/animal.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { IAnimalFull, IAnimal } from 'src/app/core/interfaces/animal.interface';
 import { configureToastr, deleteConfirmImport, refreshDataImport } from 'src/app/core/helpers';
 import { DeviceService } from '../services/device.service';
@@ -144,7 +144,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
       return this.devices.find(x => x.smartDeviceId === id);
     }
 
-    return { smartDeviceId: null, animalId: this.filterForm.value.animalId, name: null };
+    return { smartDeviceId: null, animalId: this.filterForm.value.animalId, name: null, deviceType: null };
   }
 
   resetForm() {
@@ -156,7 +156,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
 
   private getDevicesForAnimal() {
     this.deviceService.getDevicesForAnimal(this.filterForm.value.animalId)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(tap(x => console.log(x)), takeUntil(this.destroy$))
       .subscribe(
         data => this.devices = data.sort((a, b) => a.name > b.name ? 1 : -1),
         err => console.log(err));

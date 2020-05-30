@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ZooApiService.DAL.Data.Enums;
 
 namespace ZooApiService.DAL.Data.Entities
 {
@@ -9,6 +10,8 @@ namespace ZooApiService.DAL.Data.Entities
         public int AnimalId { get; set; }
 
         public string Name { get; set; }
+
+        public DeviceType? DeviceType { get; set; }
 
         public Animal Animal { get; set; }
 

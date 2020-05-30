@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { AnimalService } from '../common/animal.service';
@@ -21,8 +21,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AnimalManagementComponent implements OnInit, OnDestroy {
 
+  @ViewChild('pictureFile') pictureFile: ElementRef;
+
   animalForm: FormGroup;
   genders: any;
+  file: any;
   animalTypes: IAnimalType[] = [];
 
   private destroy$ = new Subject<void>();
@@ -37,7 +40,7 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
               private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.genders = enumSelector(GENDER, this.translate);
+    this.genders = enumSelector(GENDER);
     this.getAnimalTypes();
     this.createForm();
     configureToastr(this.toastr);
@@ -65,6 +68,10 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
     });
   }
 
+  onUpload(input) {
+    this.file = input.target.files[0];
+  }
+
   onSubmit(): void {
     if (this.animalForm.valid) {
       this.data.animalId == null ? this.createAnimal() : this.updateAnimal();
@@ -74,12 +81,9 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
   }
 
   createAnimal() {
-    this.animalService.createAnimal({
-      animalTypeId: this.animalForm.value.animalTypeId,
-      name: this.animalForm.value.name,
-      gender: this.animalForm.value.gender,
-      dateOfBirth: convertToISOFormat(this.animalForm.value.dateOfBirth, this.datePipe)
-    })
+    const formData = this.getFormData();
+
+    this.animalService.createAnimal(formData)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
@@ -93,13 +97,9 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
   }
 
   updateAnimal() {
-    this.animalService.updateAnimal({
-      animalId: this.data.animalId,
-      animalTypeId: this.animalForm.value.animalTypeId,
-      name: this.animalForm.value.name,
-      gender: this.animalForm.value.gender,
-      dateOfBirth: convertToISOFormat(this.animalForm.value.dateOfBirth, this.datePipe)
-    })
+    const formData = this.getFormData();
+
+    this.animalService.updateAnimal(formData)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
@@ -114,6 +114,24 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
 
   resetForm() {
     this.createForm();
+    this.pictureFile.nativeElement.value = null;
+    this.file = null;
+  }
+
+  private getFormData(): FormData {
+    const form = new FormData();
+
+    form.append('animalId', '' + (this.data.animalId ?? 0));
+    form.append('animalTypeId', this.animalForm.value.animalTypeId);
+    form.append('name', this.animalForm.value.name);
+    form.append('gender', this.animalForm.value.gender);
+    form.append('dateOfBirth', convertToISOFormat(this.animalForm.value.dateOfBirth, this.datePipe));
+
+    if (this.file) {
+      form.append('picture', this.file);
+    }
+
+    return form;
   }
 
   getButtonState = () =>

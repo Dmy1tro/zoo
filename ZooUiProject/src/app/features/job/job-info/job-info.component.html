@@ -33,7 +33,7 @@
                 </span>
                 <br>
                 <span class="ml-1">
-                    {{ jobStatus[job.status] }}
+                    {{ jobStatus[job.status] | translate }}
                 </span>
             </li>
             <li class="list-group-item">
@@ -59,7 +59,7 @@
             <li class="list-group-item">
                 <span class="d-inline-flex">
                     <mat-icon>perm_contact_calendar</mat-icon>
-                    <b>Finish date: </b>
+                    <b>{{'Finish-date' | translate }}: </b>
                 </span>
                 <br>
                 <span class="ml-1">

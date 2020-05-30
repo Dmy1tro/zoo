@@ -134,7 +134,7 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
       return this.animals.find(x => x.animalId === id);
     }
 
-    return { animalTypeId: null, animalId: null, name: null, gender: null, dateOfBirth: null };
+    return { animalTypeId: null, animalId: null, name: null, gender: null, dateOfBirth: null, picture: null, contentType: null };
   }
 
   private refreshData(dialogInfo) {

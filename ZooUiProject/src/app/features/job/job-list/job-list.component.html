@@ -25,7 +25,7 @@
                         <mat-label>{{'Status' | translate}}</mat-label>
                         <mat-select formControlName="status" (selectionChange)="selectStatus($event.value)">
                             <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
-                                {{ item.title }}
+                                {{ item.title | translate }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

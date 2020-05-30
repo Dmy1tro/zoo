@@ -41,11 +41,19 @@ namespace ZooApiService.API.Mapping
 
             CreateMap<string, JobStatus>()
                 .ConvertUsing(x => Enum.Parse<JobStatus>(x, true));
+
+            CreateMap<DeviceType, string>()
+                .ConvertUsing(x => x.ToString());
+
+            CreateMap<string, DeviceType>()
+                .ConvertUsing(x => Enum.Parse<DeviceType>(x, true));
         }
 
         private void MapViewModels()
         {
-            CreateMap<AnimalViewModel, AnimalDto>();
+            CreateMap<AnimalViewModel, AnimalDto>()
+                .ForMember(d => d.Picture, m => m.Ignore())
+                .ForMember(d => d.ContentType, m => m.Ignore());
             CreateMap<EmployeeViewModel, EmployeeDto>();
             CreateMap<JobViewModel, JobDto>();
             CreateMap<RationViewModel, RationDto>();

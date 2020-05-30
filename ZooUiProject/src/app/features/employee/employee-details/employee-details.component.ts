@@ -35,7 +35,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
               private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.jobs = enumSelector(Job, this.translate);
+    this.jobs = enumSelector(Job);
     this.createForm();
     this.getEmployees();
   }
@@ -65,10 +65,6 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
 
   selectEmployee(id) {
     this.employeeSelected = this.employeeFiltered.find(x => x.id === id);
-
-    if (!this.employeeSelected.picture) {
-      this.employeeSelected.picture = './assets/images/userAvatar.png';
-    }
   }
 
   addOrUpdate(id) {

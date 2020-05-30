@@ -18,6 +18,11 @@ namespace ZooApiService.API.Infrastructure.ModelValidations
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            if (value is null)
+            {
+                return ValidationResult.Success;
+            }
+
             if (!(value is IFormFile file))
             {
                 return new ValidationResult("This is not a file");

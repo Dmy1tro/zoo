@@ -27,6 +27,12 @@ export enum Role {
     Worker = 'Worker'
 }
 
+export enum DeviceType {
+    Location = 'Location',
+    Temperature = 'Temperature',
+    Pulsometer = 'Pulsometer'
+}
+
 export enum DataAction {
     Create = 'create',
     Update = 'update',

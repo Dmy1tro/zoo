@@ -5,9 +5,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { configureToastr, getButtonStateImport, hasCustomErrorImport } from 'src/app/core/helpers';
+import { configureToastr, getButtonStateImport, hasCustomErrorImport, enumSelector } from 'src/app/core/helpers';
 import { takeUntil } from 'rxjs/operators';
-import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
+import { toastrTitle, DataAction, DeviceType } from 'src/app/core/constants/enums';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -18,6 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
 
   deviceForm: FormGroup;
+  deviceTypes: any;
 
   private destroy$ = new Subject<void>();
 
@@ -29,13 +30,15 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
               private translate: TranslateService) { }
 
   ngOnInit(): void {
+    this.deviceTypes = enumSelector(DeviceType);
     this.createForm();
     configureToastr(this.toastr);
   }
 
   createForm() {
     this.deviceForm = this.fb.group({
-      name: [this.data.name, Validators.required]
+      name: [this.data.name, Validators.required],
+      deviceType: [this.data.deviceType, Validators.required]
     });
   }
 
@@ -50,7 +53,8 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
   create() {
     this.deviceService.createDevice({
       name: this.deviceForm.value.name,
-      animalId: this.data.animalId
+      animalId: this.data.animalId,
+      deviceType: this.deviceForm.value.deviceType
     })
       .pipe(takeUntil(this.destroy$))
       .subscribe(
@@ -67,7 +71,8 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
   update() {
     this.deviceService.updateDevice({
       smartDeviceId: this.data.smartDeviceId,
-      newName: this.deviceForm.value.name
+      newName: this.deviceForm.value.name,
+      deviceType: this.deviceForm.value.deviceType
     })
      .pipe(takeUntil(this.destroy$))
      .subscribe(

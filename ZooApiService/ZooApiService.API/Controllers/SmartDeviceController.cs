@@ -19,6 +19,15 @@ namespace ZooApiService.API.Controllers
             _smartDeviceService = smartDeviceService;
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> All()
+        {
+            var devices = await _smartDeviceService.GetAllDevices();
+
+            return Ok(devices);
+        }
+
         [HttpGet("{deviceId}")]
         public async Task<IActionResult> Get(int deviceId)
         {
@@ -38,15 +47,15 @@ namespace ZooApiService.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SmartDeviceCreateViewModel model)
         {
-            var created = await _smartDeviceService.CreateDeviceAsync(model.AnimalId, model.Name);
+            var created = await _smartDeviceService.CreateDeviceAsync(model.AnimalId, model.Name, model.DeviceType);
 
             return Ok(created);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Rename(SmartDeviceRenameViewModel model)
+        public async Task<IActionResult> Rename(SmartDeviceUpdateViewModel model)
         {
-            await _smartDeviceService.Rename(model.SmartDeviceId, model.NewName);
+            await _smartDeviceService.UpdateAsync(model.SmartDeviceId, model.NewName, model.DeviceType);
 
             return NoContent();
         }

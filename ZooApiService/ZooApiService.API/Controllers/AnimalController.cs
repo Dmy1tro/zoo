@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZooApiService.API.Infrastructure;
 using ZooApiService.API.ViewModels.AnimalViewModels;
 using ZooApiService.BLL.Contracts.DTO;
 using ZooApiService.BLL.Contracts.Interfaces;
@@ -40,21 +41,37 @@ namespace ZooApiService.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AnimalViewModel model)
+        public async Task<IActionResult> Create([FromForm] AnimalViewModel model)
         {
             var animalDto = _mapper.Map<AnimalDto>(model);
 
             var createdId = await _animalService.CreateAnimalAsync(animalDto);
 
+            if (model.Picture != null)
+            {
+                var picture = FormFileHelper.ConvertFileToBytes(model.Picture);
+                var contentType = model.Picture.ContentType;
+
+                await _animalService.UpdatePicture((int) createdId.CreatedId, picture, contentType);
+            }
+
             return Ok(createdId);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(AnimalViewModel model)
+        public async Task<IActionResult> Put([FromForm] AnimalViewModel model)
         {
             var animalDto = _mapper.Map<AnimalDto>(model);
 
             await _animalService.UpdateAnimalAsync(animalDto);
+
+            if (model.Picture != null)
+            {
+                var picture = FormFileHelper.ConvertFileToBytes(model.Picture);
+                var contentType = model.Picture.ContentType;
+
+                await _animalService.UpdatePicture(animalDto.AnimalId, picture, contentType);
+            }
 
             return NoContent();
         }

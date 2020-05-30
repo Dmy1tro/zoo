@@ -49,13 +49,11 @@
     "Animal-type": "Animal type",
     "Animal-type-management": "Animal type management",
     "Create-type": "Create type",
-    "Create-animal-type": "Create animal type",
     "Type-name": "Type name",
     "Description": "Description",
     "Ration": "Ration",
     "Food": "Food",
     "Food-name": "Food name",
-    "Create-food": "Create food",
     "Empty": "Empty",
 
     "is-required": " is required",
@@ -103,7 +101,7 @@
     "Update-job": "Update job",
     "Responsible": "Responsible",
     "Not-started": "Not started",
-    "Not finished": "Not finished",
+    "Not-finished": "Not finished",
     "Start": "Start",
     "Finsih": "Finish",
     "Finished": "Finished",
@@ -119,5 +117,10 @@
     "Manager": "Manager",
     "Vet": "Vet",
 
-    "In-progress": "In progress"
+    "In-progress": "In progress",
+
+    "Device-type": "Device type",
+    "Location": "Location",
+    "Temperature": "Temperature",
+    "Pulsometer": "Pulsometer"
 }

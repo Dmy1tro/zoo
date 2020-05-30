@@ -36,7 +36,7 @@ export class PersonalJobsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser;
-    this.jobStatuses = enumSelector(JobStatus, this.translate);
+    this.jobStatuses = enumSelector(JobStatus);
     console.log(this.jobStatuses);
     this.createForm();
     this.getJobs();

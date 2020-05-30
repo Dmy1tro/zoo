@@ -3,6 +3,7 @@
         <h4 class="text-center">{{'Animal-info' | translate}}</h4>
         <hr>
         <div class="form-group" *ngIf="animal">
+            <img [src]="animal.picture" alt="" class="img-fluid rounded w-50 mb-3 d-block mx-auto">
             <ul class="list-group">
                 <li class="list-group-item">
                     <span>
@@ -16,7 +17,7 @@
                 </li>
                 <li class="list-group-item">
                     <span>
-                        <b>{{'Gender'| translate}}:</b> {{ animal.gender}}
+                        <b>{{'Gender'| translate}}:</b> {{ animal.gender | translate}}
                     </span>
                 </li>
                 <li class="list-group-item">
@@ -61,7 +62,7 @@
                     <th class="col-md-4" scope="col">
                         <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdateRation(null)">
                             <mat-icon>add</mat-icon>
-                            {{'Create-food'| translate}}
+                            {{'Create-ration'| translate}}
                         </button>
                     </th>
                 </tr>

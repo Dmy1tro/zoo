@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+using ZooApiService.API.Infrastructure.ModelValidations;
 using ZooApiService.Common.Constants;
 
 namespace ZooApiService.API.ViewModels.AnimalViewModels
@@ -18,5 +20,9 @@ namespace ZooApiService.API.ViewModels.AnimalViewModels
         public string Gender { get; set; }
 
         public DateTime DateOfBirth { get; set; }
+
+        [DataType(DataType.Upload)]
+        [AllowedExtensions(new[] { ".jpeg", ".bmp", ".png", ".jpg" })]
+        public IFormFile Picture { get; set; }
     }
 }

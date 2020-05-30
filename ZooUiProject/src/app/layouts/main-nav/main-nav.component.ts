@@ -40,6 +40,8 @@ export class MainNavComponent implements OnInit, OnDestroy {
         this.currentUser = data;
         this.opened$ = this.isAuthenticated;
       });
+
+    this.translateOn = this.localizationService.getLocalization() === 'ua';
   }
 
   get isAuthenticated(): boolean {

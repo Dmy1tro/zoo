@@ -39,9 +39,9 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isUpdate = this.data.id != null;
-    this.genders = enumSelector(GENDER, this.translate);
-    this.jobs = enumSelector(Job, this.translate);
-    this.roles = enumSelector(Role, this.translate);
+    this.genders = enumSelector(GENDER);
+    this.jobs = enumSelector(Job);
+    this.roles = enumSelector(Role);
     this.createForm();
     configureToastr(this.toastr);
   }

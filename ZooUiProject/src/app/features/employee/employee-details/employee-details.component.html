@@ -14,7 +14,7 @@
                                 {{'All' | translate}}
                             </mat-option>
                             <mat-option *ngFor="let item of jobs" [value]="item.value">
-                                {{ item.title }}
+                                {{ item.title | translate }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -71,7 +71,7 @@
                         </div>
                         <div class="col-md-3 my-auto">
                             <h5>
-                                {{ employee.position }}
+                                {{ employee.position | translate }}
                             </h5>
                         </div>
                         <div class="col-md-3">
@@ -106,11 +106,11 @@
                     </li>
                     <li class="list-group-item d-inline-flex">
                         <mat-icon> vpn_key</mat-icon>
-                        {{ ('Role' | translate) +  ': ' + employeeSelected.role }}
+                        {{ ('Role' | translate) +  ': ' + (employeeSelected.role | translate) }}
                     </li>
                     <li class="list-group-item d-inline-flex">
                         <mat-icon>business_center</mat-icon>
-                        {{ employeeSelected.position }}
+                        {{ employeeSelected.position | translate }}
                     </li>
                     <li class="list-group-item d-inline-flex">
                         <mat-icon>perm_contact_calendar</mat-icon>
@@ -118,7 +118,7 @@
                     </li>
                     <li class="list-group-item d-inline-flex">
                         <mat-icon>person</mat-icon>
-                        {{ employeeSelected.gender }}
+                        {{ employeeSelected.gender | translate }}
                     </li>
                 </ul>
             </div>

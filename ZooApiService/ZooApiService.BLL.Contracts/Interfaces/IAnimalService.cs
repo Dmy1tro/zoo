@@ -13,6 +13,8 @@ namespace ZooApiService.BLL.Contracts.Interfaces
 
         Task<CreatedData> CreateAnimalAsync(AnimalDto animalDto);
 
+        Task UpdatePicture(int id, byte[] pictureBytes, string contentType);
+
         Task UpdateAnimalAsync(AnimalDto animalDto);
 
         Task DeleteAnimalAsync(int animalId);

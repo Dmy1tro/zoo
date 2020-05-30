@@ -44,7 +44,7 @@ export class JobListComponent implements OnInit, OnDestroy {
     if (this.route.snapshot.params.employeeId) {
       this.employeeId = this.route.snapshot.params.employeeId;
     }
-    this.jobStatuses = enumSelector(JobStatus, this.translate);
+    this.jobStatuses = enumSelector(JobStatus);
     this.createForm();
     this.getJobs();
     this.getEmployees();

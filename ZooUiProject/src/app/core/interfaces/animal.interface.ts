@@ -4,6 +4,8 @@ export interface IAnimal {
     name: string;
     gender: string;
     dateOfBirth: string;
+    picture: any;
+    contentType: string;
 }
 
 export interface IAnimalFull extends IAnimal {

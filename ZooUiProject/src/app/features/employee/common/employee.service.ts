@@ -51,6 +51,8 @@ export class EmployeeService {
   private mapEmployee(data: IEmployee): IEmployee {
     if (data.picture && data.contentType) {
       data.picture = `data:${data.contentType};base64,${data.picture}`;
+    } else {
+      data.picture = './assets/images/userAvatar.png';
     }
 
     return data;

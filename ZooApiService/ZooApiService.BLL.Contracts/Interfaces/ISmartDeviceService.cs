@@ -9,11 +9,13 @@ namespace ZooApiService.BLL.Contracts.Interfaces
     {
         Task<SmartDeviceDto> GetDevice(int deviceId);
 
+        Task<IList<SmartDeviceDto>> GetAllDevices();
+
         Task<IList<SmartDeviceDto>> GetDevices(int animalId);
 
-        Task<CreatedData> CreateDeviceAsync(int animalId, string name);
+        Task<CreatedData> CreateDeviceAsync(int animalId, string name, string deviceType);
 
-        Task Rename(int deviceId, string newName);
+        Task UpdateAsync(int deviceId, string newName, string deviceType);
 
         Task Delete(int deviceId);
     }

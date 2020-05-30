@@ -17,6 +17,18 @@
             </mat-error>
         </mat-form-field>
 
+        <mat-form-field appearance="standard">
+            <mat-label>{{ 'Device-type'| translate}}</mat-label>
+            <mat-select formControlName="deviceType">
+                <mat-option *ngFor="let item of deviceTypes" [value]="item.value">
+                    {{ item.title | translate }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasCustomError(deviceForm, 'deviceType')">
+                {{'Device-type'| translate}} {{'is-required'| translate}}
+            </mat-error>
+        </mat-form-field>
+
         <div class="row px-2 mt-4">
             <div class="col-md-6">
                 <button mat-raised-button class="btn-block " type="submit" color="primary">

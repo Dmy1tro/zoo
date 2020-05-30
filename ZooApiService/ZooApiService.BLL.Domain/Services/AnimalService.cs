@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +47,7 @@ namespace ZooApiService.BLL.Domain.Services
         {
             var animalDbo = await _dbContext.Animals
                 .Include(x => x.AnimalType)
+                .Select(withoutPicture)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -63,11 +67,28 @@ namespace ZooApiService.BLL.Domain.Services
             return new CreatedData(animalDbo.AnimalId);
         }
 
+        public async Task UpdatePicture(int id, byte[] pictureBytes, string contentType)
+        {
+            var animalDbo = await _dbContext.Animals
+                .FirstOrDefaultAsync(x => x.AnimalId == id);
+
+            animalDbo.Picture = pictureBytes;
+            animalDbo.ContentType = contentType;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task UpdateAnimalAsync(AnimalDto animalDto)
         {
             var animalDbo = _mapper.Map<Animal>(animalDto);
 
-            _dbContext.Animals.Update(animalDbo);
+            var loaded = await _dbContext.Animals
+                .FirstOrDefaultAsync(x => x.AnimalId == animalDbo.AnimalId);
+
+            loaded.AnimalTypeId = animalDbo.AnimalTypeId;
+            loaded.DateOfBirth = animalDbo.DateOfBirth;
+            loaded.Gender = animalDbo.Gender;
+            loaded.Name = animalDbo.Name;
 
             await _dbContext.SaveChangesAsync();
         }
@@ -81,10 +102,23 @@ namespace ZooApiService.BLL.Domain.Services
             {
                 throw new NotFoundException(EntityName.Animal, animalId);
             }
-
+            
             _dbContext.Animals.Remove(animalDbo);
 
             await _dbContext.SaveChangesAsync();
         }
+
+        private readonly Expression<Func<Animal, Animal>> withoutPicture =
+            (x) => new Animal
+            {
+                AnimalId = x.AnimalId,
+                AnimalType = x.AnimalType,
+                AnimalTypeId = x.AnimalTypeId,
+                DateOfBirth = x.DateOfBirth,
+                Gender = x.Gender,
+                Name = x.Name,
+                ContentType = null,
+                Picture = null
+            };
     }
 }

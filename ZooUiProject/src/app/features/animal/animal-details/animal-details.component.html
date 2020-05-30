@@ -67,7 +67,7 @@
                     {{ animal.name }}
                 </td>
                 <td class="col-md-2">
-                    {{ animal.gender }}
+                    {{ animal.gender | translate }}
                 </td>
                 <td class="col-md-2">
                     {{ animal.dateOfBirth | date: 'yyyy-MM-dd' }}

@@ -5,9 +5,9 @@ import { IEnumSelect } from './interfaces/enum-select.interface';
 import { DataAction } from './constants/enums';
 import { MissingTranslationHandler, MissingTranslationHandlerParams, TranslateService } from '@ngx-translate/core';
 
-export function enumSelector(data, translator: TranslateService): IEnumSelect[] {
+export function enumSelector(data): IEnumSelect[] {
     return Object.keys(data)
-        .map(key => ({ value: key, title: translator.instant(data[key]) }));
+        .map(key => ({ value: key, title: data[key] }));
 }
 
 export const convertToISOFormat = (date, datePipe: DatePipe): string => {
@@ -23,7 +23,7 @@ export const deleteConfirmImport = (name: string, translate: (str: string) => st
     confirm(translate(`Are-you-sure-you-want-to-delete`) + ' ' + `${name}` + `?`);
 
 export const getButtonStateImport = (update: boolean, name: string): string =>
-    update ? `Update-${name.toLowerCase()}` : `Create-${name.toLowerCase()}`;
+    update ? `Update` : `Create`;
 
 export const refreshDataImport = (action: string, arr: Array<any>, item, predicate: (val) => boolean): void => {
     switch (action) {

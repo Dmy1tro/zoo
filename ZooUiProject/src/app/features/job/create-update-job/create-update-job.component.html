@@ -40,7 +40,7 @@
                         <mat-label>{{'Status' | translate }}</mat-label>
                         <mat-select formControlName="status">
                             <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
-                                {{ item.title }}
+                                {{ item.title | translate }}
                             </mat-option>
                         </mat-select>
                         <mat-error *ngIf="hasCustomError(jobForm, 'status')">

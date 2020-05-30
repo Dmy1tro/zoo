@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { urls } from 'src/app/core/constants/urls';
-import { IAnimal, IAnimalFull } from 'src/app/core/interfaces/animal.interface';
+import { IAnimalFull } from 'src/app/core/interfaces/animal.interface';
 import { ICreatedId } from 'src/app/core/interfaces/createdId.interface';
-import { IAnimalType } from 'src/app/core/interfaces/animal-type.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,10 @@ export class AnimalService {
   }
 
   getAnimal(id): Observable<IAnimalFull> {
-    return this.httpClient.get<IAnimalFull>(urls.animals + id);
+    return this.httpClient.get<IAnimalFull>(urls.animals + id)
+      .pipe(
+        map(this.mapAnimal)
+      );
   }
 
   createAnimal(data): Observable<ICreatedId> {
@@ -31,5 +34,15 @@ export class AnimalService {
 
   deleteAnimal(id) {
     return this.httpClient.delete(urls.animals + id);
+  }
+
+  private mapAnimal(data: IAnimalFull): IAnimalFull {
+    if (data.picture && data.contentType) {
+      data.picture = `data:${data.contentType};base64,${data.picture}`;
+    } else {
+      data.picture = './assets/images/animal_default.png';
+    }
+
+    return data;
   }
 }

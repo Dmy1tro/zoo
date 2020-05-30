@@ -8,5 +8,8 @@ namespace ZooApiService.API.ViewModels.SmartDeviceViewModels
 
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        public string DeviceType { get; set; }
     }
 }

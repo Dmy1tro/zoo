@@ -1,29 +1,36 @@
 ﻿using System;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using ZooApiService.IoT.Models;
+using ZooApiService.IoT.Emulator;
 
 namespace ZooApiService.IoT
 {
     class Program
     {
-        private const string ApiUrl = "";
-        private const int EmulatedId = 123;
-
         static void Main(string[] args)
         {
-            using var httpClient = new HttpClient();
+            var configuration = CreateBuilder().Build();
 
-            var request = new
-            {
-                Id = EmulatedId,
-                Message = "Animal is Ok"
-            };
+            var endpoints = configuration.GetSection(nameof(Endpoints)).Get<Endpoints>();
+            var emulator = new EmulatorService(endpoints);
 
-            var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+            Task.Delay(5000).GetAwaiter().GetResult();
 
-            httpClient.PostAsync(ApiUrl, stringContent).GetAwaiter().GetResult();
+            var tokenSource = new CancellationTokenSource();
+            emulator.Emulate(tokenSource.Token);
+
+            Console.ReadKey();
+            tokenSource.Cancel();
+        }
+
+        private static IConfigurationBuilder CreateBuilder()
+        {
+            return new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
         }
     }
 }

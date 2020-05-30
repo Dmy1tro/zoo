@@ -33,7 +33,7 @@
             <mat-label>{{'Gender'| translate}}</mat-label>
             <mat-select formControlName="gender">
                 <mat-option *ngFor="let item of genders" [value]="item.value">
-                    {{ item.title }}
+                    {{ item.title | translate }}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="hasCustomError(animalForm, 'gender')">
@@ -50,6 +50,14 @@
                 {{'Date-of-birth'| translate}} {{'is-required'| translate}}
             </mat-error>
         </mat-form-field>
+
+        <div class="form-group mt-2">
+            <label>{{ 'Choose-pic' | translate }}</label>
+            <br>
+            <input class="form-control-file" #pictureFile multiple type="file" accept="image/*"
+                (change)="onUpload($event)" />
+            <br>
+        </div>
 
         <div class="row px-2 mt-4">
             <div class="col-md-6">

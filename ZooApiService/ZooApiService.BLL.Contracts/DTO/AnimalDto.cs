@@ -13,5 +13,9 @@ namespace ZooApiService.BLL.Contracts.DTO
         public string Gender { get; set; }
 
         public DateTime DateOfBirth { get; set; }
+
+        public byte[] Picture { get; set; }
+
+        public string ContentType { get; set; }
     }
 }
