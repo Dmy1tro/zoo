@@ -6,6 +6,7 @@ import { configureToastr } from 'src/app/core/helpers';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-change-avatar',
@@ -23,7 +24,8 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
 
   constructor(private employeeService: EmployeeService,
               private toastr: ToastrService,
-              private matDialogRef: MatDialogRef<ChangeAvatarComponent>) { }
+              private matDialogRef: MatDialogRef<ChangeAvatarComponent>,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     configureToastr(this.toastr);
@@ -56,11 +58,11 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.success('Done', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Done'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Update });
         },
         (err) => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         }
       );

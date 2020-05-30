@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 import { deleteConfirmImport, refreshDataImport } from 'src/app/core/helpers';
 import { CreateUpdateAnimalTypeComponent } from '../create-update-animal-type/create-update-animal-type.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-animal-type-list',
@@ -22,7 +23,8 @@ export class AnimalTypeListComponent implements OnInit, OnDestroy {
 
   constructor(private animalTypeService: AnimalTypeService,
               private toastr: ToastrService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.getAnimalTypes();
@@ -37,7 +39,7 @@ export class AnimalTypeListComponent implements OnInit, OnDestroy {
         },
         (err) => {
           console.log(err);
-          this.toastr.error('Failed to load animal types', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
         });
   }
 
@@ -55,7 +57,7 @@ export class AnimalTypeListComponent implements OnInit, OnDestroy {
   }
 
   delete(id) {
-    if (!deleteConfirmImport(this.animalTypes.find(x => x.animalTypeId === id).typeName)) {
+    if (!deleteConfirmImport(this.animalTypes.find(x => x.animalTypeId === id).typeName, this.translate.instant)) {
       return;
     }
 
@@ -64,10 +66,10 @@ export class AnimalTypeListComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           refreshDataImport(DataAction.Delete, this.animalTypes, null, (x: IAnimalType) => x.animalTypeId === id);
-          this.toastr.success('Animal deleted', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Deleted'), this.translate.instant(toastrTitle.Success));
         },
         (err) => {
-          this.toastr.error('Failed to delete animal', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         }
       );

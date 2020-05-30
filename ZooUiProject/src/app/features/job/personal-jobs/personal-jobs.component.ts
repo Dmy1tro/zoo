@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { JobStatus, DataAction } from 'src/app/core/constants/enums';
 import { IUserInfo } from 'src/app/core/interfaces/user-info.interface';
 import { AccountService } from '../../authentication/services/account.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-personal-jobs',
@@ -30,11 +31,13 @@ export class PersonalJobsComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder,
               private jobService: JobService,
               private authService: AccountService,
-              private toastr: ToastrService) { }
+              private toastr: ToastrService,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser;
-    this.jobStatuses = enumSelector(JobStatus);
+    this.jobStatuses = enumSelector(JobStatus, this.translate);
+    console.log(this.jobStatuses);
     this.createForm();
     this.getJobs();
     configureToastr(this.toastr);

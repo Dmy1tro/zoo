@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import { MaterialModule } from './material.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -14,13 +15,15 @@ import { MaterialModule } from './material.module';
     ReactiveFormsModule,
     RouterModule,
     ToastrModule.forRoot(),
-    MaterialModule
+    MaterialModule,
+    TranslateModule
   ],
   exports: [
     CommonModule,
-    ReactiveFormsModule,
     FormsModule,
-    MaterialModule
+    ReactiveFormsModule,
+    MaterialModule,
+    TranslateModule
   ]
 })
 export class SharedModule {

@@ -6,22 +6,22 @@
             </button>
         </div>
     </div>
-    <h3 class="text-center">Ration</h3>
+    <h3 class="text-center">{{'Ration' | translate}}</h3>
     <hr>
     <form [formGroup]="rationForm" novalidate (ngSubmit)="onSubmit()">
         <mat-form-field appearance="standard">
-            <mat-label>Food name</mat-label>
+            <mat-label>{{'Food-name' | translate}}</mat-label>
             <input matInput formControlName="foodName">
             <mat-error *ngIf="hasCustomError(rationForm, 'foodName')">
-                Food name is required
+                {{'Food-name' | translate}} {{'is-required' | translate}}
             </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="standard">
-            <mat-label>Description</mat-label>
+            <mat-label>{{'Description'| translate}}</mat-label>
             <textarea matInput placeholder="Some description" formControlName="description" rows="3"></textarea>
             <mat-error *ngIf="hasCustomError(rationForm, 'description')">
-                Description is required
+                {{'Description'| translate}} {{'is-required'| translate}}
             </mat-error>
         </mat-form-field>
 

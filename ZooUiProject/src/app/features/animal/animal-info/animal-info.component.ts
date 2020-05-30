@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AnimalManagementComponent } from '../animal-management/animal-management.component';
 import { RationComponent } from '../ration/ration.component';
 import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-animal-info',
@@ -33,7 +34,8 @@ export class AnimalInfoComponent implements OnInit, OnDestroy {
               private toastr: ToastrService,
               private rationService: RationService,
               private animalSerivce: AnimalService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.animalId = +this.route.snapshot.params.animalId;
@@ -79,7 +81,7 @@ export class AnimalInfoComponent implements OnInit, OnDestroy {
   }
 
   deleteRation(id) {
-    if (!deleteConfirmImport(this.rations.find(x => x.rationId === id).foodName)) {
+    if (!deleteConfirmImport(this.rations.find(x => x.rationId === id).foodName, this.translate.instant)) {
       return;
     }
 
@@ -88,10 +90,10 @@ export class AnimalInfoComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
         refreshDataImport(DataAction.Delete, this.rations, null, (x: IRation) => x.rationId === id);
-        this.toastr.success('Deleted', toastrTitle.Success);
+        this.toastr.success(this.translate.instant('Deleted'), this.translate.instant(toastrTitle.Success));
         },
         (err) => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         });
   }

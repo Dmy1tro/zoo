@@ -9,7 +9,7 @@
             <li class="list-group-item">
                 <span class="d-inline-flex">
                     <mat-icon>description</mat-icon>
-                    <b>Description: </b>
+                    <b>{{'Description' | translate}}: </b>
                 </span>
                 <br>
                 <span class="ml-1">
@@ -19,7 +19,7 @@
             <li class="list-group-item" *ngIf="employee">
                 <span class="d-inline-flex">
                     <mat-icon>person</mat-icon>
-                    <b>Responsible: </b>
+                    <b>{{'Responsible' | translate}}: </b>
                 </span>
                 <br>
                 <span class="ml-1">
@@ -29,7 +29,7 @@
             <li class="list-group-item">
                 <span class="d-inline-flex">
                     <mat-icon>info</mat-icon>
-                    <b>Status: </b>
+                    <b>{{'Status' | translate}}: </b>
                 </span>
                 <br>
                 <span class="ml-1">
@@ -39,7 +39,7 @@
             <li class="list-group-item">
                 <span class="d-inline-flex">
                     <mat-icon>perm_contact_calendar</mat-icon>
-                    <b>Creation date: </b>
+                    <b>{{'Creation-date' | translate}}: </b>
                 </span>
                 <br>
                 <span class="ml-1">
@@ -49,11 +49,11 @@
             <li class="list-group-item">
                 <span class="d-inline-flex">
                     <mat-icon>perm_contact_calendar</mat-icon>
-                    <b>Start date: </b>
+                    <b>{{'Start-date' | translate }}: </b>
                 </span>
                 <br>
                 <span class="ml-1">
-                    {{ job.startDate !== null ? (job.startDate | date: 'medium') : 'Not started' }}
+                    {{ job.startDate !== null ? (job.startDate | date: 'medium') : ('Not-started' | translate) }}
                 </span>
             </li>
             <li class="list-group-item">
@@ -63,7 +63,7 @@
                 </span>
                 <br>
                 <span class="ml-1">
-                    {{ job.finishDate !== null ? (job.finishDate | date: 'medium') : 'Not finished'  }}
+                    {{ job.finishDate !== null ? (job.finishDate | date: 'medium') : ('Not-finished' | translate)  }}
                 </span>
             </li>
         </ul>
@@ -71,25 +71,25 @@
     <div class="card-footer">
         <div class="d-flex justify-content-center">
             <ng-container *ngIf="isManager">
-                <button class="btn btn-warning mx-1" (click)="update()">Update</button>
-                <button class="btn btn-danger mx-1" (click)="delete()">Delete</button>
+                <button class="btn btn-warning mx-1" (click)="update()">{{'Update' | translate }}</button>
+                <button class="btn btn-danger mx-1" (click)="delete()">{{'Delete' | translate }}</button>
             </ng-container>
 
             <ng-container *ngIf="canDoJob">
                 <button mat-raised-button class="w-50" color="primary" 
                     *ngIf="job.status === 'Created'" (click)="startJob()">
                     <mat-icon>play_arrow</mat-icon>
-                    Start
+                    {{'Start' | translate}}
                 </button>
                 <button mat-raised-button class="w-50" color="primary" 
                     *ngIf="job.status === 'InProgress'" (click)="finishJob()">
                     <mat-icon>check_circle</mat-icon>
-                    Finish
+                    {{'Finish' | translate}}
                 </button>
                 <button mat-raised-button disabled class="w-50" 
                     *ngIf="job.status === 'Finished'">
                     <mat-icon class="mr-1">check</mat-icon>
-                    Finished
+                    {{'Finished' | translate}}
                 </button>
             </ng-container>
         </div>

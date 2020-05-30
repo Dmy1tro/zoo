@@ -5,7 +5,7 @@ import { AccountService } from 'src/app/features/authentication/services/account
 
 
 @Injectable()
-export class Interceptor implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
 
     constructor(private authService: AccountService) { }
 

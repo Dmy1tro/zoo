@@ -13,6 +13,7 @@ import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 import { CreateUpdateDeviceComponent } from '../create-update-device/create-update-device.component';
 import { IDeviceRecord } from 'src/app/core/interfaces/device-record.interface';
 import { DeviceRecordService } from '../services/device-record.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-smart-device-list',
@@ -35,7 +36,8 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
               private deviceRecordService: DeviceRecordService,
               private animalService: AnimalService,
               private toastr: ToastrService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -119,7 +121,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
   }
 
   delete(id) {
-    if (!deleteConfirmImport(this.devices.find(x => x.smartDeviceId === id).name)) {
+    if (!deleteConfirmImport(this.devices.find(x => x.smartDeviceId === id).name, this.translate.instant)) {
       return;
     }
 
@@ -128,10 +130,10 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           refreshDataImport(DataAction.Delete, this.devices, null, (x: IDevice) => x.smartDeviceId === id);
-          this.toastr.success('Created', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Created'), this.translate.instant(toastrTitle.Success));
         },
         (err) => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         }
       );

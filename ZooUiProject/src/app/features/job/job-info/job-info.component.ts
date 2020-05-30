@@ -11,6 +11,7 @@ import { IEmployee } from 'src/app/core/interfaces/employee-interface';
 import { CreateUpdateJobComponent } from '../create-update-job/create-update-job.component';
 import { toastrTitle, JobStatus, DataAction } from 'src/app/core/constants/enums';
 import { AccountService } from '../../authentication/services/account.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-job-info',
@@ -31,7 +32,8 @@ export class JobInfoComponent implements OnInit, OnChanges, OnDestroy {
               private employeeService: EmployeeService,
               private authService: AccountService,
               private toastr: ToastrService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.initValues();
@@ -72,7 +74,7 @@ export class JobInfoComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   delete() {
-    if (!deleteConfirmImport('Job: ' + this.job.title)) {
+    if (!deleteConfirmImport(this.translate.instant('Job') + ': ' + this.job.title, this.translate.instant)) {
       return;
     }
 
@@ -80,12 +82,12 @@ export class JobInfoComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.success('Deleted', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Deleted'), this.translate.instant(toastrTitle.Success));
           this.jobChanged.emit({ data: this.job, action: DataAction.Delete });
           this.job = null;
         },
         err => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         }
       );
@@ -96,11 +98,11 @@ export class JobInfoComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.success('Started', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Started'), this.translate.instant(toastrTitle.Success));
           this.refreshJob();
         },
         (err) => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         });
   }
@@ -109,11 +111,11 @@ export class JobInfoComponent implements OnInit, OnChanges, OnDestroy {
     this.jobService.finishJob(this.job.jobId)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        this.toastr.success('Finished', toastrTitle.Success);
+        this.toastr.success(this.translate.instant('Finished'), this.translate.instant(toastrTitle.Success));
         this.refreshJob();
       },
         (err) => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         });
   }

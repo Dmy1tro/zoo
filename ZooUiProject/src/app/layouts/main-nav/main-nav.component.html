@@ -1,22 +1,22 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="opened$">
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar>{{'Menu' | translate}}</mat-toolbar>
     <mat-nav-list>
       <ng-container *ngIf="isAuthenticated">
-        <a mat-list-item [routerLink]="['/animal/type-list']" routerLinkActive="active">Animal types</a>
-        <a mat-list-item [routerLink]="['/animal/animal-list']" routerLinkActive="active">Animals</a>
-        <a mat-list-item [routerLink]="['/device/device-list']" routerLinkActive="active">Devices</a>
+        <a mat-list-item [routerLink]="['/animal/type-list']" routerLinkActive="active">{{'Animal-types' | translate}}</a>
+        <a mat-list-item [routerLink]="['/animal/animal-list']" routerLinkActive="active">{{'Animals' | translate}}</a>
+        <a mat-list-item [routerLink]="['/device/device-list']" routerLinkActive="active">{{'Devices' | translate}}</a>
 
         <ng-container *ngIf="isManager">
-          <a mat-list-item [routerLink]="['/employee']" routerLinkActive="active">Employees</a>
-          <a mat-list-item [routerLink]="['/job/job-list']" routerLinkActive="active">Jobs</a>
+          <a mat-list-item [routerLink]="['/employee']" routerLinkActive="active">{{'Employees' | translate}}</a>
+          <a mat-list-item [routerLink]="['/job/job-list']" routerLinkActive="active">{{'Jobs' | translate}}</a>
         </ng-container>
 
-        <a mat-list-item [routerLink]="['/job/personal-jobs']" routerLinkActive="active">My jobs</a>
+        <a mat-list-item [routerLink]="['/job/personal-jobs']" routerLinkActive="active">{{'My-jobs' | translate}}</a>
       </ng-container>
       <ng-container *ngIf="!isAuthenticated">
-        <a mat-list-item [routerLink]="['/authentication']" routerLinkActive="active">Sign in</a>
+        <a mat-list-item [routerLink]="['/authentication']" routerLinkActive="active">{{'Sign-in' | translate}}</a>
       </ng-container>
     </mat-nav-list>
   </mat-sidenav>
@@ -26,25 +26,38 @@
         <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <span class="mr-2">Zoo service</span>
-        <ng-container *ngIf="isAuthenticated">
-          <div class="profile-block">
-            <button class="profile" mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">
-              <mat-icon>person</mat-icon>
-              Profile
+        <span class="mr-2">{{'Zoo-service' | translate}}</span>
+        <div class="profile-block">
+          <button class="mr-1 outline-none" mat-icon-button [matMenuTriggerFor]="settingsMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu class="menu outline-none" #settingsMenu="matMenu">
+            <mat-label class="ml-2">Language / мова</mat-label>
+            <button mat-menu-item class="outline-none" (click)="$event.stopPropagation();">
+              <span class="mr-1"> en </span>
+              <mat-slide-toggle [(ngModel)]="translateOn" (change)="changeLanguage($event)"
+                (click)="$event.stopPropagation();"></mat-slide-toggle>
+              <span class="ml-1"> ua </span>
             </button>
-            <mat-menu class="menu" #menu="matMenu">
-              <button mat-menu-item (click)="goProfile()">
+          </mat-menu>
+
+          <ng-container *ngIf="isAuthenticated">
+            <button class="profile outline-none" mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">
+              <mat-icon>person</mat-icon>
+              {{'Account' | translate}}
+            </button>
+            <mat-menu class="menu outline-none" #menu="matMenu">
+              <button mat-menu-item class="outline-none" (click)="goProfile()">
                 <mat-icon>account_circle</mat-icon>
-                Profile
+                {{'Profile' | translate}}
               </button>
-              <button mat-menu-item (click)="logOut()">
+              <button mat-menu-item class="outline-none" (click)="logOut()">
                 <mat-icon>exit_to_app</mat-icon>
-                Log out
+                {{'Log-out' | translate}}
               </button>
             </mat-menu>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </mat-toolbar-row>
     </mat-toolbar>
     <ng-content></ng-content>

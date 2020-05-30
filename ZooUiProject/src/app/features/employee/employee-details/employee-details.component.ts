@@ -10,6 +10,7 @@ import { enumSelector, deleteConfirmImport, refreshDataImport } from 'src/app/co
 import { Job, toastrTitle } from 'src/app/core/constants/enums';
 import { CreateUpdateEmployeeComponent } from '../create-update-employee/create-update-employee.component';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-employee-details',
@@ -30,10 +31,11 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
               private employeeService: EmployeeService,
               private router: Router,
               private toastr: ToastrService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.jobs = enumSelector(Job);
+    this.jobs = enumSelector(Job, this.translate);
     this.createForm();
     this.getEmployees();
   }
@@ -63,6 +65,10 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
 
   selectEmployee(id) {
     this.employeeSelected = this.employeeFiltered.find(x => x.id === id);
+
+    if (!this.employeeSelected.picture) {
+      this.employeeSelected.picture = './assets/images/userAvatar.png';
+    }
   }
 
   addOrUpdate(id) {
@@ -79,7 +85,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
   }
 
   delete(employee: IEmployee) {
-    if (!deleteConfirmImport(employee.firstName + ' ' + employee.lastName)) {
+    if (!deleteConfirmImport(employee.firstName + ' ' + employee.lastName, this.translate.instant)) {
       return;
     }
 
@@ -88,7 +94,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
       .subscribe(
         () => this.employees = this.employees.filter(x => x.id !== employee.id),
         (err) => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         });
   }

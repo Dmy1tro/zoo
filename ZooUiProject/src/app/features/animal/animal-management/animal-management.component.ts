@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 import { IAnimal } from 'src/app/core/interfaces/animal.interface';
 import { IAnimalType } from 'src/app/core/interfaces/animal-type.interface';
 import { AnimalTypeService } from '../common/animal-type.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-animal-management',
@@ -32,10 +33,11 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
               @Inject(MAT_DIALOG_DATA) private data: IAnimal,
               private matDialogRef: MatDialogRef<AnimalManagementComponent>,
               private toastr: ToastrService,
-              private datePipe: DatePipe) { }
+              private datePipe: DatePipe,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.genders = enumSelector(GENDER);
+    this.genders = enumSelector(GENDER, this.translate);
     this.getAnimalTypes();
     this.createForm();
     configureToastr(this.toastr);
@@ -50,7 +52,7 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
         },
         (err) => {
           console.log(err);
-          this.toastr.error('Failed to load animal types', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
         });
   }
 
@@ -81,11 +83,11 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          this.toastr.success('Animal created', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Created'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Create, data: res.createdId });
         },
         (err) => {
-          this.toastr.error('Failed to create animal', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         });
   }
@@ -101,11 +103,11 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.success('Animal updated', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Updated'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Update, data: this.data.animalId });
         },
         (err) => {
-          this.toastr.error('Failed to update animal', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         });
   }
@@ -115,7 +117,7 @@ export class AnimalManagementComponent implements OnInit, OnDestroy {
   }
 
   getButtonState = () =>
-    getButtonStateImport(this.data.animalId != null, 'Animal')
+    this.translate.instant(getButtonStateImport(this.data.animalId != null, 'Animal'))
 
   hasCustomError = (form: FormGroup, control: string) =>
     hasCustomErrorImport(form, control)

@@ -28,7 +28,11 @@
 
 .profile-block {
   position: absolute;
-  right: 10%;
+  right: 11%;
+}
+
+.outline-none {
+  outline: none !important;
 }
 
 ::ng-deep .menu button {

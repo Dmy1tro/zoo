@@ -6,14 +6,14 @@
                 </button>
             </div>
         </div>
-        <h3 class="text-center">Animal type</h3>
+        <h3 class="text-center">{{'Animal-type' | translate}}</h3>
         <hr>
         <form [formGroup]="animalTypeForm" novalidate (ngSubmit)="onSubmit()">
             <mat-form-field appearance="standard">
-                <mat-label>Type Name</mat-label>
+                <mat-label>{{'Type-name' | translate}}</mat-label>
                 <input matInput formControlName="typeName">
                 <mat-error *ngIf="hasCustomError(animalTypeForm, 'typeName')">
-                    Type name is required
+                    {{'Type-name' | translate}} {{'is-required'| translate}}
                 </mat-error>
             </mat-form-field>
 

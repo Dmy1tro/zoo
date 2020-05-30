@@ -10,6 +10,7 @@ import { IEmployee } from 'src/app/core/interfaces/employee-interface';
 import { EmployeeService } from '../../employee/common/employee.service';
 import { takeUntil } from 'rxjs/operators';
 import { toastrTitle, JobStatus, DataAction } from 'src/app/core/constants/enums';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-update-job',
@@ -30,11 +31,12 @@ export class CreateUpdateJobComponent implements OnInit, OnDestroy {
               private employeeService: EmployeeService,
               @Inject(MAT_DIALOG_DATA) private data: IJob,
               private matDialogRef: MatDialogRef<CreateUpdateJobComponent>,
-              private toastr: ToastrService) { }
+              private toastr: ToastrService,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.isUpdate = this.data.jobId != null;
-    this.jobStatuses = enumSelector(JobStatus);
+    this.jobStatuses = enumSelector(JobStatus, this.translate);
     this.createForm();
     this.getEmployees();
     configureToastr(this.toastr);
@@ -78,11 +80,11 @@ export class CreateUpdateJobComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          this.toastr.success('Created', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Created'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Create, data: res.createdId });
         },
         (err) => {
-          this.toastr.error('Failed to create', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         }
       );
@@ -96,11 +98,11 @@ export class CreateUpdateJobComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.success('Updated', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Updated'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Update, data: this.data.jobId });
         },
         err => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         }
       );
@@ -111,7 +113,7 @@ export class CreateUpdateJobComponent implements OnInit, OnDestroy {
   }
 
   getButtonState = () =>
-    getButtonStateImport(this.data.jobId != null, 'Job')
+    this.translate.instant(getButtonStateImport(this.data.jobId != null, 'Job'))
 
   hasCustomError = (form: FormGroup, control: string) =>
     hasCustomErrorImport(form, control)

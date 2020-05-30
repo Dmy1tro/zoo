@@ -12,6 +12,7 @@ import { EmployeeService } from '../../employee/common/employee.service';
 import { configureToastr, enumSelector, refreshDataImport } from 'src/app/core/helpers';
 import { JobStatus } from 'src/app/core/constants/enums';
 import { CreateUpdateJobComponent } from '../create-update-job/create-update-job.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-job-list',
@@ -36,13 +37,14 @@ export class JobListComponent implements OnInit, OnDestroy {
               private jobService: JobService,
               private employeeService: EmployeeService,
               private toastr: ToastrService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     if (this.route.snapshot.params.employeeId) {
       this.employeeId = this.route.snapshot.params.employeeId;
     }
-    this.jobStatuses = enumSelector(JobStatus);
+    this.jobStatuses = enumSelector(JobStatus, this.translate);
     this.createForm();
     this.getJobs();
     this.getEmployees();

@@ -6,62 +6,62 @@
             </button>
         </div>
     </div>
-    <h3 class="text-center">Job</h3>
+    <h3 class="text-center">{{'Job' | translate }}</h3>
     <hr>
     <form [formGroup]="jobForm" novalidate (ngSubmit)="onSubmit()">
         <mat-form-field appearance="standard">
-            <mat-label>Employee</mat-label>
+            <mat-label>{{'Employee' | translate}}</mat-label>
             <mat-select formControlName="employeeId">
                 <mat-option *ngFor="let item of employees" [value]="item.id">
                     {{ item.firstName + ' ' + item.lastName }}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="hasCustomError(jobForm, 'employeeId')">
-                Employee is required
+                {{'Employee' | translate}} {{'is-required' | translate}}
             </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="standard">
-            <mat-label>Title</mat-label>
+            <mat-label>{{'Title' | translate}}</mat-label>
             <input matInput placeholder="title" formControlName="title">
             <mat-error *ngIf="hasCustomError(jobForm, 'title')">
-                Title is required
+                {{'Title' | translate}} {{'is-required' | translate}}
             </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="standard">
-            <mat-label>Description</mat-label>
+            <mat-label>{{'Description' | translate}}</mat-label>
             <textarea matInput placeholder="Some description" formControlName="description" rows="3"></textarea>
           </mat-form-field>
 
         <div class="row" *ngIf="showFullForm">
             <div class="col-md-6">
                      <mat-form-field appearance="standard">
-                        <mat-label>Status</mat-label>
+                        <mat-label>{{'Status' | translate }}</mat-label>
                         <mat-select formControlName="status">
                             <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
                                 {{ item.title }}
                             </mat-option>
                         </mat-select>
                         <mat-error *ngIf="hasCustomError(jobForm, 'status')">
-                            Status is required
+                            {{'Status'| translate}} {{'is-required' | translate}}
                         </mat-error>
                     </mat-form-field>
             </div>
             <div class="col-md-6">
                 <mat-form-field color="primary" appearance="standard">
-                    <mat-label>Creation Date</mat-label>
+                    <mat-label>{{'Creation-date' | translate}}</mat-label>
                     <input matInput [matDatepicker]="picker1" formControlName="creationDate">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1 disabled="false"></mat-datepicker>
                     <mat-error *ngIf="hasCustomError(jobForm, 'creationDate')">
-                        Creation date is required
+                        {{'Creation-date' | translate}} {{'is-required' | translate}}
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="col-md-6">
                 <mat-form-field color="primary" appearance="standard">
-                    <mat-label>Start date</mat-label>
+                    <mat-label>{{'Start-date' | translate}}</mat-label>
                     <input matInput [matDatepicker]="picker2" formControlName="startDate">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2 disabled="false"></mat-datepicker>
@@ -69,7 +69,7 @@
             </div>
             <div class="col-md-6">
                 <mat-form-field color="primary" appearance="standard">
-                    <mat-label>Finish date</mat-label>
+                    <mat-label>{{'Finish-date' | translate}}</mat-label>
                     <input matInput [matDatepicker]="picker3" formControlName="finishDate">
                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                     <mat-datepicker #picker3 disabled="false"></mat-datepicker>

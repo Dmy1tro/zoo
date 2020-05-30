@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable, Subject, of } from 'rxjs';
-import { map, shareReplay, takeUntil, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountService } from 'src/app/features/authentication/services/account.service';
 import { Router } from '@angular/router';
 import { IUserInfo } from 'src/app/core/interfaces/user-info.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { ChangePasswordComponent } from 'src/app/features/authentication/change-password/change-password.component';
-import { ChangeAvatarComponent } from 'src/app/features/employee/change-avatar/change-avatar.component';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { LocalizationService } from 'src/app/shared/localization.service';
 
 @Component({
   selector: 'app-main-nav',
@@ -22,14 +21,17 @@ export class MainNavComponent implements OnInit, OnDestroy {
       shareReplay()
     );
 
-  currentUser: IUserInfo = null;
+  translateOn: boolean;
   opened$ = false;
+
+  private currentUser: IUserInfo = null;
+  private currentLocale: string;
   private destroy$ = new Subject<void>();
 
   constructor(private breakpointObserver: BreakpointObserver,
               private authService: AccountService,
               private router: Router,
-              private matDialog: MatDialog) {}
+              private localizationService: LocalizationService) {}
 
   ngOnInit() {
     this.authService.currentUser
@@ -48,6 +50,14 @@ export class MainNavComponent implements OnInit, OnDestroy {
     return this.authService.isManager;
   }
 
+  changeLanguage(event: MatSlideToggleChange) {
+    if (event.checked) {
+      this.localeUA();
+    } else {
+      this.localeEN();
+    }
+  }
+
   goProfile() {
     this.router.navigate(['/employee/profile']);
   }
@@ -55,6 +65,14 @@ export class MainNavComponent implements OnInit, OnDestroy {
   logOut() {
     this.authService.logOut();
     this.router.navigate(['/authentication']);
+  }
+
+  private localeUA() {
+    this.localizationService.localeUA();
+  }
+
+  private localeEN() {
+    this.localizationService.localeEN();
   }
 
   ngOnDestroy() {

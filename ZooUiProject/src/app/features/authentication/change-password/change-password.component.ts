@@ -8,6 +8,7 @@ import { IUserInfo } from 'src/app/core/interfaces/user-info.interface';
 import { configureToastr } from 'src/app/core/helpers';
 import { takeUntil } from 'rxjs/operators';
 import { toastrTitle } from 'src/app/core/constants/enums';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-change-password',
@@ -27,7 +28,8 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   constructor(private authService: AccountService,
               private toastr: ToastrService,
               private fb: FormBuilder,
-              private matDialogRef: MatDialogRef<ChangePasswordComponent>) { }
+              private matDialogRef: MatDialogRef<ChangePasswordComponent>,
+              private trasnlate: TranslateService) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -77,11 +79,11 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.success('Changed', toastrTitle.Success);
+          this.toastr.success(this.trasnlate.instant('Changed'), this.trasnlate.instant(toastrTitle.Success));
           this.matDialogRef.close();
         },
         (err) => {
-          this.toastr.error('Filed', toastrTitle.Error);
+          this.toastr.error(this.trasnlate.instant('Failed'), this.trasnlate.instant(toastrTitle.Error));
           console.log(err);
         }
       );

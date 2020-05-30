@@ -18,7 +18,8 @@ import { AnimalInfoComponent } from './animal-info/animal-info.component';
     AnimalManagementComponent,
     AnimalTypeListComponent,
     CreateUpdateAnimalTypeComponent,
-    AnimalInfoComponent],
+    AnimalInfoComponent
+  ],
   imports: [
     CommonModule,
     AnimalRoutingModule,

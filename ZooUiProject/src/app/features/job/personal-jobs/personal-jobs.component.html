@@ -1,17 +1,17 @@
 <div class="row pl-1">
     <div class="col-md-8">
         <div class="text-center my-2">
-            <h3>My jobs</h3>
+            <h3>{{'My-jobs' | translate}}</h3>
         </div>
         <hr>
         <form [formGroup]="filterForm" novalidate>
             <div class="row">
                 <div class="col-md-3">
                     <mat-form-field appearance="standard">
-                        <mat-label>Status</mat-label>
+                        <mat-label>{{'Status' | translate}}</mat-label>
                         <mat-select formControlName="status" (selectionChange)="selectStatus($event.value)">
                             <mat-option [value]="'*'">
-                                All
+                                {{'All' | translate}}
                             </mat-option>
                             <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
                                 {{ item.title }}
@@ -33,16 +33,16 @@
             <thead class="thead-light">
                 <tr class="d-flex">
                     <th class="col-md-3" scope="col">
-                        Title
+                        {{'Title' | translate}}
                     </th>
                     <th class="col-md-4" scope="col">
-                        Creation date
+                        {{'Creation-date' | translate}}
                     </th>
                     <th class="col-md-2" scope="col">
-                        Status
+                        {{'Status' | translate}}
                     </th>
                     <th class="col-md-3" scope="col">
-                        Details
+                        {{'Details' | translate}}
                     </th>
                 </tr>
             </thead>
@@ -61,13 +61,13 @@
                         <button class="btn btn-info w-75 d-inline-flex justify-content-center" 
                             [class.disabled]="jobSelected && jobSelected.jobId === item.jobId" (click)="selectJob(item)">
                             <mat-icon class="mr-1">info</mat-icon>
-                            Info
+                            {{'Info' | translate}}
                         </button>
                     </td>
                 </tr>
                 <tr *ngIf="jobsFiltered.length === 0">
                     <td>
-                        <p>There are no jobs...</p>
+                        <p>{{'Empty' | translate}}</p>
                     </td>
                 </tr>
             </tbody>
@@ -75,7 +75,7 @@
     </div>
     <div class="col-md-4" *ngIf="jobSelected">
         <div class="text-center my-2">
-            <h3>Job info</h3>
+            <h3>{{'Info' | translate}}</h3>
         </div>
         <hr>
         <app-job-info [job]="jobSelected" (jobChanged)="jobChanged($event)"></app-job-info>

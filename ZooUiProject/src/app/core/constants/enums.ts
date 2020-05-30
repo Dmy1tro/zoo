@@ -18,7 +18,7 @@ export enum Job {
 
 export enum JobStatus {
     Created = 'Created',
-    InProgress = 'In progress',
+    InProgress = 'In-progress',
     Finished = 'Finished'
 }
 

@@ -6,8 +6,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { configureToastr, getButtonStateImport, hasCustomErrorImport } from 'src/app/core/helpers';
-import { takeWhile, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-update-device',
@@ -24,7 +25,8 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
               private deviceService: DeviceService,
               @Inject(MAT_DIALOG_DATA) private data: IDevice,
               private matDialogRef: MatDialogRef<CreateUpdateDeviceComponent>,
-              private toastr: ToastrService) { }
+              private toastr: ToastrService,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -53,11 +55,11 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          this.toastr.success('Created', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Created'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Create, data: res.createdId });
         },
         (err) => {
-          this.toastr.error('Failed to create', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         });
   }
@@ -70,11 +72,11 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
      .pipe(takeUntil(this.destroy$))
      .subscribe(
       () => {
-        this.toastr.success('Updated', toastrTitle.Success);
+        this.toastr.success(this.translate.instant('Updated'), this.translate.instant(toastrTitle.Success));
         this.matDialogRef.close({ action: DataAction.Update, data: this.data.smartDeviceId });
       },
       (err) => {
-        this.toastr.error('Failed to update', toastrTitle.Error);
+        this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
         console.log(err);
       });
   }
@@ -84,7 +86,7 @@ export class CreateUpdateDeviceComponent implements OnInit, OnDestroy {
   }
 
   getButtonState = () =>
-    getButtonStateImport(this.data.smartDeviceId != null, 'Device')
+    this.translate.instant(getButtonStateImport(this.data.smartDeviceId != null, 'Device'))
 
   hasCustomError = (form: FormGroup, control: string) =>
     hasCustomErrorImport(form, control)

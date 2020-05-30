@@ -8,6 +8,7 @@ import { RationService } from '../common/ration.service';
 import { takeUntil } from 'rxjs/operators';
 import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ration',
@@ -24,7 +25,8 @@ export class RationComponent implements OnInit, OnDestroy {
               private toastr: ToastrService,
               private rationService: RationService,
               @Inject(MAT_DIALOG_DATA) private data: IRation,
-              private matDialogRef: MatDialogRef<RationComponent>) { }
+              private matDialogRef: MatDialogRef<RationComponent>,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -54,11 +56,11 @@ export class RationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          this.toastr.success('Created', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Created'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Create, data: res.createdId });
         },
         (err) => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         }
       );
@@ -73,11 +75,11 @@ export class RationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.success('Updated', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Updated'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Update, data: this.data.rationId });
         },
         (err) => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         }
       );
@@ -88,7 +90,7 @@ export class RationComponent implements OnInit, OnDestroy {
   }
 
   getButtonState = (): string =>
-    getButtonStateImport(this.data.rationId !== null, 'Ration')
+    this.translate.instant(getButtonStateImport(this.data.rationId !== null, 'Ration'))
 
   hasCustomError = (form: FormGroup, control: string): boolean =>
     hasCustomErrorImport(form, control)

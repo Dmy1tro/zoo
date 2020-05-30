@@ -1,17 +1,17 @@
 <div class="row">
     <div class="col-md-7">
         <div class="text-center my-2">
-            <h3>Device management</h3>
+            <h3>{{'Device-management' | translate }}</h3>
         </div>
         <hr>
         <form [formGroup]="filterForm" novalidate>
             <div class="row ml-1">
                 <div class="col-md-5">
                     <mat-form-field appearance="standard">
-                        <mat-label>Animal type</mat-label>
+                        <mat-label>{{'Animal-type' | translate}}</mat-label>
                         <mat-select formControlName="typeName" (selectionChange)="selectedAnimalType($event.value)">
                             <mat-option [value]="'*'">
-                                All
+                                {{'All' | translate}}
                             </mat-option>
                             <mat-option *ngFor="let item of typeNames" [value]="item">
                                 {{ item }}
@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-md-5">
                     <mat-form-field appearance="standard">
-                        <mat-label>Animal name</mat-label>
+                        <mat-label>{{'Animal' | translate}}</mat-label>
                         <mat-select formControlName="animalId" (selectionChange)="selectAnimal($event.value)">
                             <mat-option *ngFor="let item of animalsFiltered" [value]="item.animalId">
                                 {{ item.name }}
@@ -44,13 +44,13 @@
                 <thead class="thead-light">
                     <tr class="d-flex">
                         <th class="col-md-7 pointer" scope="col">
-                            Device name
+                            {{'Title' | translate}}
                         </th>
                         <th class="col-md-5" scope="col">
                             <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdate(null)"
                                 [disabled]="!canCreate">
                                 <mat-icon>add</mat-icon>
-                                Create Device
+                                {{'Create-device' | translate}}
                             </button>
                         </th>
                     </tr>
@@ -71,7 +71,7 @@
                     </tr>
                     <tr *ngIf="devices.length === 0">
                         <td>
-                            <p>No devices...</p>
+                            <p>{{'Empty' | translate}}</p>
                         </td>
                     </tr>
                 </tbody>
@@ -81,7 +81,7 @@
 
     <div class="col-md-5" *ngIf="canOpenRecords">
         <div class="text-center my-2">
-            <h3>Device records</h3>
+            <h3>{{'Device-records' | translate}}</h3>
         </div>
         <hr>
         <ul class="list-group mt-1">
@@ -89,12 +89,12 @@
                 <div class="row px-2">
                     <div class="col-md-9 my-auto">
                         <h5>
-                            Message
+                            {{'Message' | translate}}
                         </h5>
                     </div>
                     <div class="col-md-3 my-auto">
                         <h5>
-                            Date
+                            {{'Date' | translate}}
                         </h5>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                 </div>
             </li>
             <li class="list-group-item" *ngIf="deviceRecords.length === 0">
-                <h6 class="px-2"><i>No messages yet...</i></h6>
+                <h6 class="px-2"><i>{{'Empty' | translate}}</i></h6>
             </li>
         </ul>
     </div>

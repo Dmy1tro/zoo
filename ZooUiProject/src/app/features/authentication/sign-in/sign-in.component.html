@@ -1,8 +1,8 @@
 <div class="text-center mt-2">
-    <h3>Welcome</h3>
+    <h3>{{'Welcome' | translate}}</h3>
     <div>
         <span>
-            To get started, you need to sign in
+            {{'Get-started' | translate}}
         </span>
     </div>
 </div>
@@ -10,16 +10,16 @@
     <form [formGroup]="signInForm" novalidate (ngSubmit)="onSubmit()">
         <mat-card class="card-spacer">
             <mat-card-header class="d-flex justify-content-center">
-                <mat-card-title class="text-size-md">Login to App</mat-card-title>
+                <mat-card-title class="text-size-md">{{'Log-to-app' | translate}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <mat-form-field appearance="standard">
-                    <mat-label>Email</mat-label>
+                    <mat-label>{{'Email' | translate}}</mat-label>
                     <input matInput placeholder="example@qq.com" type="email" formControlName="email">
                 </mat-form-field>
                 
                 <mat-form-field appearance="standard">
-                    <mat-label>Password</mat-label>
+                    <mat-label>{{'Password' | translate}}</mat-label>
                     <input matInput placeholder="*******" [type]="hide ? 'password' : 'text'"
                         formControlName="password">
                     <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
@@ -30,7 +30,7 @@
             </mat-card-content>
             <mat-card-actions class="d-flex justify-content-center">
                 <button mat-raised-button class="w-75" color="primary" type="submit">
-                    Sign in
+                    {{'Sign-in' | translate}}
                 </button>
             </mat-card-actions>
         </mat-card>

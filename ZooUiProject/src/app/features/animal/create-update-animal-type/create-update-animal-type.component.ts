@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { configureToastr, getButtonStateImport, hasCustomErrorImport } from 'src/app/core/helpers';
 import { takeUntil } from 'rxjs/operators';
 import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-update-animal-type',
@@ -24,7 +25,8 @@ export class CreateUpdateAnimalTypeComponent implements OnInit, OnDestroy {
               private animalTypeService: AnimalTypeService,
               @Inject(MAT_DIALOG_DATA) private data: IAnimalType,
               private matDialogRef: MatDialogRef<CreateUpdateAnimalTypeComponent>,
-              private toastr: ToastrService) { }
+              private toastr: ToastrService,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -52,11 +54,11 @@ export class CreateUpdateAnimalTypeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          this.toastr.success('Created', toastrTitle.Success);
+          this.toastr.success(this.translate.instant('Created'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Create, data: res.createdId });
         },
         (err) => {
-          this.toastr.error('Failed to create', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         });
   }
@@ -69,11 +71,11 @@ export class CreateUpdateAnimalTypeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.success('Updated', toastrTitle.Success);
+          this.toastr.error(this.translate.instant('Updated'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Update, data: this.data.animalTypeId });
         },
         (err) => {
-          this.toastr.error('Failed to update', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         });
   }
@@ -83,7 +85,7 @@ export class CreateUpdateAnimalTypeComponent implements OnInit, OnDestroy {
   }
 
   getButtonState = () =>
-    getButtonStateImport(this.data.animalTypeId != null, 'Animal type')
+    this.translate.instant(getButtonStateImport(this.data.animalTypeId != null, 'Animal-type'))
 
   hasCustomError = (form: FormGroup, control: string) =>
     hasCustomErrorImport(form, control)

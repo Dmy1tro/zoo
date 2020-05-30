@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { AnimalManagementComponent } from '../animal-management/animal-management.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-animal-details',
@@ -31,7 +32,8 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
               private router: Router,
               private animalService: AnimalService,
               private toastr: ToastrService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              public translateService: TranslateService) { }
 
   ngOnInit(): void {
     this.getAnimals();
@@ -75,7 +77,7 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteAnimal(id) {
-    if (!deleteConfirmImport(this.animals.find(x => x.animalId === id).name)) {
+    if (!deleteConfirmImport(this.animals.find(x => x.animalId === id).name, this.translateService.instant)) {
       return;
     }
 
@@ -84,10 +86,10 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           refreshDataImport(DataAction.Delete, this.animals, null, (x: IAnimalFull) => x.animalId === id);
-          this.toastr.success('Animal deleted', toastrTitle.Success);
+          this.toastr.success(this.translateService.instant('Deleted'), this.translateService.instant(toastrTitle.Success));
         },
         (err) => {
-          this.toastr.error('Failed to delete animal', toastrTitle.Error);
+          this.toastr.error(this.translateService.instant('Failed'), this.translateService.instant(toastrTitle.Error));
           console.log(err);
         }
       );

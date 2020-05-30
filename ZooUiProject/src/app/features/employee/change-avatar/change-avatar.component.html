@@ -6,24 +6,24 @@
             </button>
         </div>
     </div>
-    <h3 class="text-center">Picture</h3>
+    <h3 class="text-center">{{'Picture' | translate}}</h3>
     <hr>
     <form novalidate (ngSubmit)="onSubmit()">
         <div class="form-group">
-            <label>Choose a picture</label>
+            <label>{{ 'Choose-pic' | translate }}</label>
             <br>
             <input class="form-control-file" #pictureFile multiple type="file" accept="image/*"
                 (change)="onUpload($event)" />
             <br>
             <mat-error *ngIf="hasError">
-                Picture is required
+                {{'Picture' | translate}} {{'is-required' | translate}}
             </mat-error>
         </div>
 
         <div class="row px-2 mt-4">
             <div class="col-md-6">
                 <button mat-raised-button class="btn-block" type="submit" color="primary">
-                    Save
+                    {{'Save' | translate }}
                 </button>
             </div>
             <div class="col-md-6">

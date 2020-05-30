@@ -6,58 +6,58 @@
             </button>
         </div>
     </div>
-    <h3 class="text-center">Employee</h3>
+    <h3 class="text-center">{{'Employee' | translate }}</h3>
     <hr>
     <form [formGroup]="employeeForm" novalidate (ngSubmit)="onSubmit()">
         <div class="row">
             <div class="col-md-6">
                 <mat-form-field appearance="standard">
-                    <mat-label>First name</mat-label>
+                    <mat-label>{{'First-name' | translate}}</mat-label>
                     <input matInput formControlName="firstName">
                     <mat-error *ngIf="hasCustomError(employeeForm, 'firstName')">
-                        First name is required
+                        {{'First-name' | translate}} {{'is-required' | translate}}
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="col-md-6">
                 <mat-form-field appearance="standard">
-                    <mat-label>Last name</mat-label>
+                    <mat-label>{{'Last-name' | translate}}</mat-label>
                     <input matInput formControlName="lastName">
                     <mat-error *ngIf="hasCustomError(employeeForm, 'lastName')">
-                        Last name is required
+                        {{'Last-name' | translate}} {{'is-required' | translate}}
                     </mat-error>
                 </mat-form-field>
             </div>
         </div>
         <mat-form-field appearance="standard">
-            <mat-label>Email</mat-label>
+            <mat-label>{{'Email' | translate}}</mat-label>
             <input matInput formControlName="email" type="email">
             <mat-error *ngIf="hasCustomError(employeeForm, 'email')">
-                Email is required
+                {{'Email' | translate}} {{'is-required' | translate}}
             </mat-error>
         </mat-form-field>
         <div class="row">
             <div class="col-md-6">
                 <mat-form-field color="primary" appearance="standard">
-                    <mat-label>Date of birth</mat-label>
+                    <mat-label>{{'Date-of-birth' | translate}}</mat-label>
                     <input matInput [matDatepicker]="picker1" formControlName="dateOfBirth" readonly>
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1 disabled="false"></mat-datepicker>
                     <mat-error *ngIf="hasCustomError(employeeForm, 'dateOfBirth')">
-                        Date of birth is required
+                        {{'Date-of-birth' | translate}} {{'is-required' | translate}}
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="col-md-6">
                 <mat-form-field appearance="standard">
-                    <mat-label>Gender</mat-label>
+                    <mat-label>{{'Gender' | translate}}</mat-label>
                     <mat-select formControlName="gender">
                         <mat-option *ngFor="let item of genders" [value]="item.value">
                             {{ item.title }}
                         </mat-option>
                     </mat-select>
                     <mat-error *ngIf="hasCustomError(employeeForm, 'gender')">
-                        Gender is required
+                        {{'Gender' | translate}} {{'is-required' | translate}}
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -66,27 +66,27 @@
         <div class="row">
             <div class="col-md-6">
                 <mat-form-field appearance="standard">
-                    <mat-label>Job position</mat-label>
+                    <mat-label>{{ 'Job-pos' | translate }}</mat-label>
                     <mat-select formControlName="position">
                         <mat-option *ngFor="let item of jobs" [value]="item.value">
                             {{ item.title }}
                         </mat-option>
                     </mat-select>
                     <mat-error *ngIf="hasCustomError(employeeForm, 'position')">
-                        Position is required
+                        {{'Job-pos' | translate}} {{'is-required' | translate}}
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="col-md-6">
                 <mat-form-field appearance="standard">
-                    <mat-label>Role</mat-label>
+                    <mat-label>{{'Role' | translate}}</mat-label>
                     <mat-select formControlName="role">
                         <mat-option *ngFor="let item of roles" [value]="item.value">
                             {{ item.title }}
                         </mat-option>
                     </mat-select>
                     <mat-error *ngIf="hasCustomError(employeeForm, 'role')">
-                        Role is required
+                        {{'Role' | translate}} {{'is-required' | translate}}
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -95,7 +95,7 @@
         <div class="row" *ngIf="showPasswordForm">
             <div class="col-md-6">
                 <mat-form-field appearance="standard">
-                    <mat-label>Password</mat-label>
+                    <mat-label>{{'Password' | translate}}</mat-label>
                     <input matInput [type]="hide ? 'password' : 'text'" 
                         formControlName="password" (input)="checkPasswordsMatch($event.value)">
                     <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
@@ -103,13 +103,13 @@
                         <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
                     <mat-error>
-                        Password is required. Minimum 6 characters 
+                        {{'Password' | translate}} {{'is-required' | translate}}. {{ 'min-6' | translate }}
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="col-md-6">
                 <mat-form-field appearance="standard">
-                    <mat-label>Confirm password</mat-label>
+                    <mat-label>{{'Confirm-password' | translate}}</mat-label>
                     <input matInput [type]="hideConfirm ? 'password' : 'text'" 
                         formControlName="confirmPassword" (input)="checkPasswordsMatch($event.value)">
                     <button type="button" mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm"
@@ -117,7 +117,7 @@
                         <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
                     <mat-error>
-                        {{ passError }}
+                        {{ 'Pass-not-match' | translate }}
                     </mat-error>
                 </mat-form-field>
             </div>

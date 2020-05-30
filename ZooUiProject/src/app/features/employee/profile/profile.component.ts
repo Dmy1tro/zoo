@@ -28,7 +28,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   getProfile() {
     this.employeeService.profile()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(data => this.employee = data);
+      .subscribe(data => {
+        this.employee = data;
+
+        if (!this.employee.picture) {
+          this.employee.picture = './assets/images/userAvatar.png';
+        }
+      });
   }
 
   changeAvatar() {

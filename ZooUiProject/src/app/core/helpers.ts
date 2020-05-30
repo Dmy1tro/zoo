@@ -3,10 +3,11 @@ import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
 import { IEnumSelect } from './interfaces/enum-select.interface';
 import { DataAction } from './constants/enums';
+import { MissingTranslationHandler, MissingTranslationHandlerParams, TranslateService } from '@ngx-translate/core';
 
-export function enumSelector(data): IEnumSelect[] {
+export function enumSelector(data, translator: TranslateService): IEnumSelect[] {
     return Object.keys(data)
-        .map(key => ({ value: key, title: data[key] }));
+        .map(key => ({ value: key, title: translator.instant(data[key]) }));
 }
 
 export const convertToISOFormat = (date, datePipe: DatePipe): string => {
@@ -18,11 +19,11 @@ export const configureToastr = (toastr: ToastrService) => {
     toastr.toastrConfig.timeOut = 1780;
 };
 
-export const deleteConfirmImport = (name: string): boolean =>
-    confirm(`Are you sure you want to delete ${name}?`);
+export const deleteConfirmImport = (name: string, translate: (str: string) => string): boolean =>
+    confirm(translate(`Are-you-sure-you-want-to-delete`) + ' ' + `${name}` + `?`);
 
 export const getButtonStateImport = (update: boolean, name: string): string =>
-    update ? `Update ${name}` : `Create ${name}`;
+    update ? `Update-${name.toLowerCase()}` : `Create-${name.toLowerCase()}`;
 
 export const refreshDataImport = (action: string, arr: Array<any>, item, predicate: (val) => boolean): void => {
     switch (action) {
@@ -47,3 +48,9 @@ export const hasCustomErrorImport = (form: FormGroup, control: string): boolean 
 
 export const hasPatternErrorImport = (form: FormGroup, control: string): boolean =>
     (form.get(`${control}`).invalid && form.get(`${control}`).dirty);
+
+export class MissingTranslationService implements MissingTranslationHandler {
+    handle(params: MissingTranslationHandlerParams) {
+        return `WARN: '${params.key}' is missing in '${params.translateService.currentLang}' locale`;
+    }
+}

@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { toastrTitle } from 'src/app/core/constants/enums';
 import { Router } from '@angular/router';
 import { configureToastr } from 'src/app/core/helpers';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sign-in',
@@ -23,7 +24,8 @@ export class SignInComponent implements OnInit, OnDestroy {
   constructor(private authService: AccountService,
               private fb: FormBuilder,
               private toastr: ToastrService,
-              private router: Router) { }
+              private router: Router,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     if (this.authService.getCurrentUser) {
@@ -54,11 +56,10 @@ export class SignInComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.success('Logged in', toastrTitle.Success);
           this.router.navigate(['/']);
         },
         (err) => {
-          this.toastr.error('Failed', toastrTitle.Error);
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
           console.log(err);
         }
       );
