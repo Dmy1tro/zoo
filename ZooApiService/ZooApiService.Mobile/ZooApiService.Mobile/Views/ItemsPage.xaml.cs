@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace ZooApiService.Mobile.Views
         public ItemsPage()
         {
             InitializeComponent();
-
+            
             BindingContext = viewModel = new ItemsViewModel();
         }
 
@@ -43,7 +44,7 @@ namespace ZooApiService.Mobile.Views
         {
             base.OnAppearing();
 
-            if (viewModel.Items.Count == 0)
+            if (viewModel.Jobs.Count == 0)
                 viewModel.IsBusy = true;
         }
     }

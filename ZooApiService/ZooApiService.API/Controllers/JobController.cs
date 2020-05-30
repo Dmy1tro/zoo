@@ -12,7 +12,7 @@ namespace ZooApiService.API.Controllers
     [Route("api/jobs")]
     [ApiController]
     [Authorize(Policy = PolicyName.ForAllUsers)]
-    public class JobController : ControllerBase
+    public class JobController : BaseApiController
     {
         private readonly IJobService _jobService;
         private readonly IMapper _mapper;
@@ -37,6 +37,14 @@ namespace ZooApiService.API.Controllers
             var jobDto = await _jobService.GetJobAsync(id);
 
             return Ok(jobDto);
+        }
+
+        [HttpGet("my-jobs")]
+        public async Task<IActionResult> MyJobs()
+        {
+            var jobs = await _jobService.GetJobsForEmployeeAsync(CurrentUser.UserId, null);
+
+            return Ok(jobs);
         }
 
         [HttpGet("for-employee/{employeeId}/{jobStatus?}")]

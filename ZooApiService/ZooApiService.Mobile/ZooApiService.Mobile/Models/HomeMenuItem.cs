@@ -6,8 +6,9 @@ namespace ZooApiService.Mobile.Models
 {
     public enum MenuItemType
     {
-        Browse,
-        About
+        SignIn = 0,
+        MyJobs,
+        Settings
     }
     public class HomeMenuItem
     {

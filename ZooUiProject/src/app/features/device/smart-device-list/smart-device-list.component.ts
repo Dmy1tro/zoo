@@ -156,7 +156,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
 
   private getDevicesForAnimal() {
     this.deviceService.getDevicesForAnimal(this.filterForm.value.animalId)
-      .pipe(tap(x => console.log(x)), takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         data => this.devices = data.sort((a, b) => a.name > b.name ? 1 : -1),
         err => console.log(err));

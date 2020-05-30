@@ -21,7 +21,9 @@ namespace ZooApiService.Mobile.Views
 
             MasterBehavior = MasterBehavior.Popover;
 
-            MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
+            MenuPages.Add((int)MenuItemType.SignIn, new NavigationPage(new LoginPage()));
+
+            Detail = MenuPages[0];
         }
 
         public async Task NavigateFromMenu(int id)
@@ -30,10 +32,16 @@ namespace ZooApiService.Mobile.Views
             {
                 switch (id)
                 {
-                    case (int)MenuItemType.Browse:
+                    case (int)MenuItemType.SignIn:
+                        //MenuPages.Add(id, new NavigationPage(new ItemsPage()));
+                        MenuPages.Add(id, new NavigationPage(new LoginPage()));
+                        break;
+
+                    case (int)MenuItemType.MyJobs:
                         MenuPages.Add(id, new NavigationPage(new ItemsPage()));
                         break;
-                    case (int)MenuItemType.About:
+
+                    case (int)MenuItemType.Settings:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
                         break;
                 }

@@ -6,12 +6,12 @@
              mc:Ignorable="d"
              x:Class="ZooApiService.Mobile.Views.LoginPage">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="StartAndExpand" Margin="30, 10, 0, 10">
+        <StackLayout VerticalOptions="StartAndExpand" Margin="15, 20, 15, 0">
             <Label Text="Email" FontSize="25"/>
             <Entry x:Name="EmailEntry" Placeholder="example@qq.com" FontSize="23"/>
 
-            <Label Text="Password" FontSize="25" Margin="20, 0, 0, 0" />
-            <Entry x:Name="PasswordEntry" FontSize="23" />
+            <Label Text="Password" FontSize="25" Margin="0, 10, 0, 0" />
+            <Entry x:Name="PasswordEntry" FontSize="23" IsPassword="True" />
 
             <Button Text="Sign in" Clicked="OnSignInClicked" FontSize="25"/>
         </StackLayout>
