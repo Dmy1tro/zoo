@@ -71,7 +71,7 @@ export class CreateUpdateAnimalTypeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
-          this.toastr.error(this.translate.instant('Updated'), this.translate.instant(toastrTitle.Success));
+          this.toastr.success(this.translate.instant('Updated'), this.translate.instant(toastrTitle.Success));
           this.matDialogRef.close({ action: DataAction.Update, data: this.data.animalTypeId });
         },
         (err) => {

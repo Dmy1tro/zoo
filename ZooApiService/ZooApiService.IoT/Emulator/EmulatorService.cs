@@ -33,7 +33,7 @@ namespace ZooApiService.IoT.Emulator
                     SendMessage(httpClient, device);
                 });
 
-                Task.Delay(TimeSpan.FromSeconds(30)).GetAwaiter().GetResult();
+                Task.Delay(TimeSpan.FromSeconds(15)).GetAwaiter().GetResult();
             }
         }
 

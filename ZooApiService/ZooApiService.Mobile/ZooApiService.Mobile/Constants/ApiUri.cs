@@ -6,6 +6,12 @@
 
         public const string SignIn = RootUrl + "account/sign-in";
 
-        public const string MyJobs = RootUrl + "jobs/my-jobs";
+        public const string Jobs = RootUrl + "jobs/";
+
+        public const string MyJobs = Jobs + "my-jobs/";
+
+        public const string StartJob = Jobs + "start-job/";
+
+        public const string FinishJob = Jobs + "finish-job/";
     }
 }

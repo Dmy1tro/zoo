@@ -74,7 +74,7 @@ export class JobInfoComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   delete() {
-    if (!deleteConfirmImport(this.translate.instant('Job') + ': ' + this.job.title, this.translate.instant)) {
+    if (!deleteConfirmImport(this.translate.instant('Job') + ': ' + this.job.title, this.translate)) {
       return;
     }
 

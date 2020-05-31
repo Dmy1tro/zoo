@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 
 namespace ZooApiService.Mobile.Helper
 {
     public static class LocalStorage
     {
-        private static readonly Dictionary<string, string> _items;
+        private static readonly ConcurrentDictionary<string, string> _items;
 
         static LocalStorage()
         {
-            _items = new Dictionary<string, string>();
+            _items = new ConcurrentDictionary<string, string>();
         }
 
-        public static void AddItem(string name, string val)
+        public static void SetItem(string name, string val)
         {
             _items[name] = val;
         }

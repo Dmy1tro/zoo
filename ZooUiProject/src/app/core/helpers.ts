@@ -19,8 +19,8 @@ export const configureToastr = (toastr: ToastrService) => {
     toastr.toastrConfig.timeOut = 1780;
 };
 
-export const deleteConfirmImport = (name: string, translate: (str: string) => string): boolean =>
-    confirm(translate(`Are-you-sure-you-want-to-delete`) + ' ' + `${name}` + `?`);
+export const deleteConfirmImport = (name: string, translate: TranslateService): boolean =>
+    confirm(translate.instant('Are-you-sure-you-want-to-delete') + ' ' + `${name}` + `?`);
 
 export const getButtonStateImport = (update: boolean, name: string): string =>
     update ? `Update` : `Create`;

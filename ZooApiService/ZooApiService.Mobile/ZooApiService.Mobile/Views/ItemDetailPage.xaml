@@ -1,17 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:res="clr-namespace:ZooApiService.Mobile.Helper;assembly=ZooApiService.Mobile"
              x:Class="ZooApiService.Mobile.Views.ItemDetailPage"
              Title="{Binding Title}">
 
-    <StackLayout Spacing="20" Padding="15">
-        <Label Text="Text:" FontSize="Medium" />
-        <Label Text="{Binding Item.Text}" d:Text="Item name" FontSize="Small"/>
-        <Label Text="Description:" FontSize="Medium" />
-        <Label Text="{Binding Item.Description}" d:Text="Item description" FontSize="Small"/>
-    </StackLayout>
-    
+    <ScrollView>
+        <StackLayout Spacing="20" Padding="15" Orientation="Vertical">
+
+            <Label x:Name="Title" FontSize="20" FontAttributes="Bold"/>
+            <Label Text="{Binding Job.Title, Mode=TwoWay}" d:Text="Item name" FontSize="18" x:Name="l_title"/>
+
+            <Label x:Name="Description" FontSize="20" FontAttributes="Bold"/>
+            <Label Text="{Binding Job.Description, Mode=TwoWay}" d:Text="Item description" FontSize="18" x:Name="l_description"/>
+
+            <Label x:Name="Status" FontSize="20" FontAttributes="Bold"/>
+            <Label Text="{Binding Job.Status, Mode=TwoWay}" d:Text="Item name" FontSize="18" x:Name="l_status"/>
+
+            <Label x:Name="CreatDate" FontSize="20" FontAttributes="Bold"/>
+            <Label Text="{Binding Path = Job.CreationDate, Mode=TwoWay}" d:Text="Item description" FontSize="18" x:Name="l_crDate"/>
+
+            <Label x:Name="StartDate" FontSize="20" FontAttributes="Bold"/>
+            <Label Text="{Binding Job.StartDate, Mode=TwoWay}" d:Text="Not started" FontSize="18" x:Name="l_sDate"/>
+
+            <Label x:Name="FinishDate" FontSize="20" FontAttributes="Bold"/>
+            <Label Text="{Binding Job.FinishDate, Mode=TwoWay}" d:Text="Not finished" FontSize="18" x:Name="l_fDate"/>
+
+            <Button FontSize="20" 
+                    IsEnabled="{Binding IsEnabled, Mode=TwoWay}" 
+                    Clicked="OnButtonClick" 
+                    x:Name="button"/>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

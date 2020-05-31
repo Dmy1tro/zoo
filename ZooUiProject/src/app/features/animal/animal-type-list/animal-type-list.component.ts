@@ -57,7 +57,7 @@ export class AnimalTypeListComponent implements OnInit, OnDestroy {
   }
 
   delete(id) {
-    if (!deleteConfirmImport(this.animalTypes.find(x => x.animalTypeId === id).typeName, this.translate.instant)) {
+    if (!deleteConfirmImport(this.animalTypes.find(x => x.animalTypeId === id).typeName, this.translate)) {
       return;
     }
 

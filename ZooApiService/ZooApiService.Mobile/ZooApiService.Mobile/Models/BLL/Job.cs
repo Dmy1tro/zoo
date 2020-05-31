@@ -15,11 +15,11 @@ namespace ZooApiService.Mobile.Models.BLL
 
         public JobStatus Status { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public string CreationDate { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        public string StartDate { get; set; }
 
-        public DateTime? FinishDate { get; set; }
+        public string FinishDate { get; set; }
     }
 
 }

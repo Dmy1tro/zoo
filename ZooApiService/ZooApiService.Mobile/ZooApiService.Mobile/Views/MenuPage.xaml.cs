@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Xamarin.Forms;
+using ZooApiService.Mobile.Helper;
 
 namespace ZooApiService.Mobile.Views
 {
@@ -26,24 +27,44 @@ namespace ZooApiService.Mobile.Views
         {
             MessagingCenter.Subscribe<LoginPage>(this, "SignIn", (sender) =>
             {
-                var menu = MenuItems.First(x => x.Id == MenuItemType.SignIn);
-                MenuItems.Remove(menu);
-
-                MenuItems.Add(new HomeMenuItem
+                var items = MenuItems.Where(x => x.Id != MenuItemType.SignIn).ToList();
+                items.Add(new HomeMenuItem
                 {
                     Id = MenuItemType.MyJobs,
-                    Title = "My Jobs"
+                    Title = Translator.Translate("My-jobs"),
+                    Original = "My-jobs"
                 });
+
+                MenuItems.Clear();
+
+                items.OrderBy(x => x.Id).ToList().ForEach(x => MenuItems.Add(x));
+            });
+
+            MessagingCenter.Subscribe<Settings>(this, "l", (sender) =>
+            {
+                MenuItems.Clear();
+
+                var items = GetMenuItems().ToList();
+
+                if (LocalStorage.GetItem("token") != null)
+                {
+                    items = items.Where(x => x.Id != MenuItemType.SignIn).ToList();
+
+                    items.Add(new HomeMenuItem
+                    {
+                        Id = MenuItemType.MyJobs,
+                        Title = Translator.Translate("My-jobs"),
+                        Original = "My-jobs"
+                    });
+                }
+
+                items.OrderBy(x => x.Id).ToList().ForEach(x => MenuItems.Add(x));
             });
         }
 
         private void Initialize()
         {
-            MenuItems = new ObservableCollection<HomeMenuItem>
-            {
-                new HomeMenuItem {Id = MenuItemType.SignIn, Title="Sign in" },
-                new HomeMenuItem { Id = MenuItemType.Settings, Title = "Settings" }
-            };
+            MenuItems = GetMenuItems();
 
             ListViewMenu.ItemsSource = MenuItems;
 
@@ -57,5 +78,14 @@ namespace ZooApiService.Mobile.Views
                 await RootPage.NavigateFromMenu(id);
             };
         }
+
+        private ObservableCollection<HomeMenuItem> GetMenuItems() =>
+            new ObservableCollection<HomeMenuItem>
+            {
+                new HomeMenuItem
+                    {Id = MenuItemType.SignIn, Title = Translator.Translate("Sign-in"), Original = "Sign-in"},
+                new HomeMenuItem
+                    {Id = MenuItemType.Settings, Title = Translator.Translate("Settings"), Original = "Settings"}
+            };
     }
 }

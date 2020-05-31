@@ -17,10 +17,18 @@ namespace ZooApiService.IoT
             var endpoints = configuration.GetSection(nameof(Endpoints)).Get<Endpoints>();
             var emulator = new EmulatorService(endpoints);
 
-            Task.Delay(5000).GetAwaiter().GetResult();
+            Task.Delay(10_000).GetAwaiter().GetResult();
 
             var tokenSource = new CancellationTokenSource();
-            emulator.Emulate(tokenSource.Token);
+
+            try
+            {
+                emulator.Emulate(tokenSource.Token);
+            }
+            catch (Exception e)
+            {
+
+            }
 
             Console.ReadKey();
             tokenSource.Cancel();

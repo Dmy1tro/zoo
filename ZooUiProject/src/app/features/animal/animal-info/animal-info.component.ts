@@ -81,7 +81,7 @@ export class AnimalInfoComponent implements OnInit, OnDestroy {
   }
 
   deleteRation(id) {
-    if (!deleteConfirmImport(this.rations.find(x => x.rationId === id).foodName, this.translate.instant)) {
+    if (!deleteConfirmImport(this.rations.find(x => x.rationId === id).foodName, this.translate)) {
       return;
     }
 

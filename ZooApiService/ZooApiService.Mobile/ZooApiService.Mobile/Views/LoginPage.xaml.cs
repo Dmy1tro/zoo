@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZooApiService.Mobile.Helper;
+using ZooApiService.Mobile.Models;
 using ZooApiService.Mobile.Models.ViewModels;
 using ZooApiService.Mobile.Services;
 
@@ -11,11 +12,17 @@ namespace ZooApiService.Mobile.Views
     public partial class LoginPage : ContentPage
     {
         private readonly ApiService _apiService;
+        MainPage RootPage { get => Application.Current.MainPage as MainPage; }
 
         public LoginPage()
         {
             InitializeComponent();
             _apiService = new ApiService();
+            SetLabels();
+            MessagingCenter.Subscribe<Settings>(this, "l", s =>
+            {
+                SetLabels();
+            });
         }
 
         public async void OnSignInClicked(object sender, EventArgs eventArgs)
@@ -36,15 +43,12 @@ namespace ZooApiService.Mobile.Views
 
             MessagingCenter.Send(this, "SignIn");
 
-            await Navigation.PushAsync(new ItemsPage());
-
             (isValid, error) = await _apiService.SignIn(model.Email, model.Password);
 
             if (isValid)
             {
-                await DisplayAlert("Success", $"Token: {LocalStorage.GetItem("token")}", "Ok");
-
-                await Navigation.PushAsync(new ItemsPage());
+                //await Navigation.PushAsync(new ItemsPage());
+                await RootPage.NavigateFromMenu((int)MenuItemType.MyJobs);
             }
             else
             {
@@ -52,5 +56,11 @@ namespace ZooApiService.Mobile.Views
             }
         }
 
+        private void SetLabels()
+        {
+            Email.Text = Translator.Translate("Email");
+            Password.Text = Translator.Translate("Password");
+            SignInButton.Text = Translator.Translate("Sign-in");
+        }
     }
 }

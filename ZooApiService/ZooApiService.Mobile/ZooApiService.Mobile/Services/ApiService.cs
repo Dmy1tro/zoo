@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -19,6 +20,8 @@ namespace ZooApiService.Mobile.Services
         public ApiService()
         {
             _httpClient = new HttpClient();
+
+            SetToken();
         }
 
         public async Task<(bool, string)> SignIn(string email, string password)
@@ -37,7 +40,7 @@ namespace ZooApiService.Mobile.Services
             {
                 var token = JsonConvert.DeserializeObject<TokenResponse>(raw);
 
-                LocalStorage.AddItem("token", token.Token);
+                LocalStorage.SetItem("token", token.Token);
 
                 return (true, null);
             }
@@ -45,20 +48,30 @@ namespace ZooApiService.Mobile.Services
             return (false, JsonConvert.DeserializeObject<ErrorResponse>(raw).Error);
         }
 
+        public async Task<Job> GetJob(int id)
+        {
+            var data = await GetDataFromApi<Job>(ApiUri.Jobs + id);
+
+            return data;
+        }
+
         public async Task<List<Job>> GetJobs()
         {
-            var token = LocalStorage.GetItem("token");
+            var data = await GetDataFromApi<List<Job>>(ApiUri.MyJobs);
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return data
+                .OrderByDescending(x => x.CreationDate)
+                .ToList();
+        }
 
-            var jobs = await Task.Run(() =>
-            {
-                var data = GetDataFromApi<List<Job>>(ApiUri.MyJobs);
+        public async Task StartJob(int jobId)
+        { 
+            await _httpClient.PutAsync(ApiUri.StartJob + jobId, null);
+        }
 
-                return data;
-            });
-
-            return jobs;
+        public async Task FinishJob(int jobId)
+        {
+            await _httpClient.PutAsync(ApiUri.FinishJob + jobId, null);
         }
 
         public void Dispose()
@@ -66,25 +79,26 @@ namespace ZooApiService.Mobile.Services
             _httpClient.Dispose();
         }
 
-        private T GetDataFromApi<T>(string endpoint)
+        private void SetToken()
         {
-            var rawData = _httpClient.GetStringAsync(endpoint).GetAwaiter().GetResult();
+            var token = LocalStorage.GetItem("token");
+
+            if (token is null)
+            {
+                return;
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
+        private async Task<T> GetDataFromApi<T>(string endpoint)
+        {
+            var rawData = await _httpClient.GetStringAsync(endpoint);
 
             var serializedData = JsonConvert.DeserializeObject<T>(rawData);
 
             return serializedData;
         }
 
-        private void PutDataToApi<T>(HttpClient client, string endpoint, T item)
-        {
-            var request = JsonConvert.SerializeObject(item);
-
-            var stringContent = new StringContent(request, Encoding.UTF8, "application/json");
-
-            var response = client.PostAsync(endpoint, stringContent).GetAwaiter().GetResult();
-
-            stringContent.Dispose();
-            response.Dispose();
-        }
     }
 }

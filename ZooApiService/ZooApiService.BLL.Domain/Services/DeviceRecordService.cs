@@ -42,6 +42,7 @@ namespace ZooApiService.BLL.Domain.Services
         {
             var records = await _context.DeviceRecords
                 .AsNoTracking()
+                .Take(10)
                 .Where(x => x.SmartDeviceId == deviceId)
                 .ToListAsync();
 

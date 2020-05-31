@@ -15,5 +15,7 @@ namespace ZooApiService.Mobile.Models
         public MenuItemType Id { get; set; }
 
         public string Title { get; set; }
+
+        public string Original { get; set; }
     }
 }

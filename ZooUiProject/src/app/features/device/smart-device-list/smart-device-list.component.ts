@@ -121,7 +121,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
   }
 
   delete(id) {
-    if (!deleteConfirmImport(this.devices.find(x => x.smartDeviceId === id).name, this.translate.instant)) {
+    if (!deleteConfirmImport(this.devices.find(x => x.smartDeviceId === id).name, this.translate)) {
       return;
     }
 
@@ -130,7 +130,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           refreshDataImport(DataAction.Delete, this.devices, null, (x: IDevice) => x.smartDeviceId === id);
-          this.toastr.success(this.translate.instant('Created'), this.translate.instant(toastrTitle.Success));
+          this.toastr.success(this.translate.instant('Deleted'), this.translate.instant(toastrTitle.Success));
         },
         (err) => {
           this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));

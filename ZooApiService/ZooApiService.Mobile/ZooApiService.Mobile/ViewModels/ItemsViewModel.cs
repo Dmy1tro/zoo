@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
-
-using ZooApiService.Mobile.Models;
+using ZooApiService.Mobile.Helper;
 using ZooApiService.Mobile.Models.BLL;
 using ZooApiService.Mobile.Services;
 using ZooApiService.Mobile.Views;
@@ -21,16 +21,9 @@ namespace ZooApiService.Mobile.ViewModels
         public ItemsViewModel()
         {
             _apiService = new ApiService();
-            Title = "Browse";
+            Title = Translator.Translate("My-jobs");
             Jobs = new ObservableCollection<Job>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            //MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
-            //{
-            //    var newItem = item as Item;
-            //    Jobs.Add(newItem);
-            //    await DataStore.AddItemAsync(newItem);
-            //});
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -43,7 +36,10 @@ namespace ZooApiService.Mobile.ViewModels
 
                 var loadedJobs = await _apiService.GetJobs();
 
-                loadedJobs.ForEach(x => Jobs.Add(x));
+                loadedJobs.ForEach(x =>
+                {
+                    Jobs.Add(x);
+                });
             }
             catch (Exception ex)
             {

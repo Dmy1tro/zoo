@@ -77,7 +77,7 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteAnimal(id) {
-    if (!deleteConfirmImport(this.animals.find(x => x.animalId === id).name, this.translateService.instant)) {
+    if (!deleteConfirmImport(this.animals.find(x => x.animalId === id).name, this.translateService)) {
       return;
     }
 

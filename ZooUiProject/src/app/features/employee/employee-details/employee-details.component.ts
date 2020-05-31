@@ -81,7 +81,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
   }
 
   delete(employee: IEmployee) {
-    if (!deleteConfirmImport(employee.firstName + ' ' + employee.lastName, this.translate.instant)) {
+    if (!deleteConfirmImport(employee.firstName + ' ' + employee.lastName, this.translate)) {
       return;
     }
 

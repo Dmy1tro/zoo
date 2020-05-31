@@ -33,7 +33,6 @@ namespace ZooApiService.Mobile.Views
                 switch (id)
                 {
                     case (int)MenuItemType.SignIn:
-                        //MenuPages.Add(id, new NavigationPage(new ItemsPage()));
                         MenuPages.Add(id, new NavigationPage(new LoginPage()));
                         break;
 
@@ -42,7 +41,7 @@ namespace ZooApiService.Mobile.Views
                         break;
 
                     case (int)MenuItemType.Settings:
-                        MenuPages.Add(id, new NavigationPage(new AboutPage()));
+                        MenuPages.Add(id, new NavigationPage(new Settings()));
                         break;
                 }
             }
