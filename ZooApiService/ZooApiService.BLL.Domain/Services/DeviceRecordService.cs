@@ -42,8 +42,9 @@ namespace ZooApiService.BLL.Domain.Services
         {
             var records = await _context.DeviceRecords
                 .AsNoTracking()
-                .Take(10)
                 .Where(x => x.SmartDeviceId == deviceId)
+                .OrderByDescending(x => x.Date)
+                .Take(15)
                 .ToListAsync();
 
             var recordsDto = _mapper.Map<List<DeviceRecordDto>>(records);

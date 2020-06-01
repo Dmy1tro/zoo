@@ -25,7 +25,6 @@ export class MainNavComponent implements OnInit, OnDestroy {
   opened$ = false;
 
   private currentUser: IUserInfo = null;
-  private currentLocale: string;
   private destroy$ = new Subject<void>();
 
   constructor(private breakpointObserver: BreakpointObserver,

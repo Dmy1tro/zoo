@@ -21,12 +21,26 @@ namespace ZooApiService.Mobile.Views
             BindingContext = this.viewModel = viewModel;
             button.BackgroundColor = Color.LightBlue;
 
-            SetLabels();
-            Refresh();
+            try
+            {
+                SetLabels();
+                Refresh();
+            }
+            catch(Exception ex)
+            {
+
+            }
 
             MessagingCenter.Subscribe<Settings>(this, "l", s =>
             {
-                SetLabels();
+                try
+                {
+                    SetLabels();
+                }
+                catch (Exception e)
+                {
+
+                }
             });
         }
 
@@ -60,7 +74,14 @@ namespace ZooApiService.Mobile.Views
             viewModel.ButtonText = viewModel.GetButtonText();
             viewModel.IsEnabled = updatedJob.Status != JobStatus.Finished;
 
-            Refresh();
+            try
+            {
+                Refresh();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void Refresh()
@@ -70,8 +91,19 @@ namespace ZooApiService.Mobile.Views
             l_title.Text = job.Title;
             l_description.Text = job.Description;
             l_crDate.Text = job.CreationDate;
-            l_sDate.Text = string.IsNullOrEmpty(job.StartDate) ? Translator.Translate("Not-started") : DateTime.Parse(job.StartDate).ToString();
-            l_fDate.Text = string.IsNullOrEmpty(job.FinishDate) ? Translator.Translate("Not-finished") : DateTime.Parse(job.FinishDate).ToString();
+            try
+            {
+                l_sDate.Text = string.IsNullOrEmpty(job.StartDate)
+                    ? Translator.Translate("Not-started")
+                    : DateTime.Parse(job.StartDate).ToString();
+                l_fDate.Text = string.IsNullOrEmpty(job.FinishDate)
+                    ? Translator.Translate("Not-finished")
+                    : DateTime.Parse(job.FinishDate).ToString();
+            }
+            catch (Exception ex)
+            {
+
+            }
             l_status.Text = Translator.Translate(GetStringStatus(job.Status));
             button.Text = Translator.Translate(viewModel.ButtonText);
             button.IsEnabled = job.Status != JobStatus.Finished;
