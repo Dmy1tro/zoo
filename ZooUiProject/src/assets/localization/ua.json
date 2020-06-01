@@ -122,5 +122,18 @@
     "Device-type": "Тип пристрою",
     "Location": "Локація",
     "Temperature": "Температура",
-    "Pulsometer": "Пульсометр"
+    "Pulsometer": "Пульсометр",
+
+    "Admin-panel": "Адміністрування",
+    "Db-query": "Запит до бази даних",
+    "Query": "Запит",
+    "Command": "Команда",
+    "Sql": "Sql запит",
+    "Run": "Виконати",
+    "Complete": "Виконано",
+    "No-rows-have-changed": "Змін не виявлено",
+    "Db-backup": "Бекап бази даних",
+    "create-backup": "Створити бекап",
+    "get-backup": "Скачати бекап",
+    "Admin": "Адмін"
 }

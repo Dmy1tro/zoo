@@ -51,6 +51,7 @@ namespace ZooApiService.API.Configuration
         public static IServiceCollection ConfigureDiServices(this IServiceCollection services)
         {
             services.AddScoped<IAnimalService, AnimalService>();
+            services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IAnimalTypeService, AnimalTypeService>();
             services.AddScoped<IDeviceRecordService, DeviceRecordService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
@@ -128,10 +129,13 @@ namespace ZooApiService.API.Configuration
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(PolicyName.ForAllUsers, configure =>
-                    configure.RequireClaim(CustomClaimName.Role, Role.Manager, Role.Worker));
+                    configure.RequireClaim(CustomClaimName.Role, Role.Manager, Role.Worker, Role.Admin));
 
                 options.AddPolicy(PolicyName.ForManagersOnly, configure =>
-                    configure.RequireClaim(CustomClaimName.Role, Role.Manager));
+                    configure.RequireClaim(CustomClaimName.Role, Role.Manager, Role.Admin));
+
+                options.AddPolicy(PolicyName.ForAdmins, configure =>
+                    configure.RequireClaim(CustomClaimName.Role, Role.Admin));
             });
 
             return services;

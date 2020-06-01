@@ -5,5 +5,7 @@
         public const string Manager = "Manager";
 
         public const string Worker = "Worker";
+
+        public const string Admin = "Admin";
     }
 }

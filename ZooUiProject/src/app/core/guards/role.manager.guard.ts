@@ -6,14 +6,13 @@ import { AccountService } from 'src/app/features/authentication/services/account
 @Injectable({ providedIn: 'root' })
 export class RoleManagerGuard implements CanActivate {
 
-    constructor(private router: Router,
-                private authService: AccountService) { }
+    constructor(private authService: AccountService) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.authService.isManager;
+        return this.authService.isManager || this.authService.isAdmin;
     }
 
     canLoad(route: Route): Observable<boolean> | Promise<boolean> | boolean {
-        return this.authService.isManager;
+        return this.authService.isManager || this.authService.isAdmin;
     }
 }

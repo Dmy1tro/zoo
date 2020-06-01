@@ -14,7 +14,9 @@
         </ng-container>
 
         <a mat-list-item [routerLink]="['/job/personal-jobs']" routerLinkActive="active">{{'My-jobs' | translate}}</a>
+        <a *ngIf="isAdmin" mat-list-item [routerLink]="['/admin']" routerLinkActive="active">{{'Admin-panel' | translate}}</a>
       </ng-container>
+
       <ng-container *ngIf="!isAuthenticated">
         <a mat-list-item [routerLink]="['/authentication']" routerLinkActive="active">{{'Sign-in' | translate}}</a>
       </ng-container>

@@ -52,6 +52,10 @@ export class MainNavComponent implements OnInit, OnDestroy {
     return this.authService.isManager;
   }
 
+  get isAdmin(): boolean {
+    return this.authService.isAdmin;
+  }
+
   changeLanguage(event: MatSlideToggleChange) {
     if (event.checked) {
       this.localeUA();

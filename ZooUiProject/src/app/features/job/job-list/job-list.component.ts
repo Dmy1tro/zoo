@@ -54,7 +54,7 @@ export class JobListComponent implements OnInit, OnDestroy {
   createForm() {
     this.filterForm = this.fb.group({
       employeeId: this.employeeId ?? '*',
-      status: null
+      status: '*'
     });
   }
 
@@ -98,6 +98,11 @@ export class JobListComponent implements OnInit, OnDestroy {
   }
 
   selectStatus(value) {
+    if (value === '*') {
+      this.jobsFiltered = this.jobs;
+      return;
+    }
+
     this.jobsFiltered = this.jobs.filter(x => x.status === value);
   }
 

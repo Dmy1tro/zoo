@@ -20,15 +20,19 @@ namespace ZooApiService.DAL.Data.DataBuilders
 
         public void SetData()
         {
-            if (_userManager.FindByEmailAsync("admin@admin.com").GetAwaiter().GetResult() != null)
+            var user = _userManager.FindByEmailAsync("admin@admin.com").GetAwaiter().GetResult();
+
+            if (user != null)
+            {
                 return;
+            }
 
             var admin = new Employee
             {
                 Email = "admin@admin.com",
-                UserName = "Super Admin",
+                UserName = "Super|Admin",
                 DateOfBirth = new DateTime(2000, 03, 13),
-                Gender = Gender.Female,
+                Gender = Gender.Male,
                 Position = JobPosition.Manager,
             };
 
@@ -44,7 +48,12 @@ namespace ZooApiService.DAL.Data.DataBuilders
                 _roleManager.CreateAsync(new IdentityRole(Role.Worker)).GetAwaiter().GetResult();
             }
 
-            _userManager.AddToRoleAsync(admin, Role.Manager).GetAwaiter().GetResult();
+            if (!_roleManager.RoleExistsAsync(Role.Admin).GetAwaiter().GetResult())
+            {
+                _roleManager.CreateAsync(new IdentityRole(Role.Admin)).GetAwaiter().GetResult();
+            }
+
+            _userManager.AddToRoleAsync(admin, Role.Admin).GetAwaiter().GetResult();
         }
     }
 }

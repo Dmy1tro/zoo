@@ -24,7 +24,8 @@ export enum JobStatus {
 
 export enum Role {
     Manager = 'Manager',
-    Worker = 'Worker'
+    Worker = 'Worker',
+    Admin = 'Admin'
 }
 
 export enum DeviceType {

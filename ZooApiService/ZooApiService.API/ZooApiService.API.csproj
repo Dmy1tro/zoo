@@ -31,5 +31,9 @@
     <ProjectReference Include="..\ZooApiService.DAL.Data\ZooApiService.DAL.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Backups\" />
+  </ItemGroup>
+
 
 </Project>

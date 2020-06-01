@@ -24,6 +24,9 @@
                     <mat-form-field appearance="standard">
                         <mat-label>{{'Status' | translate}}</mat-label>
                         <mat-select formControlName="status" (selectionChange)="selectStatus($event.value)">
+                            <mat-option [value]="'*'">
+                                {{ 'All' | translate }}
+                            </mat-option>
                             <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
                                 {{ item.title | translate }}
                             </mat-option>
@@ -69,7 +72,7 @@
                         {{ item.creationDate | date: 'medium' }}
                     </td>
                     <td class="col-md-2">
-                        {{ jobStatus[item.status]  }}
+                        {{ jobStatus[item.status] | translate  }}
                     </td>
                     <td class="col-md-3">
                         <button class="btn btn-info w-75 d-inline-flex justify-content-center" (click)="selectJob(item)"

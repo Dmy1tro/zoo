@@ -122,5 +122,18 @@
     "Device-type": "Device type",
     "Location": "Location",
     "Temperature": "Temperature",
-    "Pulsometer": "Pulsometer"
+    "Pulsometer": "Pulsometer",
+
+    "Admin-panel": "Admin panel",
+    "Db-query": "Database query",
+    "Query": "Query",
+    "Command": "Command",
+    "Sql": "Sql query",
+    "Run": "Run",
+    "Complete": "Complete",
+    "No-rows-have-changed": "No one rows have changed",
+    "Db-backup": "Database backup",
+    "create-backup": "Create backup",
+    "get-backup": "Download backup",
+    "Admin": "Admin"
 }

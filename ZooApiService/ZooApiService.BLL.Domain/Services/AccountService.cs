@@ -115,7 +115,7 @@ namespace ZooApiService.BLL.Domain.Services
                 new Claim(CustomClaimName.UserName, employee.UserName.Replace('|', ' '))
             };
 
-            var expires = DateTime.Now.AddHours(2);
+            var expires = DateTime.Now.AddDays(1);
             var signKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var credentials = new SigningCredentials(signKey, SecurityAlgorithms.HmacSha256);
 

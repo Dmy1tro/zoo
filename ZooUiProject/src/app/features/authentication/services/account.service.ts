@@ -29,7 +29,7 @@ export class AccountService {
     const currentUser = this.currentUserSubject.value;
 
     if (currentUser) {
-      return currentUser.role === Role.Manager;
+      return currentUser.role === Role.Manager || currentUser.role === Role.Admin;
     }
 
     return false;
@@ -40,6 +40,16 @@ export class AccountService {
 
     if (currentUser) {
       return currentUser.role === Role.Worker;
+    }
+
+    return false;
+  }
+
+  get isAdmin(): boolean {
+    const currentUser = this.currentUserSubject.value;
+
+    if (currentUser) {
+      return currentUser.role === Role.Admin;
     }
 
     return false;
