@@ -1,0 +1,47 @@
+<div class="text-center my-2">
+    <h3>{{'Animal-type-management' | translate}}</h3>
+</div>
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <ul class="list-group mt-1">
+                <li class="list-group-item">
+                    <div class="row px-2">
+                        <div class="col-md-9 my-auto">
+                            <h4 class="font-weight-bold">
+                                <i>{{'Type-name' | translate}}</i>
+                            </h4>
+                        </div>
+                        <div class="col-md-3 my-auto">
+                            <button mat-raised-button class="btn btn-sm" color="primary"
+                                (click)="addOrUpdate(null)">
+                                <mat-icon>add</mat-icon>
+                                {{'Create-type' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let type of animalTypes">
+                    <div class="row px-3">
+                        <div class="col-md-9 my-auto">
+                            <h5>
+                                {{ type.typeName }}
+                            </h5>
+                        </div>
+                        <div class="col-md-3 my-auto">
+                            <button class="btn btn-sm btn-warning ml-4 mr-1" (click)="addOrUpdate(type.animalTypeId)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button class="btn btn-sm btn-danger mx-1" (click)="delete(type.animalTypeId)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

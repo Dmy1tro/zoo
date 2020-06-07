@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="form-group float-right">
+        <div class="text-right">
+            <button mat-icon-button matSuffix mat-dialog-close>
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <h3 class="text-center">{{'Ration' | translate}}</h3>
+    <hr>
+    <form [formGroup]="rationForm" novalidate (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="standard">
+            <mat-label>{{'Food-name' | translate}}</mat-label>
+            <input matInput formControlName="foodName">
+            <mat-error *ngIf="hasCustomError(rationForm, 'foodName')">
+                {{'Food-name' | translate}} {{'is-required' | translate}}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>{{'Description'| translate}}</mat-label>
+            <textarea matInput placeholder="Some description" formControlName="description" rows="3"></textarea>
+            <mat-error *ngIf="hasCustomError(rationForm, 'description')">
+                {{'Description'| translate}} {{'is-required'| translate}}
+            </mat-error>
+        </mat-form-field>
+
+        <div class="row px-2 mt-4">
+            <div class="col-md-6">
+                <button mat-raised-button class="btn-block" color="primary" type="submit">
+                    {{ getButtonState() }}
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
+                    <mat-icon>cached</mat-icon>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

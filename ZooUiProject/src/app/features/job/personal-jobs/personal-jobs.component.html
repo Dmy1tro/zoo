@@ -1,0 +1,83 @@
+<div class="row pl-1">
+    <div class="col-md-8">
+        <div class="text-center my-2">
+            <h3>{{'My-jobs' | translate}}</h3>
+        </div>
+        <hr>
+        <form [formGroup]="filterForm" novalidate>
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-form-field appearance="standard">
+                        <mat-label>{{'Status' | translate}}</mat-label>
+                        <mat-select formControlName="status" (selectionChange)="selectStatus($event.value)">
+                            <mat-option [value]="'*'">
+                                {{'All' | translate}}
+                            </mat-option>
+                            <mat-option *ngFor="let item of jobStatuses" [value]="item.value">
+                                {{ item.title | translate }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-button-toggle-group class="my-auto">
+                        <mat-button-toggle (click)="resetForm()">
+                            <mat-icon>cached</mat-icon>
+                        </mat-button-toggle>
+                    </mat-button-toggle-group>
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-bordered text-center mt-2">
+            <thead class="thead-light">
+                <tr class="d-flex">
+                    <th class="col-md-3" scope="col">
+                        {{'Title' | translate}}
+                    </th>
+                    <th class="col-md-4" scope="col">
+                        {{'Creation-date' | translate}}
+                    </th>
+                    <th class="col-md-2" scope="col">
+                        {{'Status' | translate}}
+                    </th>
+                    <th class="col-md-3" scope="col">
+                        {{'Details' | translate}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="d-flex" *ngFor="let item of jobsFiltered">
+                    <td class="col-md-3">
+                        {{ item.title }}
+                    </td>
+                    <td class="col-md-4">
+                        {{ item.creationDate | date: 'medium' }}
+                    </td>
+                    <td class="col-md-2">
+                        {{ jobStatus[item.status] | translate }}
+                    </td>
+                    <td class="col-md-3">
+                        <button class="btn btn-info w-75 d-inline-flex justify-content-center" 
+                            [class.disabled]="jobSelected && jobSelected.jobId === item.jobId" (click)="selectJob(item)">
+                            <mat-icon class="mr-1">info</mat-icon>
+                            {{'Info' | translate}}
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="jobsFiltered.length === 0">
+                    <td>
+                        <p>{{'Empty' | translate}}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4" *ngIf="jobSelected">
+        <div class="text-center my-2">
+            <h3>{{'Info' | translate}}</h3>
+        </div>
+        <hr>
+        <app-job-info [job]="jobSelected" (jobChanged)="jobChanged($event)"></app-job-info>
+    </div>
+</div>

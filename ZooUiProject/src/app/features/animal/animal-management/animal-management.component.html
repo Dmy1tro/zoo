@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="form-group float-right">
+        <div class="text-right">
+            <button mat-icon-button matSuffix mat-dialog-close>
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <h3 class="text-center">{{'Animal'| translate}}</h3>
+    <hr>
+    <form [formGroup]="animalForm" novalidate (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="standard">
+            <mat-label>{{'Animal-type' | translate}}</mat-label>
+            <mat-select formControlName="animalTypeId">
+                <mat-option *ngFor="let item of animalTypes" [value]="item.animalTypeId">
+                    {{ item.typeName }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasCustomError(animalForm, 'animalTypeId')">
+                {{ 'Animal-type' | translate }} {{ 'is-required' | translate }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>{{'Name'| translate}}</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngIf="hasCustomError(animalForm, 'name')">
+                {{'Name'| translate}} {{'is-required'| translate}}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>{{'Gender'| translate}}</mat-label>
+            <mat-select formControlName="gender">
+                <mat-option *ngFor="let item of genders" [value]="item.value">
+                    {{ item.title | translate }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasCustomError(animalForm, 'gender')">
+                {{'Gender'| translate}} {{'is-required'| translate}}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field color="primary" appearance="standard">
+            <mat-label>{{'Date-of-birth'| translate}}</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName='dateOfBirth' readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+            <mat-error *ngIf="hasCustomError(animalForm, 'dateOfBirth')">
+                {{'Date-of-birth'| translate}} {{'is-required'| translate}}
+            </mat-error>
+        </mat-form-field>
+
+        <div class="form-group mt-2">
+            <label>{{ 'Choose-pic' | translate }}</label>
+            <br>
+            <input class="form-control-file" #pictureFile multiple type="file" accept="image/*"
+                (change)="onUpload($event)" />
+            <br>
+        </div>
+
+        <div class="row px-2 mt-4">
+            <div class="col-md-6">
+                <button mat-raised-button class="btn-block " type="submit" color="primary">
+                    {{ getButtonState() }}
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
+                    <mat-icon>cached</mat-icon>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

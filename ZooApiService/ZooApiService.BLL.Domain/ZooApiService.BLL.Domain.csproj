@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="5.1.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.5.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZooApiService.BLL.Contracts\ZooApiService.BLL.Contracts.csproj" />
+    <ProjectReference Include="..\ZooApiService.Common\ZooApiService.Common.csproj" />
+    <ProjectReference Include="..\ZooApiService.DAL.Data\ZooApiService.DAL.Data.csproj" />
+  </ItemGroup>
+
+</Project>

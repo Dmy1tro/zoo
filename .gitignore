@@ -5,15 +5,9 @@
 **/*.dtbcache
 **/*.ide
 **/*.suo
-**/*.user
 
 **/bin/**
 **/obj/**
-**/node_modules/**
 
 **/.idea/**
 **/.vs/**
-
-**/*.db
-**/*.db-shm
-**/*.db-wal

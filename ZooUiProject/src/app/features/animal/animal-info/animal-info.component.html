@@ -1,0 +1,95 @@
+<div class="row px-2">
+    <div class="col-md-5">
+        <h4 class="text-center">{{'Animal-info' | translate}}</h4>
+        <hr>
+        <div class="form-group" *ngIf="animal">
+            <img [src]="animal.picture" alt="" class="img-fluid rounded w-50 mb-3 d-block mx-auto">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span>
+                        <b>{{'Animal-type' | translate}}:</b> {{ animal.typeName }}
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span>
+                        <b>{{'Name'| translate}}:</b> {{ animal.name }}
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span>
+                        <b>{{'Gender'| translate}}:</b> {{ animal.gender | translate}}
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span>
+                        <b>{{'Date-of-birth'| translate}}:</b> {{ animal.dateOfBirth | date: 'yyy-MM-dd' }}
+                    </span>
+                </li>
+            </ul>
+            <div class="d-flex justify-content-center" *ngIf="animal == null">
+                <mat-spinner></mat-spinner>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <button mat-raised-button class="btn-block" 
+                    color="secondary" (click)="backToAnimals()">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                    {{'Back'| translate}}
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button mat-raised-button class="btn-block" color="accent" (click)="updateAnimal()">
+                    <mat-icon>edit</mat-icon>
+                    {{'Update'| translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="col-md-6">
+        <h4 class="text-center">{{'Ration'| translate}}</h4>
+        <hr>
+        <table class="table table-bordered text-center">
+            <thead class="thead-light">
+                <tr class="d-flex">
+                    <th class="col-md-3" scope="col">
+                        <u>{{'Food-name'| translate}}</u>
+                    </th>
+                    <th class="col-md-5 pointer" scope="col">
+                        {{'Description'| translate}}
+                    </th>
+                    <th class="col-md-4" scope="col">
+                        <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdateRation(null)">
+                            <mat-icon>add</mat-icon>
+                            {{'Create-ration'| translate}}
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="d-flex" *ngFor="let ration of rations">
+                    <td class="col-md-3 text-overflow-hidden">
+                        {{ ration.foodName }}
+                    </td>
+                    <td class="col-md-5">
+                        {{ ration.description }}
+                    </td>
+                    <td class="col-md-4">
+                        <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdateRation(ration.rationId)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button class="btn btn-sm btn-danger mx-1" (click)="deleteRation(ration.rationId)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="rations.length === 0">
+                    <td>
+                        <p>{{ 'Empty' | translate }}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
