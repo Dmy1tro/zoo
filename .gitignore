@@ -9,6 +9,7 @@
 
 **/bin/**
 **/obj/**
+**/node_modules/**
 
 **/.idea/**
 **/.vs/**
