@@ -38,3 +38,9 @@
 ::ng-deep .menu button {
   font-size: 15px;
 }
+
+@media only screen and (max-width: 470px) {
+  .sidenav {
+    width: 200px;
+  }
+} 

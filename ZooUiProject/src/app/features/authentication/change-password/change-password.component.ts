@@ -5,7 +5,7 @@ import { AccountService } from '../services/account.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialogRef } from '@angular/material/dialog';
 import { IUserInfo } from 'src/app/core/interfaces/user-info.interface';
-import { configureToastr } from 'src/app/core/helpers';
+import { configureToastr, hasCustomErrorImport } from 'src/app/core/helpers';
 import { takeUntil } from 'rxjs/operators';
 import { toastrTitle } from 'src/app/core/constants/enums';
 import { TranslateService } from '@ngx-translate/core';
@@ -92,6 +92,9 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   resetForm() {
     this.passwordForm.reset();
   }
+
+  hasCustomError = (form: FormGroup, control: string) =>
+    hasCustomErrorImport(form, control)
 
   ngOnDestroy() {
     this.destroy$.next();

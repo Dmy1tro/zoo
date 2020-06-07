@@ -12,6 +12,7 @@ import { toastrTitle, DataAction } from 'src/app/core/constants/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { AnimalManagementComponent } from '../animal-management/animal-management.component';
 import { TranslateService } from '@ngx-translate/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-animal-details',
@@ -21,9 +22,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AnimalDetailsComponent implements OnInit, OnDestroy {
 
+  public typeNames: string[] = [];
   public animals: IAnimalFull[];
   public filteredAnimals: IAnimalFull[];
   public filterForm: FormGroup;
+  public tableView = false;
 
   private sortValue = true;
   private destroy$ = new Subject<void>();
@@ -46,6 +49,10 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(data => {
         this.animals = data;
+        this.typeNames = this.animals
+          .map(x => x.typeName)
+          .filter((item, index, arr) => arr.indexOf(item) === index);
+
         this.defaultSort();
         this.filterAnimals();
       });
@@ -53,15 +60,24 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
 
   createForm(): void {
     this.filterForm = this.fb.group({
+      typeName: [null],
       name: [null],
       fromDate: [null],
       byDate: [null]
     });
   }
 
+  changeView(event: MatSlideToggleChange) {
+    this.tableView = event.checked;
+  }
+
   filterAnimals() {
     const formValue = this.filterForm.value;
     this.filteredAnimals = this.animals;
+
+    if (formValue.typeName && formValue.typeName !== '*') {
+      this.filteredAnimals = this.filteredAnimals.filter(x => x.typeName.toUpperCase() === formValue.typeName.toUpperCase());
+    }
 
     if (formValue.name) {
       this.filteredAnimals = this.filteredAnimals.filter(x => x.name.toUpperCase().includes(formValue.name.toUpperCase()));

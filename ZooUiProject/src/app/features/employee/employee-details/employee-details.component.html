@@ -95,7 +95,7 @@
         <div class="card">
             <div class="card-body my-auto">
                 <img [src]="employeeSelected.picture" alt="" class="img-fluid rounded-circle w-50 mb-3 d-block mx-auto">
-                <h4>
+                <h4 class="text-center">
                     {{ employeeSelected.firstName + ' ' + employeeSelected.lastName }}
                 </h4>
                 <br>
@@ -105,7 +105,7 @@
                         {{ employeeSelected.email }}
                     </li>
                     <li class="list-group-item d-inline-flex">
-                        <mat-icon> vpn_key</mat-icon>
+                        <mat-icon>vpn_key</mat-icon>
                         {{ ('Role' | translate) +  ': ' + (employeeSelected.role | translate) }}
                     </li>
                     <li class="list-group-item d-inline-flex">

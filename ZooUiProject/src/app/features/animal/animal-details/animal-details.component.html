@@ -4,14 +4,27 @@
 <hr>
 
 <form [formGroup]="filterForm" novalidate (ngSubmit)="filterAnimals()">
-    <div class="row ml-1">
-        <div class="col-md-3">
+    <div class="row">
+        <div class="col-md-2 my-auto">
+            <mat-form-field appearance="standard">
+                <mat-label>{{'Animal-type' | translate}}</mat-label>
+                <mat-select formControlName="typeName">
+                    <mat-option [value]="'*'">
+                        {{'All' | translate}}
+                    </mat-option>
+                    <mat-option *ngFor="let item of typeNames" [value]="item">
+                        {{ item }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-3 my-auto">
             <mat-form-field appearance="standard">
                 <mat-label>{{ 'Name' | translate }}</mat-label>
                 <input matInput placeholder="title" formControlName="name">
             </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2 my-auto">
             <mat-form-field color="primary" appearance="standard">
                 <mat-label>{{ 'From-date' | translate }}</mat-label>
                 <input class="mat-datepicker-input" matInput [matDatepicker]="picker1" formControlName='fromDate'>
@@ -19,7 +32,7 @@
                 <mat-datepicker #picker1 disabled="false"></mat-datepicker>
             </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2 my-auto">
             <mat-form-field color="primary" appearance="standard">
                 <mat-label>{{ 'By-date' | translate }}</mat-label>
                 <input matInput [matDatepicker]="picker2" formControlName='byDate'>
@@ -27,7 +40,7 @@
                 <mat-datepicker #picker2 disabled="false"></mat-datepicker>
             </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 my-auto">
             <mat-button-toggle-group>
                 <button mat-raised-button color="primary" type="submit" class="px-5">
                     {{ 'Search' | translate }}
@@ -40,7 +53,42 @@
     </div>
 </form>
 
-<div class="table-responsive px-2 mt-2">
+<div class="mb-3">
+    <span class="mr-1">Table view:</span>
+    <mat-slide-toggle [(ngModel)]="tableView" (change)="changeView($event)" (click)="$event.stopPropagation();"></mat-slide-toggle>
+</div>
+
+<div class="row" *ngIf="!tableView">
+    <div class="col-md-4" *ngFor="let item of filteredAnimals">
+        <div class="card mb-2">
+            <img [src]="item.picture" class="card-img-top w-75 mx-auto">
+            <div class="card-body my-auto">
+                <h5 class="text-center">
+                    {{ item.name }}
+                </h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-inline-flex">
+                        <mat-icon>description</mat-icon>
+                        <b class="mr-1">Name: </b>
+                        {{ item.name }}
+                    </li>
+                    <li class="list-group-item d-inline-flex">
+                        <mat-icon>description</mat-icon>
+                        <b class="mr-1">Type: </b>
+                        {{ item.typeName }}
+                    </li>
+                    <li class="list-group-item d-inline-flex">
+                        <mat-icon>description</mat-icon>
+                        <b class="mr-1">Gender: </b>
+                        {{ item.gender }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive px-2" *ngIf="tableView">
     <table class="table table-bordered text-center">
         <thead class="thead-light">
             <tr class="d-flex">
