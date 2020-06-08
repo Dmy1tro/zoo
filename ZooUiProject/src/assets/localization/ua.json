@@ -135,5 +135,8 @@
     "Db-backup": "Бекап бази даних",
     "create-backup": "Створити бекап",
     "get-backup": "Скачати бекап",
-    "Admin": "Адмін"
+    "Admin": "Адмін",
+
+    "Table-view": "Таблиця",
+    "Card-view": "Картки"
 }

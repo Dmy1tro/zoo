@@ -26,7 +26,7 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
   public animals: IAnimalFull[];
   public filteredAnimals: IAnimalFull[];
   public filterForm: FormGroup;
-  public tableView = false;
+  public tableView: boolean;
 
   private sortValue = true;
   private destroy$ = new Subject<void>();
@@ -42,6 +42,7 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     this.getAnimals();
     this.createForm();
     configureToastr(this.toastr);
+    this.tableView = this.isTableView();
   }
 
   getAnimals(): void {
@@ -67,7 +68,18 @@ export class AnimalDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  isTableView(): boolean {
+    const isTableView = localStorage.getItem('table-view');
+
+    if (isTableView) {
+      return isTableView.toUpperCase() === 'true'.toUpperCase();
+    }
+
+    return false;
+  }
+
   changeView(event: MatSlideToggleChange) {
+    localStorage.setItem('table-view', event.checked + '');
     this.tableView = event.checked;
   }
 

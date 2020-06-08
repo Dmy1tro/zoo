@@ -135,5 +135,8 @@
     "Db-backup": "Database backup",
     "create-backup": "Create backup",
     "get-backup": "Download backup",
-    "Admin": "Admin"
+    "Admin": "Admin",
+
+    "Table-view": "Table view",
+    "Card-view": "Card view"
 }

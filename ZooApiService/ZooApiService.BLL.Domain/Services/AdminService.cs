@@ -36,7 +36,7 @@ namespace ZooApiService.BLL.Domain.Services
 
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
-                    obj.TryAdd(i.ToString(), record[i]);
+                    obj.TryAdd(reader.GetName(i), record[i]);
                 }
 
                 list.Add(obj);
