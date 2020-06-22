@@ -19,7 +19,7 @@ namespace ZooApiService.BLL.Domain.Services
             _connectionString = configuration["ConnectionStrings:ZooDb"];
         }
 
-        public async Task<IList<object>> ExecuteQuery(string query)
+        public async Task<IList<ExpandoObject>> ExecuteQuery(string query)
         {
             using var connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
@@ -28,7 +28,7 @@ namespace ZooApiService.BLL.Domain.Services
 
             var reader = await command.ExecuteReaderAsync();
 
-            var list = new List<object>();
+            var list = new List<ExpandoObject>();
 
             foreach (DbDataRecord record in reader)
             {
@@ -45,7 +45,7 @@ namespace ZooApiService.BLL.Domain.Services
             return list;
         }
 
-        public async Task<object> ExecuteCommand(string sqlCommand)
+        public async Task<int> ExecuteCommand(string sqlCommand)
         {
             using var connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
@@ -54,14 +54,12 @@ namespace ZooApiService.BLL.Domain.Services
 
             var result = await command.ExecuteNonQueryAsync();
 
-            return result > 0
-                ? "Complete"
-                : "No-rows-have-changed";
+            return result;
         }
 
         public async Task CreateBackup(string location)
         {
-            location = Path.Combine(location, $"Backup.bak");
+            location = Path.Combine(location, "Backup.bak");
 
             if (File.Exists(location))
             {

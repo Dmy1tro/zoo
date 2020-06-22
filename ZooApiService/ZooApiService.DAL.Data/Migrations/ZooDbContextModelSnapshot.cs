@@ -184,6 +184,43 @@ namespace ZooApiService.DAL.Data.Migrations
                     b.ToTable("Animals");
                 });
 
+            modelBuilder.Entity("ZooApiService.DAL.Data.Entities.AnimalDetails", b =>
+                {
+                    b.Property<int>("AnimalDetailsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AdditionalInfo")
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<int>("AnimalId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("BodyLength")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<double?>("TailLength")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("AnimalDetailsId");
+
+                    b.HasIndex("AnimalId")
+                        .IsUnique();
+
+                    b.ToTable("AnimalDetails");
+                });
+
             modelBuilder.Entity("ZooApiService.DAL.Data.Entities.AnimalType", b =>
                 {
                     b.Property<int>("AnimalTypeId")
@@ -463,6 +500,15 @@ namespace ZooApiService.DAL.Data.Migrations
                     b.HasOne("ZooApiService.DAL.Data.Entities.AnimalType", "AnimalType")
                         .WithMany("Animals")
                         .HasForeignKey("AnimalTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ZooApiService.DAL.Data.Entities.AnimalDetails", b =>
+                {
+                    b.HasOne("ZooApiService.DAL.Data.Entities.Animal", "Animal")
+                        .WithOne("AnimalDetails")
+                        .HasForeignKey("ZooApiService.DAL.Data.Entities.AnimalDetails", "AnimalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

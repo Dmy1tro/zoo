@@ -28,6 +28,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
   public devices: IDevice[] = [];
   public deviceRecords: IDeviceRecord[] = null;
   public filterForm: FormGroup;
+  public deviceSelectedId: number = null;
 
   private destroy$ = new Subject<void>();
 
@@ -81,13 +82,13 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
     } else {
       this.filterForm.get('animalId').setValue(null);
       this.devices = [];
-      this.deviceRecords = null;
+      this.resetSelectedDevice();
       this.animalsFiltered = this.animals.filter(x => x.typeName === this.filterForm.value.typeName);
     }
   }
 
   selectAnimal(value) {
-    this.deviceRecords = null;
+    this.resetSelectedDevice();
     this.getDevicesForAnimal();
   }
 
@@ -95,7 +96,10 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
     this.deviceRecordService.getRecords(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        data => this.deviceRecords = data,
+        data => {
+          this.deviceRecords = data;
+          this.deviceSelectedId = id;
+        },
         err => console.log(err));
   }
 
@@ -104,7 +108,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
   }
 
   get canOpenRecords(): boolean {
-    return this.deviceRecords != null;
+    return this.deviceSelectedId != null;
   }
 
   addOrUpdate(id) {
@@ -139,6 +143,10 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
       );
   }
 
+  refreshRecords() {
+    this.openRecords(this.deviceSelectedId);
+  }
+
   findOrDefaultDevice(id): IDevice {
     if (id) {
       return this.devices.find(x => x.smartDeviceId === id);
@@ -151,7 +159,7 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
     this.createForm();
     this.animalsFiltered = this.animals;
     this.devices = [];
-    this.deviceRecords = null;
+    this.resetSelectedDevice();
   }
 
   private getDevicesForAnimal() {
@@ -171,6 +179,11 @@ export class SmartDeviceListComponent implements OnInit, OnDestroy {
         refreshDataImport(action, this.devices, data, (x: IDevice) => x.smartDeviceId === id);
         this.devices.sort((a, b) => a.name > b.name ? 1 : -1);
       });
+  }
+
+  private resetSelectedDevice() {
+    this.deviceRecords = null;
+    this.deviceSelectedId = null;
   }
 
   ngOnDestroy() {

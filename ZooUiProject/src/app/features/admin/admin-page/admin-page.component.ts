@@ -5,7 +5,7 @@ import { AdminService } from '../services/admin.service';
 import { takeUntil } from 'rxjs/operators';
 import { toastrTitle } from 'src/app/core/constants/enums';
 import { ToastrService } from 'ngx-toastr';
-import { configureToastr } from 'src/app/core/helpers';
+import { configureToastr, hasCustomErrorImport } from 'src/app/core/helpers';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -17,6 +17,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
 
   dbForm: FormGroup;
   queryResult: string = null;
+  commandResult: string = null;
 
   private destroy$ = new Subject<void>();
 
@@ -38,36 +39,48 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.dbForm.valid) {
-      if (this.dbForm.value.queryType === 'query') {
-        this.adminService.query({
-          sqlQuery: this.dbForm.value.sqlQuery
-        })
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(
-            data => {
-              this.queryResult = JSON.stringify(data);
-              console.log(data);
-            },
-            err => {
-              this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
-              console.log(err);
-            });
-      } else {
-        this.adminService.command({
-          sqlQuery: this.dbForm.value.sqlQuery
-        })
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(
-            data => this.queryResult = this.translate.instant(data.result),
-            err => {
-              this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
-              console.log(err);
-            });
-      }
-    } else {
+    if (!this.dbForm.valid) {
       this.dbForm.markAllAsTouched();
+      return;
     }
+
+    if (this.dbForm.value.queryType === 'query') {
+      this.executeQuery({ sqlQuery: this.dbForm.value.sqlQuery });
+    } else {
+      this.executeCommand({ sqlQuery: this.dbForm.value.sqlQuery });
+    }
+  }
+
+  private executeQuery(formValue) {
+    this.adminService.query(formValue)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        data => {
+          this.commandResult = null;
+          this.queryResult = JSON.stringify(data);
+        },
+        err => {
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
+          console.log(err);
+        }
+      );
+  }
+
+  private executeCommand(formValue) {
+    this.adminService.command(formValue)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        data => {
+          this.queryResult = null;
+          this.commandResult = data.result > 0
+            ? 'Complete'
+            : 'No-rows-have-changed';
+        },
+        err => {
+          this.toastr.error(this.translate.instant('Failed'), this.translate.instant(toastrTitle.Error));
+          console.log(err);
+        }
+      );
   }
 
   createBackup() {
@@ -89,6 +102,9 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   resetForm() {
     this.createForm();
   }
+
+  hasCustomError = (form: FormGroup, control: string) =>
+    hasCustomErrorImport(form, control)
 
   ngOnDestroy() {
     this.destroy$.next();

@@ -8,3 +8,8 @@ span {
     padding-left: 10%;
     padding-right: 10%;
 }
+
+textarea {
+    background-color: #fff !important;
+    background: #fff !important;
+}

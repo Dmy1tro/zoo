@@ -8,18 +8,16 @@ namespace ZooApiService.DAL.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Animals",
+                name: "AnimalTypes",
                 columns: table => new
                 {
-                    AnimalId = table.Column<int>(nullable: false)
+                    AnimalTypeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 100, nullable: false),
-                    Gender = table.Column<int>(nullable: false),
-                    DateOfBirth = table.Column<DateTime>(nullable: false)
+                    TypeName = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Animals", x => x.AnimalId);
+                    table.PrimaryKey("PK_AnimalTypes", x => x.AnimalTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,6 +54,9 @@ namespace ZooApiService.DAL.Data.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
+                    Role = table.Column<string>(maxLength: 100, nullable: true),
+                    Picture = table.Column<byte[]>(nullable: true),
+                    ContentType = table.Column<string>(maxLength: 100, nullable: true),
                     Gender = table.Column<int>(nullable: false),
                     Position = table.Column<int>(nullable: false)
                 },
@@ -65,43 +66,26 @@ namespace ZooApiService.DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rations",
+                name: "Animals",
                 columns: table => new
                 {
-                    RationId = table.Column<int>(nullable: false)
+                    AnimalId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AnimalId = table.Column<int>(nullable: false),
-                    FoodName = table.Column<string>(maxLength: 100, nullable: false),
-                    Description = table.Column<string>(maxLength: 300, nullable: false)
+                    AnimalTypeId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Gender = table.Column<int>(nullable: false),
+                    DateOfBirth = table.Column<DateTime>(nullable: false),
+                    Picture = table.Column<byte[]>(nullable: true),
+                    ContentType = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rations", x => x.RationId);
+                    table.PrimaryKey("PK_Animals", x => x.AnimalId);
                     table.ForeignKey(
-                        name: "FK_Rations_Animals_AnimalId",
-                        column: x => x.AnimalId,
-                        principalTable: "Animals",
-                        principalColumn: "AnimalId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SmartDevices",
-                columns: table => new
-                {
-                    SmartDeviceId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AnimalId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SmartDevices", x => x.SmartDeviceId);
-                    table.ForeignKey(
-                        name: "FK_SmartDevices_Animals_AnimalId",
-                        column: x => x.AnimalId,
-                        principalTable: "Animals",
-                        principalColumn: "AnimalId",
+                        name: "FK_Animals_AnimalTypes_AnimalTypeId",
+                        column: x => x.AnimalTypeId,
+                        principalTable: "AnimalTypes",
+                        principalColumn: "AnimalTypeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -237,6 +221,73 @@ namespace ZooApiService.DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AnimalDetails",
+                columns: table => new
+                {
+                    AnimalDetailsId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AnimalId = table.Column<int>(nullable: false),
+                    Weight = table.Column<double>(nullable: true),
+                    Height = table.Column<double>(nullable: true),
+                    BodyLength = table.Column<double>(nullable: true),
+                    TailLength = table.Column<double>(nullable: true),
+                    Price = table.Column<decimal>(nullable: true),
+                    AdditionalInfo = table.Column<string>(maxLength: 300, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnimalDetails", x => x.AnimalDetailsId);
+                    table.ForeignKey(
+                        name: "FK_AnimalDetails_Animals_AnimalId",
+                        column: x => x.AnimalId,
+                        principalTable: "Animals",
+                        principalColumn: "AnimalId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rations",
+                columns: table => new
+                {
+                    RationId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AnimalId = table.Column<int>(nullable: false),
+                    FoodName = table.Column<string>(maxLength: 100, nullable: false),
+                    Description = table.Column<string>(maxLength: 300, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rations", x => x.RationId);
+                    table.ForeignKey(
+                        name: "FK_Rations_Animals_AnimalId",
+                        column: x => x.AnimalId,
+                        principalTable: "Animals",
+                        principalColumn: "AnimalId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SmartDevices",
+                columns: table => new
+                {
+                    SmartDeviceId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AnimalId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    DeviceType = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SmartDevices", x => x.SmartDeviceId);
+                    table.ForeignKey(
+                        name: "FK_SmartDevices_Animals_AnimalId",
+                        column: x => x.AnimalId,
+                        principalTable: "Animals",
+                        principalColumn: "AnimalId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DeviceRecords",
                 columns: table => new
                 {
@@ -256,6 +307,23 @@ namespace ZooApiService.DAL.Data.Migrations
                         principalColumn: "SmartDeviceId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnimalDetails_AnimalId",
+                table: "AnimalDetails",
+                column: "AnimalId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Animals_AnimalTypeId",
+                table: "Animals",
+                column: "AnimalTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnimalTypes_TypeName",
+                table: "AnimalTypes",
+                column: "TypeName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -320,6 +388,9 @@ namespace ZooApiService.DAL.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AnimalDetails");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -354,6 +425,9 @@ namespace ZooApiService.DAL.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Animals");
+
+            migrationBuilder.DropTable(
+                name: "AnimalTypes");
         }
     }
 }

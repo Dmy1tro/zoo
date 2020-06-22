@@ -10,8 +10,8 @@ using ZooApiService.DAL.Data.Context;
 namespace ZooApiService.DAL.Data.Migrations
 {
     [DbContext(typeof(ZooDbContext))]
-    [Migration("20200527133922_AddRoleProp")]
-    partial class AddRoleProp
+    [Migration("20200622185509_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -162,6 +162,9 @@ namespace ZooApiService.DAL.Data.Migrations
                     b.Property<int>("AnimalTypeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ContentType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -173,11 +176,51 @@ namespace ZooApiService.DAL.Data.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("varbinary(max)");
+
                     b.HasKey("AnimalId");
 
                     b.HasIndex("AnimalTypeId");
 
                     b.ToTable("Animals");
+                });
+
+            modelBuilder.Entity("ZooApiService.DAL.Data.Entities.AnimalDetails", b =>
+                {
+                    b.Property<int>("AnimalDetailsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AdditionalInfo")
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<int>("AnimalId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("BodyLength")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<double?>("TailLength")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("AnimalDetailsId");
+
+                    b.HasIndex("AnimalId")
+                        .IsUnique();
+
+                    b.ToTable("AnimalDetails");
                 });
 
             modelBuilder.Entity("ZooApiService.DAL.Data.Entities.AnimalType", b =>
@@ -238,6 +281,10 @@ namespace ZooApiService.DAL.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ContentType")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -273,6 +320,9 @@ namespace ZooApiService.DAL.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int>("Position")
                         .HasColumnType("int");
@@ -381,6 +431,9 @@ namespace ZooApiService.DAL.Data.Migrations
                     b.Property<int>("AnimalId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("DeviceType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
@@ -449,6 +502,15 @@ namespace ZooApiService.DAL.Data.Migrations
                     b.HasOne("ZooApiService.DAL.Data.Entities.AnimalType", "AnimalType")
                         .WithMany("Animals")
                         .HasForeignKey("AnimalTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ZooApiService.DAL.Data.Entities.AnimalDetails", b =>
+                {
+                    b.HasOne("ZooApiService.DAL.Data.Entities.Animal", "Animal")
+                        .WithOne("AnimalDetails")
+                        .HasForeignKey("ZooApiService.DAL.Data.Entities.AnimalDetails", "AnimalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

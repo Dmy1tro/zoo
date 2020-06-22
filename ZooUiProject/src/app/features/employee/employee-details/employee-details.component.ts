@@ -11,6 +11,7 @@ import { Job, toastrTitle } from 'src/app/core/constants/enums';
 import { CreateUpdateEmployeeComponent } from '../create-update-employee/create-update-employee.component';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { AccountService } from '../../authentication/services/account.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -29,6 +30,7 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
               private employeeService: EmployeeService,
+              private accountService: AccountService,
               private router: Router,
               private toastr: ToastrService,
               private dialog: MatDialog,
@@ -81,6 +83,16 @@ export class EmployeeDetailsComponent implements OnInit, OnDestroy {
   }
 
   delete(employee: IEmployee) {
+    if (!this.accountService.isAdmin && employee.role.toUpperCase() === 'Admin'.toUpperCase()) {
+      alert(this.translate.instant('Not-allowed'));
+      return;
+    }
+
+    if (this.accountService.getCurrentUser.id === employee.id) {
+      alert(this.translate.instant('Not-delete-yourself'));
+      return;
+    }
+
     if (!deleteConfirmImport(employee.firstName + ' ' + employee.lastName, this.translate)) {
       return;
     }

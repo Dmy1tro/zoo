@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading.Tasks;
 
 namespace ZooApiService.BLL.Contracts.Interfaces
 {
     public interface IAdminService
     {
-        Task<IList<object>> ExecuteQuery(string query);
+        Task<IList<ExpandoObject>> ExecuteQuery(string query);
 
-        Task<object> ExecuteCommand(string command);
+        Task<int> ExecuteCommand(string command);
 
         Task CreateBackup(string location);
     }

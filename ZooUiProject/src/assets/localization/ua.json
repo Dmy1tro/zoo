@@ -138,5 +138,17 @@
     "Admin": "Адмін",
 
     "Table-view": "Таблиця",
-    "Card-view": "Картки"
+    "Card-view": "Картки",
+
+    "Weight": "Вага",
+    "Height": "Висота",
+    "BodyLength": "Довжина тіла",
+    "TailLength": "Довжина хвоста",
+    "Price": "Ціна",
+    "AdditionalInfo": "Додаткова інформація",
+    "M": "м",
+    "Kg": "кг",
+
+    "Not-allowed": "У вас немає доступу",
+    "Not-delete-yourself": "Ви не можете видалити свій аккаунт"
 }

@@ -4,3 +4,8 @@
   right: 47px;
   z-index: 999;
 }
+
+img {
+  height: 178px !important;
+  width: 100% !important;
+}

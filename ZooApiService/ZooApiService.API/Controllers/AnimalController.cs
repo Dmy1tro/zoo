@@ -16,11 +16,15 @@ namespace ZooApiService.API.Controllers
     public class AnimalController : ControllerBase
     {
         private readonly IAnimalService _animalService;
+        private readonly IAnimalDetailsService _animalDetailsService;
         private readonly IMapper _mapper;
 
-        public AnimalController(IAnimalService animalService, IMapper mapper)
+        public AnimalController(IAnimalService animalService,
+                                IAnimalDetailsService animalDetailsService,
+                                IMapper mapper)
         {
             _animalService = animalService;
+            _animalDetailsService = animalDetailsService;
             _mapper = mapper;
         }
 
@@ -46,6 +50,7 @@ namespace ZooApiService.API.Controllers
             var animalDto = _mapper.Map<AnimalDto>(model);
 
             var createdId = await _animalService.CreateAnimalAsync(animalDto);
+            await _animalDetailsService.CreateAnimalDetailsAsync(new AnimalDetailsDto { AnimalId = (int)createdId.CreatedId });
 
             if (model.Picture != null)
             {
