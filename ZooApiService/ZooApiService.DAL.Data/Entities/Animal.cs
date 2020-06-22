@@ -20,6 +20,8 @@ namespace ZooApiService.DAL.Data.Entities
 
         public string ContentType { get; set; }
 
+        public AnimalDetails AnimalDetails { get; set; }
+
         public AnimalType AnimalType { get; set; }
 
         public ICollection<SmartDevice> SmartDevices { get; set; }

@@ -8,6 +8,8 @@ namespace ZooApiService.DAL.Data.Context
     {
         public DbSet<Animal> Animals { get; set; }
 
+        public DbSet<AnimalDetails> AnimalDetails { get; set; }
+
         public DbSet<AnimalType> AnimalTypes { get; set; }
         
         public DbSet<DeviceRecord> DeviceRecords { get; set; }

@@ -3,7 +3,7 @@
         <h4 class="text-center">{{'Animal-info' | translate}}</h4>
         <hr>
         <div class="form-group" *ngIf="animal">
-            <img [src]="animal.picture" alt="" class="img-fluid rounded w-50 mb-3 d-block mx-auto">
+            <img [src]="animal.picture" alt="" class="img-fluid rounded w-100 mb-3 d-block mx-auto">
             <ul class="list-group">
                 <li class="list-group-item">
                     <span>
@@ -32,8 +32,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <button mat-raised-button class="btn-block" 
-                    color="secondary" (click)="backToAnimals()">
+                <button mat-raised-button class="btn-block" color="secondary" (click)="backToAnimals()">
                     <mat-icon>arrow_back_ios</mat-icon>
                     {{'Back'| translate}}
                 </button>
@@ -48,48 +47,108 @@
     </div>
     <hr>
     <div class="col-md-6">
-        <h4 class="text-center">{{'Ration'| translate}}</h4>
-        <hr>
-        <table class="table table-bordered text-center">
-            <thead class="thead-light">
-                <tr class="d-flex">
-                    <th class="col-md-3" scope="col">
-                        {{'Food-name'| translate}}
-                    </th>
-                    <th class="col-md-5" scope="col">
-                        {{'Description'| translate}}
-                    </th>
-                    <th class="col-md-4" scope="col">
-                        <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdateRation(null)">
-                            <mat-icon>add</mat-icon>
-                            {{'Create-ration'| translate}}
-                        </button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="d-flex" *ngFor="let ration of rations">
-                    <td class="col-md-3 text-overflow-hidden">
-                        {{ ration.foodName }}
-                    </td>
-                    <td class="col-md-5">
-                        {{ ration.description }}
-                    </td>
-                    <td class="col-md-4">
-                        <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdateRation(ration.rationId)">
-                            <mat-icon>edit</mat-icon>
-                        </button>
-                        <button class="btn btn-sm btn-danger mx-1" (click)="deleteRation(ration.rationId)">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </td>
-                </tr>
-                <tr *ngIf="rations.length === 0">
-                    <td>
-                        <p>{{ 'Empty' | translate }}</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <mat-tab-group animationDuration="400ms" mat-align-tabs="center">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    {{ 'Details' | translate }}
+                </ng-template>
+                <form class="w-75 mx-auto" [formGroup]="animalDetailsForm" novalidate (ngSubmit)="updateDetails()" *ngIf="animalDetailsForm">
+                    <mat-form-field appearance="standard">
+                        <mat-label>{{'Weight'| translate}}, {{ 'Kg' | translate }}</mat-label>
+                        <input type="number" matInput formControlName="weight">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <mat-label>{{'Height'| translate}}, {{ 'M' | translate }}</mat-label>
+                        <input type="number" matInput formControlName="height">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <mat-label>{{'BodyLength'| translate}}, {{ 'M' | translate }}</mat-label>
+                        <input type="number" matInput formControlName="bodyLength">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <mat-label>{{'TailLength'| translate}}, {{ 'M' | translate }}</mat-label>
+                        <input type="number" matInput formControlName="tailLength">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <mat-label>{{'Price'| translate}}, {{ 'USD' }}</mat-label>
+                        <input type="number" matInput formControlName="price">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard">
+                        <mat-label>{{'AdditionalInfo'| translate}}</mat-label>
+                        <textarea matInput formControlName="additionalInfo" rows="3"></textarea>
+                    </mat-form-field>
+
+                    <div class="row px-2 my-2">
+                        <div class="col-md-6">
+                            <button mat-raised-button class="btn-block " type="submit" color="primary">
+                                {{ 'Update' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
+                                <mat-icon>cached</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    {{ 'Ration' | translate }}
+                </ng-template>
+
+                <table class="table table-bordered text-center mt-2">
+                    <thead class="thead-light">
+                        <tr class="d-flex">
+                            <th class="col-md-3" scope="col">
+                                {{'Food-name'| translate}}
+                            </th>
+                            <th class="col-md-5" scope="col">
+                                {{'Description'| translate}}
+                            </th>
+                            <th class="col-md-4" scope="col">
+                                <button mat-raised-button class="btn btn-sm" color="primary"
+                                    (click)="addOrUpdateRation(null)">
+                                    <mat-icon>add</mat-icon>
+                                    {{'Create'| translate}}
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex" *ngFor="let ration of rations">
+                            <td class="col-md-3 text-overflow-hidden">
+                                {{ ration.foodName }}
+                            </td>
+                            <td class="col-md-5">
+                                {{ ration.description }}
+                            </td>
+                            <td class="col-md-4">
+                                <button class="btn btn-sm btn-warning mx-1"
+                                    (click)="addOrUpdateRation(ration.rationId)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button class="btn btn-sm btn-danger mx-1" (click)="deleteRation(ration.rationId)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="rations.length === 0">
+                            <td>
+                                <p>{{ 'Empty' | translate }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </mat-tab>
+        </mat-tab-group>
+        <!-- <h4 class="text-center">{{'Ration'| translate}}</h4>
+        <hr> -->
     </div>
 </div>

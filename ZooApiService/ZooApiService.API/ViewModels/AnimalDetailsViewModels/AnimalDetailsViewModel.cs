@@ -1,6 +1,9 @@
-﻿namespace ZooApiService.DAL.Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using ZooApiService.Common.Constants;
+
+namespace ZooApiService.API.ViewModels.AnimalDetailsViewModels
 {
-    public class AnimalDetails
+    public class AnimalDetailsViewModel
     {
         public int AnimalDetailsId { get; set; }
 
@@ -16,8 +19,7 @@
 
         public decimal? Price { get; set; }
 
+        [MaxLength(LengthConstants.MediumLength)]
         public string AdditionalInfo { get; set; }
-
-        public Animal Animal { get; set; }
     }
 }

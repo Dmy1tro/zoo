@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
+using ZooApiService.API.ViewModels.AnimalDetailsViewModels;
 using ZooApiService.API.ViewModels.AnimalViewModels;
 using ZooApiService.API.ViewModels.EmployeeViewModels;
 using ZooApiService.API.ViewModels.JobViewModels;
@@ -54,8 +55,13 @@ namespace ZooApiService.API.Mapping
             CreateMap<AnimalViewModel, AnimalDto>()
                 .ForMember(d => d.Picture, m => m.Ignore())
                 .ForMember(d => d.ContentType, m => m.Ignore());
+
+            CreateMap<AnimalDetailsViewModel, AnimalDetailsDto>();
+
             CreateMap<EmployeeViewModel, EmployeeDto>();
+
             CreateMap<JobViewModel, JobDto>();
+
             CreateMap<RationViewModel, RationDto>();
         }
 
@@ -67,6 +73,9 @@ namespace ZooApiService.API.Mapping
             CreateMap<Animal, AnimalFullDto>()
                 .IncludeBase<Animal, AnimalDto>()
                 .ForMember(d => d.TypeName, m => m.MapFrom(s => s.AnimalType.TypeName));
+
+            CreateMap<AnimalDetails, AnimalDetailsDto>()
+                .ReverseMap();
 
             CreateMap<AnimalType, AnimalTypeDto>()
                 .ReverseMap();

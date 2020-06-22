@@ -51,6 +51,7 @@ namespace ZooApiService.API.Configuration
         public static IServiceCollection ConfigureDiServices(this IServiceCollection services)
         {
             services.AddScoped<IAnimalService, AnimalService>();
+            services.AddScoped<IAnimalDetailsService, AnimalDetailsService>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IAnimalTypeService, AnimalTypeService>();
             services.AddScoped<IDeviceRecordService, DeviceRecordService>();

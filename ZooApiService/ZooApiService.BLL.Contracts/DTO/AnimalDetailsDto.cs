@@ -1,6 +1,6 @@
-﻿namespace ZooApiService.DAL.Data.Entities
+﻿namespace ZooApiService.BLL.Contracts.DTO
 {
-    public class AnimalDetails
+    public class AnimalDetailsDto
     {
         public int AnimalDetailsId { get; set; }
 
@@ -17,7 +17,5 @@
         public decimal? Price { get; set; }
 
         public string AdditionalInfo { get; set; }
-
-        public Animal Animal { get; set; }
     }
 }

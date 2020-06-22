@@ -10,6 +10,9 @@ export namespace urls {
     // animal
     export const animals = environment.apiUrl + 'animals/';
 
+    // animalDetails
+    export const animalDetails = environment.apiUrl + 'animal-details/';
+
     // admin
     export const admin = environment.apiUrl + 'admin/';
     export const adminQuery = admin + 'query/';

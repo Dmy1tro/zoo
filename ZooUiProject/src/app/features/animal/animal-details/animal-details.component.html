@@ -21,7 +21,12 @@
         <div class="col-md-3 my-auto">
             <mat-form-field appearance="standard">
                 <mat-label>{{ 'Name' | translate }}</mat-label>
-                <input matInput placeholder="title" formControlName="name">
+                <input matInput placeholder="title" formControlName="name" [matAutocomplete]="autoName">
+                <mat-autocomplete #autoName="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredAnimals" [value]="option.name">
+                        {{option.name}}
+                    </mat-option>
+                </mat-autocomplete>
             </mat-form-field>
         </div>
         <div class="col-md-2 my-auto">
@@ -71,8 +76,8 @@
 
 <div class="row" *ngIf="!tableView">
     <div class="col-md-3" *ngFor="let item of filteredAnimals">
-        <div class="card mb-2">
-            <img [src]="item.picture" class="card-img-top w-75 mx-auto">
+        <div class="card mb-2 shadow">
+            <img [src]="item.picture" class="card-img-top mx-auto">
             <h5 class="text-center mt-2">
                 {{ item.name }}
             </h5>
