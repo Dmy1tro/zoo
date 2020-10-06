@@ -1,10 +1,13 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ZooApiService.BLL.Contracts.Interfaces;
@@ -140,6 +143,27 @@ namespace ZooApiService.API.Configuration
             });
 
             return services;
+        }
+
+        public static IApplicationBuilder RunSPAonSamePort(this IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.Use(async (context, next) => 
+            {
+                await next();
+
+                if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
+
+            app.UseStaticFiles(new StaticFileOptions 
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "SPA"))
+            });
+
+            return app;
         }
 
         public static IApplicationBuilder MigrateDataBase(this IApplicationBuilder app)

@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using System.IO;
 using ZooApiService.API.Configuration;
 using ZooApiService.API.Mapping;
 using ZooApiService.API.Middleware;
@@ -59,22 +57,7 @@ namespace ZooApiService.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Use(async (context, next) => 
-            {
-                await next();
-
-                if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
-                {
-                    context.Request.Path = "/index.html";
-                    await next();
-                }
-            });
-
             app.UseDefaultFiles();
-            app.UseStaticFiles(new StaticFileOptions 
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "SPA"))
-            });
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {

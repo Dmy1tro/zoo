@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://dmytro-laskuryk-web-app.azurewebsites.net/api/'
+  apiUrl: 'http://localhost:5000/api/'
 };
