@@ -4,14 +4,32 @@
 <hr>
 
 <form [formGroup]="filterForm" novalidate (ngSubmit)="filterAnimals()">
-    <div class="row ml-1">
-        <div class="col-md-3">
+    <div class="row">
+        <div class="col-md-2 my-auto">
             <mat-form-field appearance="standard">
-                <mat-label>{{ 'Name' | translate }}</mat-label>
-                <input matInput placeholder="title" formControlName="name">
+                <mat-label>{{'Animal-type' | translate}}</mat-label>
+                <mat-select formControlName="typeName">
+                    <mat-option [value]="'*'">
+                        {{'All' | translate}}
+                    </mat-option>
+                    <mat-option *ngFor="let item of typeNames" [value]="item">
+                        {{ item }}
+                    </mat-option>
+                </mat-select>
             </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 my-auto">
+            <mat-form-field appearance="standard">
+                <mat-label>{{ 'Name' | translate }}</mat-label>
+                <input matInput placeholder="title" formControlName="name" [matAutocomplete]="autoName">
+                <mat-autocomplete #autoName="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredAnimals" [value]="option.name">
+                        {{option.name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div class="col-md-2 my-auto">
             <mat-form-field color="primary" appearance="standard">
                 <mat-label>{{ 'From-date' | translate }}</mat-label>
                 <input class="mat-datepicker-input" matInput [matDatepicker]="picker1" formControlName='fromDate'>
@@ -19,7 +37,7 @@
                 <mat-datepicker #picker1 disabled="false"></mat-datepicker>
             </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2 my-auto">
             <mat-form-field color="primary" appearance="standard">
                 <mat-label>{{ 'By-date' | translate }}</mat-label>
                 <input matInput [matDatepicker]="picker2" formControlName='byDate'>
@@ -27,7 +45,7 @@
                 <mat-datepicker #picker2 disabled="false"></mat-datepicker>
             </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 my-auto">
             <mat-button-toggle-group>
                 <button mat-raised-button color="primary" type="submit" class="px-5">
                     {{ 'Search' | translate }}
@@ -40,7 +58,62 @@
     </div>
 </form>
 
-<div class="table-responsive px-2 mt-2">
+<div class="mb-3">
+    <span class="mr-1">
+        {{ 'Card-view' | translate }}
+    </span>
+    <mat-slide-toggle [(ngModel)]="tableView" (change)="changeView($event)" (click)="$event.stopPropagation();">
+    </mat-slide-toggle>
+    <span class="ml-1">
+        {{ 'Table-view' | translate }}
+    </span>
+</div>
+
+<button mat-fab color="primary" class="add-circle-button d-flex justify-content-center" (click)="addOrUpdate(null)"
+    *ngIf="!tableView">
+    <mat-icon>add</mat-icon>
+</button>
+
+<div class="row" *ngIf="!tableView">
+    <div class="col-md-3" *ngFor="let item of filteredAnimals">
+        <div class="card mb-2 shadow">
+            <img [src]="item.picture" class="card-img-top mx-auto">
+            <h5 class="text-center mt-2">
+                {{ item.name }}
+            </h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-inline-flex">
+                    <mat-icon class="mr-1">description</mat-icon>
+                    {{ item.typeName }}
+                </li>
+                <li class="list-group-item d-inline-flex">
+                    <mat-icon class="mr-1">info</mat-icon>
+                    {{ item.gender | translate }}
+                </li>
+                <li class="list-group-item d-inline-flex">
+                    <mat-icon class="mr-1">date_range</mat-icon>
+                    {{ item.dateOfBirth | date: 'yyyy-MM-dd' }}
+                </li>
+            </ul>
+
+            <div class="card-body d-flex justify-content-center">
+                <a [routerLink]="['/animal/animal-info', item.animalId]"
+                    class="btn btn-info mr-2 d-inline-flex justify-content-center">
+                    <mat-icon class="mr-1">info</mat-icon>
+                    {{'Info' | translate}}
+                </a>
+                <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdate(item.animalId)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button class="btn btn-sm btn-danger mx-1" (click)="deleteAnimal(item.animalId)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive px-2" *ngIf="tableView">
     <table class="table table-bordered text-center">
         <thead class="thead-light">
             <tr class="d-flex">
@@ -49,7 +122,8 @@
                 </th>
                 <th class="col-md-3 pointer" scope="col" (click)="sortBy('name')"><u>{{'Name'| translate}}</u></th>
                 <th class="col-md-2" scope="col">{{'Gender'| translate}}</th>
-                <th class="col-md-2 pointer" scope="col" (click)="sortBy('date')"><u>{{'Date-of-birth'| translate}}</u></th>
+                <th class="col-md-2 pointer" scope="col" (click)="sortBy('date')"><u>{{'Date-of-birth'| translate}}</u>
+                </th>
                 <th class="col-md-3" scope="col">
                     <button mat-raised-button class="btn btn-sm" color="primary" (click)="addOrUpdate(null)">
                         <mat-icon>add</mat-icon>
@@ -73,10 +147,11 @@
                     {{ animal.dateOfBirth | date: 'yyyy-MM-dd' }}
                 </td>
                 <td class="col-md-3">
-                    <button class="btn btn-info mr-3 d-inline-flex justify-content-center" (click)="goToInfo(animal.animalId)">
+                    <a [routerLink]="['/animal/animal-info', animal.animalId]"
+                        class="btn btn-info mr-3 d-inline-flex justify-content-center">
                         <mat-icon class="mr-1">info</mat-icon>
                         {{'Info' | translate}}
-                    </button>
+                    </a>
                     <button class="btn btn-sm btn-warning mx-1" (click)="addOrUpdate(animal.animalId)">
                         <mat-icon>edit</mat-icon>
                     </button>

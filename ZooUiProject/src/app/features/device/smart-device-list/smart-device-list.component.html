@@ -43,7 +43,7 @@
             <table class="table table-bordered text-center">
                 <thead class="thead-light">
                     <tr class="d-flex">
-                        <th class="col-md-5 pointer" scope="col">
+                        <th class="col-md-5" scope="col">
                             {{'Title' | translate}}
                         </th>
                         <th class="col-md-3" scope="col">
@@ -61,9 +61,11 @@
                 <tbody>
                     <tr class="d-flex" *ngFor="let device of devices">
                         <td class="col-md-5">
-                            <u class="btn btn-link" (click)="openRecords(device.smartDeviceId)">
+                            <button class="btn btn-link" type="button"
+                                [class.selected]="device.smartDeviceId === deviceSelectedId"
+                                (click)="openRecords(device.smartDeviceId)">
                                 {{ device.name }}
-                            </u>
+                            </button>
                         </td>
                         <td class="col-md-3" scope="col">
                             {{ device.deviceType | translate }}
@@ -88,8 +90,12 @@
     </div>
 
     <div class="col-md-5" *ngIf="canOpenRecords">
-        <div class="text-center my-2">
+        <div class="d-flex justify-content-center">
             <h3>{{'Device-records' | translate}}</h3>
+            <button mat-raised-button type="button" class="btn btn-sm ml-3" (click)="refreshRecords()">
+                Refresh
+                <mat-icon>cached</mat-icon>
+            </button>
         </div>
         <hr>
         <ul class="list-group mt-1">
@@ -111,12 +117,12 @@
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let record of deviceRecords">
                 <div class="row px-2">
-                    <div class="col-md-8 my-auto">
+                    <div class="col-md-9 my-auto">
                         <h6>
                             {{ record.value }}
                         </h6>
                     </div>
-                    <div class="col-md-4 my-auto">
+                    <div class="col-md-3 my-auto">
                         <h6>
                             <small><i>{{ record.date | date: 'medium' }}</i></small>
                         </h6>

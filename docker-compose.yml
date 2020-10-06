@@ -1,0 +1,39 @@
+version: '3'
+
+services: 
+    zoo-sqldb:
+        image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+        environment: 
+            ACCEPT_EULA: "Y"
+            SA_PASSWORD: "zoo2d2r2_PlQ"
+            MSSQL_PID: Express
+        ports: 
+        - "1433:1433"
+        container_name: zoo-sqldb
+        restart: unless-stopped
+    
+    zoo-api:
+        build: 
+            context: ./ZooApiService
+            dockerfile: ./ZooApiService.API/Dockerfile
+        expose: 
+            - 80
+        ports: 
+            - 5000:80
+        container_name: zoo-api
+        restart: unless-stopped
+        depends_on: 
+            - zoo-sqldb
+    
+    zoo-ui:
+        build: 
+            context: ./ZooUiProject
+            dockerfile: ./Dockerfile
+        expose: 
+            - 100
+        ports: 
+            - 4200:100
+        container_name: zoo-ui
+        restart: unless-stopped
+        depends_on: 
+            - zoo-api

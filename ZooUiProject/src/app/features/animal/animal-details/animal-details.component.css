@@ -1,17 +1,11 @@
+.add-circle-button {
+  position: fixed;
+  bottom: 60px;
+  right: 47px;
+  z-index: 999;
+}
 
-.mat-action-list a {
-    background-color: #fff;
-    border-radius: 3px;
-    border: solid 0.5px silver;
-    margin-bottom: 3px;
-  }
-
-.mat-action-list a.active {
-    background: #673ab7;
-    color: white;
-  }
-
-  .mat-action-list span {
-      position: absolute;
-      right: 7%;
-  }
+img {
+  height: 178px !important;
+  width: 100% !important;
+}

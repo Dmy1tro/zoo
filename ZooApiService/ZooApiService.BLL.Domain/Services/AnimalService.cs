@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -47,7 +44,6 @@ namespace ZooApiService.BLL.Domain.Services
         {
             var animalDbo = await _dbContext.Animals
                 .Include(x => x.AnimalType)
-                .Select(withoutPicture)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -107,18 +103,5 @@ namespace ZooApiService.BLL.Domain.Services
 
             await _dbContext.SaveChangesAsync();
         }
-
-        private readonly Expression<Func<Animal, Animal>> withoutPicture =
-            (x) => new Animal
-            {
-                AnimalId = x.AnimalId,
-                AnimalType = x.AnimalType,
-                AnimalTypeId = x.AnimalTypeId,
-                DateOfBirth = x.DateOfBirth,
-                Gender = x.Gender,
-                Name = x.Name,
-                ContentType = null,
-                Picture = null
-            };
     }
 }

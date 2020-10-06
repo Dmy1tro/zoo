@@ -122,15 +122,17 @@
                 </mat-form-field>
             </div>
         </div>
-
+        <p *ngIf="!havePermission" class="text-danger">
+            {{ 'Not-allowed' | translate }}
+        </p>
         <div class="row px-2 mt-4">
             <div class="col-md-6">
-                <button mat-raised-button class="btn-block" type="submit" color="primary">
+                <button mat-raised-button class="btn-block" type="submit" color="primary" [disabled]="!havePermission">
                     {{ getButtonState() }}
                 </button>
             </div>
             <div class="col-md-6">
-                <button mat-raised-button type="button" class="btn-block" (click)="resetForm()">
+                <button mat-raised-button type="button" class="btn-block" (click)="resetForm()" [disabled]="!havePermission">
                     <mat-icon>cached</mat-icon>
                 </button>
             </div>

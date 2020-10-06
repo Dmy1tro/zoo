@@ -6,7 +6,7 @@
         </span>
     </div>
 </div>
-<div class="col-md-4 offset-4 my-4">
+<div class="d-block mx-auto col-md-4 my-4">
     <form [formGroup]="signInForm" novalidate (ngSubmit)="onSubmit()">
         <mat-card class="card-spacer">
             <mat-card-header class="d-flex justify-content-center">
@@ -17,7 +17,7 @@
                     <mat-label>{{'Email' | translate}}</mat-label>
                     <input matInput placeholder="example@qq.com" type="email" formControlName="email">
                 </mat-form-field>
-                
+
                 <mat-form-field appearance="standard">
                     <mat-label>{{'Password' | translate}}</mat-label>
                     <input matInput placeholder="*******" [type]="hide ? 'password' : 'text'"

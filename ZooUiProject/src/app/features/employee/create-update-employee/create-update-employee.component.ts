@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import { toastrTitle, GENDER, Job, Role, DataAction } from 'src/app/core/constants/enums';
 import { EmployeeService } from '../common/employee.service';
 import { TranslateService } from '@ngx-translate/core';
+import { IEnumSelect } from 'src/app/core/interfaces/enum-select.interface';
 
 @Component({
   selector: 'app-create-update-employee',
@@ -21,10 +22,11 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
   employeeForm: FormGroup;
   genders: any;
   jobs: any;
-  roles: any;
+  roles: IEnumSelect[];
   hide = true;
   hideConfirm = true;
   passError = null;
+  havePermission = false;
 
   private isUpdate = false;
   private destroy$ = new Subject<void>();
@@ -39,11 +41,21 @@ export class CreateUpdateEmployeeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isUpdate = this.data.id != null;
+    this.havePermission = !this.data.role || this.data.role.toUpperCase() !== 'Admin'.toUpperCase() || this.accountService.isAdmin;
     this.genders = enumSelector(GENDER);
     this.jobs = enumSelector(Job);
-    this.roles = enumSelector(Role);
+    this.getAllowedRoles();
     this.createForm();
     configureToastr(this.toastr);
+  }
+
+  getAllowedRoles() {
+    this.roles = enumSelector(Role);
+
+    if (!this.accountService.isAdmin && this.havePermission) {
+      const index = this.roles.findIndex(x => x.title === 'Admin');
+      this.roles.splice(index, 1);
+    }
   }
 
   createForm() {

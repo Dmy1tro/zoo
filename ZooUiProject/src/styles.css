@@ -12,6 +12,10 @@ input {
     height: 100%;
 }
 
+button {
+    outline: none !important;
+}
+
 th {
     font-size: 18px;
 }

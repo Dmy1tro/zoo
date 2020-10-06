@@ -35,12 +35,12 @@
           </button>
           <mat-menu class="menu outline-none" #settingsMenu="matMenu">
             <mat-label class="ml-2">Language / мова</mat-label>
-            <button mat-menu-item class="outline-none" (click)="$event.stopPropagation();">
+            <div mat-menu-item class="outline-none" (click)="$event.stopPropagation();">
               <span class="mr-1"> en </span>
               <mat-slide-toggle [(ngModel)]="translateOn" (change)="changeLanguage($event)"
                 (click)="$event.stopPropagation();"></mat-slide-toggle>
               <span class="ml-1"> ua </span>
-            </button>
+            </div>
           </mat-menu>
 
           <ng-container *ngIf="isAuthenticated">

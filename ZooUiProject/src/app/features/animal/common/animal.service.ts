@@ -14,7 +14,13 @@ export class AnimalService {
   constructor(private httpClient: HttpClient) { }
 
   getAnimals(): Observable<IAnimalFull[]> {
-    return this.httpClient.get<IAnimalFull[]>(urls.animals);
+    return this.httpClient.get<IAnimalFull[]>(urls.animals)
+      .pipe(
+        map(data => {
+          data.forEach(this.mapAnimal);
+          return data;
+        })
+      );
   }
 
   getAnimal(id): Observable<IAnimalFull> {

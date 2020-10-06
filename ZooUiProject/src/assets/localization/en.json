@@ -135,5 +135,20 @@
     "Db-backup": "Database backup",
     "create-backup": "Create backup",
     "get-backup": "Download backup",
-    "Admin": "Admin"
+    "Admin": "Admin",
+
+    "Table-view": "Table view",
+    "Card-view": "Card view",
+
+    "Weight": "Weight",
+    "Height": "Height",
+    "BodyLength": "Body length",
+    "TailLength": "Tail length",
+    "Price": "Price",
+    "AdditionalInfo": "Additional info",
+    "M": "m",
+    "Kg": "kg",
+
+    "Not-allowed": "You do not have permission",
+    "Not-delete-yourself": "You can not delete yourself"
 }
